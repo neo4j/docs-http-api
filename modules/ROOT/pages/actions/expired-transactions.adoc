@@ -1,0 +1,23 @@
+:description: Timed out transaction error.
+
+[[http-api-expired-transactions]]
+= Expired transactions
+
+If an attempt is made to commit a transaction which has timed out, you will see the following error:
+
+[source, JSON, role="nocopy"]
+----
+404 Not Found
+Content-Type: application/json
+
+{
+    "results": [],
+    "errors": [
+        {
+            "code": "Neo.ClientError.Transaction.TransactionNotFound",
+            "message": "Unrecognized transaction id. Transaction may have timed out and been rolled back."
+        }
+    ]
+}
+----
+

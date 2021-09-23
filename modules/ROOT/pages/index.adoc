@@ -1,0 +1,29 @@
+:description: This is the manual for the HTTP API, Neo4j version {neo4j-version}.
+
+[[http-api]]
+= HTTP API
+
+[discrete]
+== Neo4j  v{neo4j-version}
+
+ifndef::backend-pdf[]
+License: link:{common-license-page-uri}[Creative Commons 4.0]
+endif::[]
+
+ifdef::backend-pdf[]
+License: Creative Commons 4.0
+endif::[]
+
+Transactional Cypher HTTP endpoint. 
+
+This manual covers the following areas:
+
+* xref:introduction.adoc[]
+* xref:discovery.adoc[]
+* xref:actions/index.adoc[]
+* xref:security/index.adoc[]
+
+_Who should read this?_
+
+This manual is written for the developer of a client application which accesses Neo4j through the HTTP API.
+

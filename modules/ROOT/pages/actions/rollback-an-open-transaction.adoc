@@ -1,0 +1,27 @@
+:description: Rollback a transaction.
+
+[[http-api-rollback-an-open-transaction]]
+= Rollback an open transaction
+
+Given that you have an open transaction, you can send a rollback request.
+The server will roll back the transaction.
+Any attempt to run additional statements in this transaction will fail immediately.
+
+_Example request_
+
+* *+DELETE+*  +http://localhost:7474/db/neo4j/tx/3+
+* *+Accept:+* +application/json;charset=UTF-8+
+
+_Example response_
+
+* *+200:+* +OK+
+* *+Content-Type:+* +application/json;charset=utf-8+
+
+[source, JSON, role="nocopy"]
+----
+{
+  "results" : [ ],
+  "errors" : [ ]
+}
+----
+

@@ -1,0 +1,51 @@
+:description: Multiple Cypher statements in one request.
+
+[[http-api-execute-multiple-statements]]
+= Execute multiple statements
+
+It is possible to send multiple Cypher statements in the same request.
+The response will contain the result of each statement.
+
+_Example request_
+
+* *+POST+*  +http://localhost:7474/db/neo4j/tx/commit+
+* *+Accept:+* +application/json;charset=UTF-8+
+* *+Content-Type:+* +application/json+
+
+[source, JSON, role="nocopy"]
+----
+{
+  "statements": [
+    {
+      "statement": "MATCH (n) WHERE id(n) = $nodeId RETURN n",
+      "parameters": {
+        "nodeId": 3
+      }
+    }
+  ]
+}
+----
+
+_Example response_
+
+* *+200:+* +OK+
+* *+Content-Type:+* +application/json;charset=utf-8+
+
+[source,javascript]
+----
+{
+  "results" : [ {
+    "columns" : [ "n" ],
+    "data" : [ {
+      "row" : [ { } ],
+      "meta" : [ {
+        "id" : 3,
+        "type" : "node",
+        "deleted" : false
+      } ]
+    } ]
+  } ],
+  "errors" : [ ]
+}
+----
+

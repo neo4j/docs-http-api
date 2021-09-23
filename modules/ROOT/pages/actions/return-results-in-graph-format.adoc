@@ -1,0 +1,126 @@
+:description: Graph result data format option.
+
+[[http-api-return-results-in-graph-format]]
+= Return results in graph format
+
+If you want to understand the graph structure of nodes and relationships returned by your query, you can specify the `graph` results data format.
+This is useful when you want to visualize the graph structure.
+The format collates all the nodes and relationships from all columns of the result, and also flattens collections of nodes and relationships, including paths.
+
+_Example request_
+
+* *+POST+* +http://localhost:7474/db/neo4j/tx/commit+
+* *+Accept:+* +application/json;charset=UTF-8+
+* *+Content-Type:+* +application/json+
+
+[source, JSON, role="nocopy"]
+----
+{
+  "statements": [
+    {
+      "statement": "CREATE (bike:Bike {weight: 10}) CREATE (frontWheel:Wheel {spokes: 3}) CREATE (backWheel:Wheel {spokes: 32}) CREATE p1 = (bike)-[:HAS {position: 1}]->(frontWheel) CREATE p2 = (bike)-[:HAS {position: 2} ]->(backWheel) RETURN bike, p1, p2",
+      "resultDataContents": ["row", "graph"]
+    }
+  ]
+}
+----
+
+_Example response_
+
+* *+200:+* +OK+
+* *+Content-Type:+* +application/json;charset=utf-8+
+
+[source, JSON, role="nocopy"]
+----
+{
+  "results" : [ {
+    "columns" : [ "bike", "p1", "p2" ],
+    "data" : [ {
+      "row" : [ {
+        "weight" : 10
+      }, [ {
+        "weight" : 10
+      }, {
+        "position" : 1
+      }, {
+        "spokes" : 3
+      } ], [ {
+        "weight" : 10
+      }, {
+        "position" : 2
+      }, {
+        "spokes" : 32
+      } ] ],
+      "meta" : [ {
+        "id" : 8,
+        "type" : "node",
+        "deleted" : false
+      }, [ {
+        "id" : 8,
+        "type" : "node",
+        "deleted" : false
+      }, {
+        "id" : 0,
+        "type" : "relationship",
+        "deleted" : false
+      }, {
+        "id" : 9,
+        "type" : "node",
+        "deleted" : false
+      } ], [ {
+        "id" : 8,
+        "type" : "node",
+        "deleted" : false
+      }, {
+        "id" : 1,
+        "type" : "relationship",
+        "deleted" : false
+      }, {
+        "id" : 10,
+        "type" : "node",
+        "deleted" : false
+      } ] ],
+      "graph" : {
+        "nodes" : [ {
+          "id" : "8",
+          "labels" : [ "Bike" ],
+          "properties" : {
+            "weight" : 10
+          }
+        }, {
+          "id" : "9",
+          "labels" : [ "Wheel" ],
+          "properties" : {
+            "spokes" : 3
+          }
+        }, {
+          "id" : "10",
+          "labels" : [ "Wheel" ],
+          "properties" : {
+            "spokes" : 32
+          }
+        } ],
+        "relationships" : [ {
+          "id" : "0",
+          "type" : "HAS",
+          "startNode" : "8",
+          "endNode" : "9",
+          "properties" : {
+            "position" : 1
+          }
+        }, {
+          "id" : "1",
+          "type" : "HAS",
+          "startNode" : "8",
+          "endNode" : "10",
+          "properties" : {
+            "position" : 2
+          }
+        } ]
+      }
+    } ]
+  } ],
+  "errors" : [ ]
+}
+----
+

@@ -1,0 +1,22 @@
+:description: Illustation how transactions are managed with the HTTP API.
+
+[[http-api-actions-transaction-flow]]
+= Transaction flow
+
+Cypher transactions are managed over several distinct URIs that are designed to be used in a prescribed pattern.
+Facilities are provided to carry out the full transaction cycle over a single HTTP request, or over multiple HTTP requests.
+
+The overall flow is illustrated below, with each box representing a separate HTTP request:
+
+image::http-cypher-transaction-api-flow.png[title="Cypher transaction flow"]
+
+
+[[http-api-actions-transaction-lifetime]]
+== Transaction lifetime
+
+The state of each transaction is maintained on the server on which the transaction began.
+Transactions expire automatically after a period of inactivity.
+By default this is `60` seconds.
+
+To keep a transaction alive without submitting new queries, an empty statement list can be posted to the `/tx/\{n}` URI.
+

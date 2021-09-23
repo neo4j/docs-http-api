@@ -1,0 +1,52 @@
+:description: This chapter describes the actions that can be performed using the Discovery HTTP endpoint.
+
+[[http-api-discovery]]
+= Discovery API
+
+The HTTP API uses the port `7474` for HTTP and the port `7473` for HTTPS.
+
+[TIP]
+====
+See the xref:4.4-preview@operations-manual:ROOT:configuration/ports/index.adoc[Operations Manual -> Ports] for an overview of the Neo4j-specific ports.
+====
+
+
+[[http-api-discovery-root]]
+== Root discovery
+
+Each server provides a root discovery URI that lists a basic index of other URIs, as well as version information.
+
+_Example request_
+
+[source, request, role="noheader"]
+-----
+GET http://localhost:7474/
+Accept: application/json
+-----
+
+_Example response_
+
+[source, response, role="noheader"]
+-----
+200 OK
+Content-Type: application/json
+
+{
+  "bolt_direct": "bolt://localhost:7687",
+  "bolt_routing": "neo4j://localhost:7687",
+  "transaction": "http://localhost:7474/db/{databaseName}/tx",
+  "neo4j_version": "4.4.0",
+  "neo4j_edition": "enterprise"
+}
+-----
+
+// Investigate the "cluster": "http://localhost:7474/db/{databaseName}/cluster"
+//{
+//  "bolt_direct": "bolt://localhost:7687",
+//  "bolt_routing": "neo4j://localhost:7687",
+//  "cluster": "http://localhost:7474/db/{databaseName}/cluster",
+//  "transaction": "http://localhost:7474/db/{databaseName}/tx",
+//  "neo4j_version": "4.0.0",
+//  "neo4j_edition": "enterprise"
+//}
+

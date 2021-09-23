@@ -1,0 +1,37 @@
+:description: Transaction keep alive.
+
+[[http-api-reset-transaction-timeout-of-an-open-transaction]]
+= Keeping transactions alive with an empty statement
+
+If you need to extend the timeout while processing a transaction, you can send a POST to the transaction's endpoint with a blank HTTP body.
+
+_Example request_
+
+* *+POST+*  +http://localhost:7474/db/neo4j/tx/2+
+* *+Accept:+* +application/json;charset=UTF-8+
+* *+Content-Type:+* +application/json+
+
+[source, JSON, role="nocopy"]
+----
+{
+  "statements": []
+}
+----
+
+_Example response_
+
+* *+200:+* +OK+
+* *+Content-Type:+* +application/json;charset=utf-8+
+
+[source, JSON, role="nocopy"]
+----
+{
+  "results" : [ ],
+  "errors" : [ ],
+  "commit" : "http://localhost:7474/db/neo4j/tx/2/commit",
+  "transaction" : {
+    "expires" : "Mon, 20 Sep 2021 07:57:36 GMT"
+  }
+}
+----
+

@@ -1,0 +1,43 @@
+:description: Inspect a response for the transaction key.
+
+[[http-api-handling-errors-in-an-open-transaction]]
+= Handling errors in an open transaction
+
+If there is an error in a request, the server will roll back the transaction.
+You can tell if the transaction is still open by inspecting the response for the presence/absence of the `transaction` key.
+
+_Example request_
+
+* *+POST+*  +http://localhost:7474/db/neo4j/tx/15+
+* *+Accept:+* +application/json;charset=UTF-8+
+* *+Content-Type:+* +application/json+
+
+[source, JSON, role="nocopy"]
+----
+{
+  "statements": [
+    {
+      "statement": "This is not a valid Cypher Statement."
+    }
+  ]
+}
+----
+
+
+_Example response_
+
+* *+200:+* +OK+
+* *+Content-Type:+* +application/json;charset=utf-8+
+
+[source, JSON, role="nocopy"]
+----
+{
+  "results" : [ ],
+  "errors" : [ {
+    "code" : "Neo.ClientError.Statement.SyntaxError",
+    "message" : "Invalid input 'T': expected <init> (line 1, column 1 (offset: 0))\n\"This is not a valid Cypher Statement.\"\n ^"
+  } ],
+  "commit" : "http://localhost:7474/db/neo4j/tx/15/commit"
+}
+----
+

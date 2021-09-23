@@ -1,0 +1,12 @@
+= User status
+
+Given that you know the current password, you can ask the server for the user status.
+
+_Example request_
+
+//include::{import-neo4j-server-docs-docs}/http-api/authentication/includes/user-status.request.asciidoc[]
+
+_Example response_
+
+//include::{import-neo4j-server-docs-docs}/http-api/authentication/includes/user-status.response.asciidoc[]
+
