@@ -7,7 +7,7 @@ The HTTP API uses the port `7474` for HTTP and the port `7473` for HTTPS.
 
 [TIP]
 ====
-See the xref:4.4-preview@operations-manual:ROOT:configuration/ports/index.adoc[Operations Manual -> Ports] for an overview of the Neo4j-specific ports.
+See the xref:4.3@operations-manual:ROOT:configuration/ports/index.adoc[Operations Manual -> Ports] for an overview of the Neo4j-specific ports.
 ====
 
 
@@ -35,7 +35,7 @@ Content-Type: application/json
   "bolt_direct": "bolt://localhost:7687",
   "bolt_routing": "neo4j://localhost:7687",
   "transaction": "http://localhost:7474/db/{databaseName}/tx",
-  "neo4j_version": "4.4.0",
+  "neo4j_version": "4.3.0",
   "neo4j_edition": "enterprise"
 }
 -----
