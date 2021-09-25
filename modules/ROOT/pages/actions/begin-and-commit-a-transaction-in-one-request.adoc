@@ -58,9 +58,6 @@ _Example response_
 The API described in this section of the manual has been deprecated and will be removed in Neo4j 5.0.
 ====
 
-Starting with Neo4j version 4.3, statements submitted via these endpoints will be processed by the user's respective _home database_.
-Previous versions rely on the the globally configured _default database_.
-
 _Example request_
 
 * *+POST+* +http://localhost:7474/db/neo4j/tx/commit+
