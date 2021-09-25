@@ -3,7 +3,7 @@
 [[http-api-security]]
 = Authentication and authorization
 
-Authentication and authorization are enabled by default in Neo4j (refer to xref:4.4-preview@operations-manual:ROOT:authentication-authorization/index.adoc#auth[Operations Manual -> Authentication and authorization]).
+Authentication and authorization are enabled by default in Neo4j (refer to xref:4.1@operations-manual:ROOT:authentication-authorization/index.adoc#auth[Operations Manual -> Authentication and authorization]).
 With authentication and authorization enabled, requests to the HTTP API must be authorized using the username and password of a valid user.
 
 

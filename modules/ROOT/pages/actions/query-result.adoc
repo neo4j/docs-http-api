@@ -1,0 +1,156 @@
+:description: HTTP API query and result format.
+
+= Query and result format
+
+
+[[http-api-actions-query-format]]
+== Query format
+
+All transaction POST requests can accept one or more Cypher queries within the request payload.
+This enables a large amount of flexibility in how, and when, queries are sent, and can help to reduce the number of individual HTTP requests overall.
+
+The payload is sent as JSON with the following general structure:
+
+[source, JSON, role="nocopy"]
+----
+{
+  "statements": [
+    {
+      "statement": "...",
+      "parameters": {...}
+    },
+    {
+      "statement": "...",
+      "parameters": {...}
+    },
+    ...
+  ]
+}
+----
+
+For example:
+
+[source, JSON, role="nocopy"]
+----
+{
+  "statements": [
+    {
+      "statement": "CREATE (n $props) RETURN n",
+      "parameters": {
+        "props": {
+          "name": "My Node"
+        }
+      }
+    },
+    {
+      "statement": "CREATE (n $props) RETURN n",
+      "parameters": {
+        "props": {
+          "name": "Another Node"
+        }
+      }
+    }
+  ]
+}
+----
+
+Parameters are included as key-value pairs, with each value adopting a type that corresponds to an entry in the mapping table below:
+
+.HTTP API parameter type mappings
+[options="header", cols="m,a"]
+|===
+| JSON Type
+| Cypher Type
+
+| null
+| Null
+
+| boolean
+| Boolean
+
+| number
+| Float
+
+| string
+| String
+
+| array
+| List
+
+| object
+| Map
+|===
+
+[[http-api-actions-result-format]]
+== Result format
+
+The HTTP API for Neo4j v{neo4j-version}, only support JSON as the result format.
+It contains an embedded `results` element.
+To request this format, place `application/json` in the `Accept` header.
+This format is the default returned if no `Accept` header is provided.
+
+[source, JSON, role="nocopy"]
+----
+{
+    "results": [
+        {
+            "columns": [],
+            "data": [
+                {
+                    "row": [ row-data ],
+                    "meta": [ metadata ]
+                },
+                {
+
+                }
+            ]
+        },
+        {
+             //another statement’s results
+        }
+    ]
+}
+----
+
+For example, running the query `UNWIND range(0, 2, 1) AS number RETURN number` will return the following results:
+
+[source, JSON, role="nocopy"]
+----
+{
+    "results": [
+        {
+            "columns": [
+                "number"
+            ],
+            "data": [
+                {
+                    "row": [
+                        0
+                    ],
+                    "meta": [
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        1
+                    ],
+                    "meta": [
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        2
+                    ],
+                    "meta": [
+                        null
+                    ]
+                }
+            ]
+        }
+    ],
+    // other transactional data
+}
+----
+
