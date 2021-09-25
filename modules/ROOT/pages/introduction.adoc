@@ -9,7 +9,7 @@ Each HTTP request can include a list of statements, and for convenience you can 
 
 The server guards against orphaned transactions by using a timeout.
 If there are no requests for a given transaction within the timeout period, the server will roll it back.
-You can configure the timeout in the server configuration, by setting xref:4.1@operations-manual:ROOT:reference/configuration-settings/index.adoc#config_dbms.rest.transaction.idle_timeout[Operations Manual -> Configuration settings `dbms.rest.transaction.idle_timeout`] to the number of seconds before timeout.
+You can configure the timeout in the server configuration, by setting xref:4.0@operations-manual:ROOT:reference/configuration-settings/index.adoc#config_dbms.rest.transaction.idle_timeout[Operations Manual -> Configuration settings `dbms.rest.transaction.idle_timeout`] to the number of seconds before timeout.
 The default timeout is `60` seconds.
 
 Responses from the HTTP API can be transmitted as JSON streams, resulting in better performance and lower memory overhead on the server side.
@@ -18,7 +18,7 @@ To use streaming, supply the header `X-Stream: true` with each request.
 [NOTE]
 ====
 * Literal line breaks are not allowed inside Cypher statements.
-* Cypher queries with `USING PERIODIC COMMIT` (see xref:4.1@cypher-manual:ROOT:query-tuning/using/index.adoc#query-using-periodic-commit-hint[Cypher Manual -> `PERIODIC COMMIT` query hint]) may only be executed when creating a new transaction and immediately committing it with a single HTTP request (see xref::/actions/begin-and-commit-a-transaction-in-one-request.adoc[Begin and commit a transaction in one request] for how to do that).
+* Cypher queries with `USING PERIODIC COMMIT` (see xref:4.0@cypher-manual:ROOT:query-tuning/using/index.adoc#query-using-periodic-commit-hint[Cypher Manual -> `PERIODIC COMMIT` query hint]) may only be executed when creating a new transaction and immediately committing it with a single HTTP request (see xref::/actions/begin-and-commit-a-transaction-in-one-request.adoc[Begin and commit a transaction in one request] for how to do that).
 * When a request fails the transaction will be rolled back.
 By checking the result for the presence/absence of the `transaction` key you can figure out if the transaction is still open.
 ====
@@ -27,6 +27,6 @@ By checking the result for the presence/absence of the `transaction` key you can
 ====
 In order to speed up queries in repeated scenarios, try not to use literals but replace them with parameters wherever possible.
 This will let the server cache query plans.
-See xref:4.1@cypher-manual:ROOT:syntax/parameters/index.adoc#cypher-parameters[Cypher Manual -> Parameters] for more information.
+See xref:4.0@cypher-manual:ROOT:syntax/parameters/index.adoc#cypher-parameters[Cypher Manual -> Parameters] for more information.
 ====
 
