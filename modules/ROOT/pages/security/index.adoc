@@ -3,31 +3,63 @@
 [[http-api-security]]
 = Authentication and authorization
 
-Authentication and authorization are enabled by default in Neo4j (refer to xref:4.4-preview@operations-manual:ROOT:authentication-authorization/index.adoc#auth[Operations Manual -> Authentication and authorization]).
-With authentication and authorization enabled, requests to the HTTP API must be authorized using the username and password of a valid user.
+[WARNING]
+====
+The functionality described in this section has been deprecated and will be removed in Neo4j 4.0.
+====
+
+
+[[http-api-security-introduction]]
+[role=deprecated]
+== Introduction
+
+Authentication and authorization are enabled by default in Neo4j (refer to xref:3.5@operations-manual:ROOT:authentication-authorization/enable/index.adoc[Operations Manual -> Enabling authentication and authorization]).
+This means that requests to the HTTP API must be authorized using the username and password of a valid user.
+
+When Neo4j is newly installed, the default user `neo4j` has the default password `neo4j`.
+The default password must be changed before access to resources will be permitted.
+See xref::security/index.adoc#http-api-changing-the-user-password[Changing the user password] for how to set a new password.
+
+
+[[http-api-authenticate-to-access-the-server]]
+[role=deprecated]
+== Authenticate to access the server
+
+Authenticate by sending a username and a password to Neo4j using HTTP Basic Auth.
+Requests should include an `Authorization` header with a value of `Basic <payload>`, where `payload` is a base64-encoded string of `username:password`.
+
+_Example request_
+
+* *+GET+* +http://localhost:7474/user/neo4j+
+* *+Accept:+* +application/json;charset=UTF-8+
+* *+Authorization:+* +Basic bmVvNGo6c2VjcmV0+
+
+_Example response_
+
+* *+200:+* +OK+
+* *+Content-Type:+* +application/json;charset=utf-8+
+
+[source, JSON, role="nocopy"]
+----
+{
+  "password_change_required" : false,
+  "password_change" : "http://localhost:7474/user/neo4j/password",
+  "username" : "neo4j"
+}
+----
+
 
 
 [[http-api-missing-authorization]]
+[role=deprecated]
 == Missing authorization
 
 If an `Authorization` header is not supplied, the server will reply with an error.
 
 _Example request_
 
-* *+POST+*  +http://localhost:7474/db/neo4j/tx/commit+
+* *+GET+*  +http://localhost:7474/db/data/+
 * *+Accept:+* +application/json;charset=UTF-8+
-* *+Content-Type:+* +application/json+
-
-[source, JSON, role="nocopy"]
-----
-{
-  "statements": [
-    {
-      "statement": "CREATE (n:MyLabel) RETURN n"
-    }
-  ]
-}
-----
 
 _Example response_
 
@@ -52,27 +84,16 @@ If authentication and authorization have been disabled, HTTP API requests can be
 
 
 [[http-api-incorrect-authentication]]
+[role=deprecated]
 == Incorrect authentication
 
 If an incorrect username or password is provided, the server replies with an error.
 
 _Example request_
 
-* *+POST+*  +http://localhost:7474/db/neo4j/tx/commit+
+* *+POST+*  +http://localhost:7474/db/data/+
 * *+Accept:+* +application/json;charset=UTF-8+
 * *+Authorization:+* +Basic bmVvNGo6aW5jb3JyZWN0+
-* *+Content-Type:+* +application/json+
-
-[source, JSON, role="nocopy"]
-----
-{
-  "statements": [
-    {
-      "statement": "CREATE (n:MyLabel) RETURN n"
-    }
-  ]
-}
-----
 
 _Example response_
 
@@ -91,9 +112,116 @@ _Example response_
 ----
 
 
-[[http-api-auth-failure-rollback]]
-== Authentication failure on open transactions
+[[http-api-required-password-changes]]
+[role=deprecated]
+== Required password changes
 
-A `Neo.ClientError.Security.Unauthorized` error will typically imply a transaction rollback.
-However, due to the way authentication is processed in the HTTP server, the transaction will remain open.
+
+In some cases, for example the very first time Neo4j is accessed, the user will be required to choose a new password.
+The database will signal that a new password is required and deny access.
+
+See xref::security/index.adoc#http-api-changing-the-user-password[Changing the user password] for how to set a new password.
+
+
+_Example request_
+
+* *+GET+*  +http://localhost:7474/db/data/+
+* *+Accept:+* +application/json;charset=UTF-8+
+* *+Authorization:+* +Basic bmVvNGo6bmVvNGo=+
+
+_Example response_
+
+* *+403:+* +Forbidden+
+* *+Content-Type:+* +application/json;charset=utf-8+
+
+[source, JSON, role="nocopy"]
+----
+{
+  "password_change" : "http://localhost:7474/user/neo4j/password",
+  "errors" : [ {
+    "code" : "Neo.ClientError.Security.Forbidden",
+    "message" : "User is required to change their password."
+  } ]
+}
+----
+
+
+[[http-api-user-status-on-first-access]]
+[role=deprecated]
+== User status on first access
+
+On first access, and using the default password, the user status will indicate that the users password requires changing.
+
+_Example request_
+
+* *+GET+*  +ttp://localhost:7474/user/neo4j+
+* *+Accept:+* +application/json;charset=UTF-8+
+* *+Authorization:+* +Basic bmVvNGo6bmVvNGo=+
+
+_Example response_
+
+* *+200:+* +OK+
+* *+Content-Type:+* +application/json;charset=utf-8+
+
+[source, JSON, role="nocopy"]
+----
+{
+  "password_change_required" : true,
+  "password_change" : "http://localhost:7474/user/neo4j/password",
+  "username" : "neo4j"
+}
+----
+
+
+[[http-api-user-status]]
+[role=deprecated]
+== User status
+
+Given that you know the current password, you can ask the server for the user status.
+
+_Example request_
+
+* *+GET+*  +http://localhost:7474/user/neo4j+
+* *+Accept:+* +application/json;charset=UTF-8+
+* *+Authorization:+* +Basic bmVvNGo6c2VjcmV0+
+
+_Example response_
+
+* *+200:+* +OK+
+* *+Content-Type:+* +application/json;charset=utf-8+
+
+[source, JSON, role="nocopy"]
+----
+{
+  "password_change_required" : false,
+  "password_change" : "http://localhost:7474/user/neo4j/password",
+  "username" : "neo4j"
+}
+----
+
+
+[[http-api-changing-the-user-password]]
+[role=deprecated]
+== Changing the user password
+
+Given that you know the current password for a user, you can ask the server to change that user's password.
+You can choose any password as long as it is different from the current password.
+
+_Example request_
+
+* *+POST+*  +http://localhost:7474/user/neo4j/password+
+* *+Accept:+* +application/json;charset=UTF-8+
+* *+Authorization:+* +Basic bmVvNGo6bmVvNGo=+
+* *+Content-Type:+* +application/json;charset=UTF-8+
+
+[source, JSON, role="nocopy"]
+----
+{
+  "password" : "secret"
+}
+----
+
+_Example response_
+
+* *+200:+* +OK+
 
