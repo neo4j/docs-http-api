@@ -8,7 +8,7 @@
 This section describes the actions that can be performed using the Transactional Cypher HTTP endpoint.
 --
 
-This chapter includes the following sections:
+This section includes the following topics:
 
 * xref:actions/begin-and-commit-a-transaction-in-one-request.adoc[]
 * xref:actions/execute-multiple-statements.adoc[]
