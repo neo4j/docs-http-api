@@ -1,14 +1,13 @@
 :description: Run queries in a transaction.
 
 [[http-api-execute-statements-in-an-open-transaction]]
-= Run queries inside a transaction
+= Execute statements in an open transaction
 
-Once you have an open transaction by calling `db/\{name}/tx`, you can run additional statements that form part of your transaction by calling the newly created transaction endpoint.
-The endpoint will be in the form `db/\{name}/tx/\{txid}`, where `txid` is provided in the response of the initial call to begin the transaction.
+Given that you have an open transaction, you can make a number of requests, each of which executes additional statements, and keep the transaction open by resetting the transaction timeout.
 
 _Example request_
 
-* *+POST+*  +http://localhost:7474/db/neo4j/tx/18+
+* *+POST+*  +http://localhost:7474/db/data/transaction/12+
 * *+Accept:+* +application/json;charset=UTF-8+
 * *+Content-Type:+* +application/json+
 
@@ -26,27 +25,27 @@ _Example request_
 _Example response_
 
 * *+200:+* +OK+
-* *+Content-Type:+* +application/json;charset=utf-8+
+* *+Content-Type:+* +application/json+
 
 [source, JSON, role="nocopy"]
 ----
 {
+  "commit" : "http://localhost:7474/db/data/transaction/12/commit",
   "results" : [ {
     "columns" : [ "n" ],
     "data" : [ {
       "row" : [ { } ],
       "meta" : [ {
-        "id" : 12,
+        "id" : 11,
         "type" : "node",
         "deleted" : false
       } ]
     } ]
   } ],
-  "errors" : [ ],
-  "commit" : "http://localhost:7474/db/neo4j/tx/18/commit",
   "transaction" : {
-    "expires" : "Mon, 20 Sep 2021 07:57:38 GMT"
-  }
+    "expires" : "Mon, 27 Sep 2021 08:28:00 +0000"
+  },
+  "errors" : [ ]
 }
 ----
 

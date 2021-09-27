@@ -9,7 +9,7 @@ The format collates all the nodes and relationships from all columns of the resu
 
 _Example request_
 
-* *+POST+* +http://localhost:7474/db/neo4j/tx/commit+
+* *+POST+* +http://localhost:7474/db/data/transaction/commit+
 * *+Accept:+* +application/json;charset=UTF-8+
 * *+Content-Type:+* +application/json+
 
@@ -28,7 +28,7 @@ _Example request_
 _Example response_
 
 * *+200:+* +OK+
-* *+Content-Type:+* +application/json;charset=utf-8+
+* *+Content-Type:+* +application/json+
 
 [source, JSON, role="nocopy"]
 ----

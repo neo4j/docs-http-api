@@ -3,13 +3,11 @@
 [[http-api-begin-and-commit-a-transaction-in-one-request]]
 = Begin and commit a transaction in one request
 
-== Begin and commit request
-
 If there is no need to keep a transaction open across multiple HTTP requests, you can begin a transaction, execute statements, and commit within a single HTTP request.
 
 _Example request_
 
-* *+POST+* +http://localhost:7474/db/neo4j/tx/commit+
+* *+POST+* +http://localhost:7474/db/data/transaction/commit+
 * *+Accept:+* +application/json;charset=UTF-8+
 * *+Content-Type:+* +application/json+
 
@@ -18,10 +16,7 @@ _Example request_
 {
   "statements": [
     {
-      "statement": "MATCH (n) WHERE id(n) = $nodeId RETURN n",
-      "parameters": {
-        "nodeId": 7
-      }
+      "statement": "CREATE (n) RETURN id(n)"
     }
   ]
 }
@@ -30,74 +25,16 @@ _Example request_
 _Example response_
 
 * *+200:+* +OK+
-* *+Content-Type:+* +application/json;charset=utf-8+
-
-[source, JSON, role="nocopy"]
-----
-{
-  "results" : [ {
-    "columns" : [ "n" ],
-    "data" : [ {
-      "row" : [ { } ],
-      "meta" : [ {
-        "id" : 7,
-        "type" : "node",
-        "deleted" : false
-      } ]
-    } ]
-  } ],
-  "errors" : [ ]
-}
-----
-
-
-== Legacy Endpoints label:deprecated[]
-
-[IMPORTANT]
-====
-The API described in this section of the manual has been deprecated and will be removed in Neo4j 5.0.
-====
-
-Starting with Neo4j version 4.3, statements submitted via these endpoints will be processed by the user's respective _home database_.
-Previous versions rely on the the globally configured _default database_.
-
-_Example request_
-
-* *+POST+* +http://localhost:7474/db/neo4j/tx/commit+
-* *+Accept:+* +application/json;charset=UTF-8+
 * *+Content-Type:+* +application/json+
 
 [source, JSON, role="nocopy"]
 ----
 {
-  "statements": [
-    {
-      "statement": "MATCH (n) WHERE id(n) = $nodeId RETURN n",
-      "parameters": {
-        "nodeId": 2
-      }
-    }
-  ]
-}
-----
-
-_Example response_
-
-* *+200:+* +OK+
-* *+Content-Type:+* +application/json;charset=utf-8+
-
-[source, JSON, role="nocopy"]
-----
-{
   "results" : [ {
-    "columns" : [ "n" ],
+    "columns" : [ "id(n)" ],
     "data" : [ {
-      "row" : [ { } ],
-      "meta" : [ {
-        "id" : 2,
-        "type" : "node",
-        "deleted" : false
-      } ]
+      "row" : [ 6 ],
+      "meta" : [ null ]
     } ]
   } ],
   "errors" : [ ]

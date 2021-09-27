@@ -3,43 +3,40 @@
 [[http-api-begin-a-transaction]]
 = Begin a transaction
 
-A new transaction can be started by posting zero or more Cypher queries to the transaction endpoint.
-The server will respond with the results of your queries, as well as the location of your new transaction.
-
-Transactions expire automatically after a period of inactivity (i.e. queries and a commit).
-By default this is `60` seconds.
-
-To keep a transaction alive without submitting new queries, an empty statement list can be posted to the transaction URI.
+You begin a new transaction by posting zero or more Cypher statements to the transaction endpoint. The server will respond with the result of your statements, as well as the location of your open transaction.
 
 _Example request_
 
-* *+POST+*  +http://localhost:7474/db/neo4j/tx+
+* *+POST+*  +http://localhost:7474/db/data/transaction+
 * *+Accept:+* +application/json;charset=UTF-8+
 * *+Content-Type:+* +application/json+
 
 [source, JSON, role="nocopy"]
 ----
 {
-  "statements" : [ {
-    "statement" : "CREATE (n $props) RETURN n",
-    "parameters" : {
-      "props" : {
-        "name" : "My Node"
+  "statements": [
+    {
+      "statement": "CREATE (n $props) RETURN n",
+      "parameters": {
+        "props": {
+          "name": "My Node"
+        }
       }
     }
-  } ]
+  ]
 }
 ----
 
 _Example response_
 
 * *+201:+* +Created+
-* *+Content-Type:+* +application/json;charset=utf-8+
-* *+Location:+* +http://localhost:7474/db/neo4j/tx/16+
+* *+Content-Type:+* +application/json+
+* *+Location:+* +http://localhost:7474/db/data/transaction/10+
 
 [source, JSON, role="nocopy"]
 ----
 {
+  "commit" : "http://localhost:7474/db/data/transaction/10/commit",
   "results" : [ {
     "columns" : [ "n" ],
     "data" : [ {
@@ -47,17 +44,16 @@ _Example response_
         "name" : "My Node"
       } ],
       "meta" : [ {
-        "id" : 11,
+        "id" : 10,
         "type" : "node",
         "deleted" : false
       } ]
     } ]
   } ],
-  "errors" : [ ],
-  "commit" : "http://localhost:7474/db/neo4j/tx/16/commit",
   "transaction" : {
-    "expires" : "Mon, 20 Sep 2021 07:57:37 GMT"
-  }
+    "expires" : "Mon, 27 Sep 2021 08:28:00 +0000"
+  },
+  "errors" : [ ]
 }
 ----
 

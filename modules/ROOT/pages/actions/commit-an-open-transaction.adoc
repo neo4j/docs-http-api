@@ -1,13 +1,14 @@
 :description: Commit a transaction.
 
 [[http-api-commit-an-open-transaction]]
-= Commit a transaction
+= Commit an open transaction
 
-When you have executed all the statements for the transaction, and want to commit the changes to the database, you can use `POST db/\{name}/tx/\{txid}/commit`, which can also include any final statements to execute before committing.
+Given you have an open transaction, you can send a commit request.
+Optionally, you can submit additional statements along with the request that will be executed before committing the transaction.
 
 _Example request_
 
-* *+POST+*  +http://localhost:7474/db/neo4j/tx/2/commit+
+* *+POST+*  +http://localhost:7474/db/data/transaction/6/commit+
 * *+Accept:+* +application/json;charset=UTF-8+
 * *+Content-Type:+* +application/json+
 
@@ -16,10 +17,7 @@ _Example request_
 {
   "statements": [
     {
-      "statement": "MATCH (n) WHERE id(n) = $nodeId RETURN n",
-      "parameters": {
-        "nodeId": 6
-      }
+      "statement": "CREATE (n) RETURN id(n)"
     }
   ]
 }
@@ -28,20 +26,16 @@ _Example request_
 _Example response_
 
 * *+200:+* +OK+
-* *+Content-Type:+* +application/json;charset=utf-8+
+* *+Content-Type:+* +application/json+
 
 [source, JSON, role="nocopy"]
 ----
 {
   "results" : [ {
-    "columns" : [ "n" ],
+    "columns" : [ "id(n)" ],
     "data" : [ {
-      "row" : [ { } ],
-      "meta" : [ {
-        "id" : 6,
-        "type" : "node",
-        "deleted" : false
-      } ]
+      "row" : [ 5 ],
+      "meta" : [ null ]
     } ]
   } ],
   "errors" : [ ]

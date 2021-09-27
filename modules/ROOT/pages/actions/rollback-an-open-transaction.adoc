@@ -9,13 +9,13 @@ Any attempt to run additional statements in this transaction will fail immediate
 
 _Example request_
 
-* *+DELETE+*  +http://localhost:7474/db/neo4j/tx/3+
+* *+DELETE+*  +http://localhost:7474/db/data/transaction/3+
 * *+Accept:+* +application/json;charset=UTF-8+
 
 _Example response_
 
 * *+200:+* +OK+
-* *+Content-Type:+* +application/json;charset=utf-8+
+* *+Content-Type:+* +application/json+
 
 [source, JSON, role="nocopy"]
 ----

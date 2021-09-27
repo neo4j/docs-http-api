@@ -1,34 +1,24 @@
 :description: Actions that can be performed using the Cypher transaction HTTP endpoint.
 
 [[http-api-actions]]
-= Cypher transaction API
+= Using the HTTP API
 
-There are several _actions_ that can be performed using the Cypher transaction HTTP endpoint.
+[abstract]
+--
+This section describes the actions that can be performed using the Transactional Cypher HTTP endpoint.
+--
 
-*Concepts:*
+This chapter includes the following sections:
 
-* xref:actions/transaction-flow.adoc[]
-* xref:actions/query-format.adoc[]
-* xref:actions/result-format.adoc[]
-
-*Using the API:*
-
+* xref:actions/begin-and-commit-a-transaction-in-one-request.adoc[]
+* xref:actions/execute-multiple-statements.adoc[]
 * xref:actions/begin-a-transaction.adoc[]
 * xref:actions/execute-statements-in-an-open-transaction.adoc[]
 * xref:actions/reset-transaction-timeout-of-an-open-transaction.adoc[]
 * xref:actions/commit-an-open-transaction.adoc[]
 * xref:actions/rollback-an-open-transaction.adoc[]
-* xref:actions/begin-and-commit-a-transaction-in-one-request.adoc[]
-
-*Additional actions:*
-
-* xref:actions/execute-multiple-statements.adoc[]
 * xref:actions/include-query-statistics.adoc[]
 * xref:actions/return-results-in-graph-format.adoc[]
-
-*Error handling:*
-
-* xref:actions/expired-transactions.adoc[]
 * xref:actions/handling-errors.adoc[]
 * xref:actions/handling-errors-in-an-open-transaction.adoc[]
 

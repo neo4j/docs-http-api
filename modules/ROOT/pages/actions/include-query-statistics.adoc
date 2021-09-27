@@ -7,7 +7,7 @@ By setting `includeStats` to `true` for a statement, query statistics will be re
 
 _Example request_
 
-* *+POST+* +http://localhost:7474/db/neo4j/tx/commit+
+* *+POST+* +http://localhost:7474/db/data/transaction/commit+
 * *+Accept:+* +application/json;charset=UTF-8+
 * *+Content-Type:+* +application/json+
 
@@ -26,7 +26,7 @@ _Example request_
 _Example response_
 
 * *+200:+* +OK+
-* *+Content-Type:+* +application/json;charset=utf-8+
+* *+Content-Type:+* +application/json+
 
 [source, JSON, role="nocopy"]
 ----
@@ -34,7 +34,7 @@ _Example response_
   "results" : [ {
     "columns" : [ "id(n)" ],
     "data" : [ {
-      "row" : [ 5 ],
+      "row" : [ 4 ],
       "meta" : [ null ]
     } ],
     "stats" : {
@@ -49,9 +49,7 @@ _Example response_
       "indexes_added" : 0,
       "indexes_removed" : 0,
       "constraints_added" : 0,
-      "constraints_removed" : 0,
-      "contains_system_updates" : false,
-      "system_updates" : 0
+      "constraints_removed" : 0
     }
   } ],
   "errors" : [ ]

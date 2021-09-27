@@ -8,7 +8,7 @@ The response will contain the result of each statement.
 
 _Example request_
 
-* *+POST+*  +http://localhost:7474/db/neo4j/tx/commit+
+* *+POST+*  +http://localhost:7474/db/data/transaction/commit+
 * *+Accept:+* +application/json;charset=UTF-8+
 * *+Content-Type:+* +application/json+
 
@@ -17,9 +17,14 @@ _Example request_
 {
   "statements": [
     {
-      "statement": "MATCH (n) WHERE id(n) = $nodeId RETURN n",
+      "statement": "CREATE (n) RETURN id(n)"
+    },
+    {
+      "statement": "CREATE (n $props) RETURN n",
       "parameters": {
-        "nodeId": 3
+        "props": {
+          "name": "My Node"
+        }
       }
     }
   ]
@@ -29,15 +34,23 @@ _Example request_
 _Example response_
 
 * *+200:+* +OK+
-* *+Content-Type:+* +application/json;charset=utf-8+
+* *+Content-Type:+* +application/json+
 
-[source,javascript]
+[source, JSON, role="nocopy"]
 ----
 {
   "results" : [ {
+    "columns" : [ "id(n)" ],
+    "data" : [ {
+      "row" : [ 2 ],
+      "meta" : [ null ]
+    } ]
+  }, {
     "columns" : [ "n" ],
     "data" : [ {
-      "row" : [ { } ],
+      "row" : [ {
+        "name" : "My Node"
+      } ],
       "meta" : [ {
         "id" : 3,
         "type" : "node",

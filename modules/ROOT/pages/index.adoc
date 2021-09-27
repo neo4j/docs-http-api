@@ -19,7 +19,6 @@ Transactional Cypher HTTP endpoint.
 This manual covers the following areas:
 
 * xref:introduction.adoc[]
-* xref:discovery.adoc[]
 * xref:actions/index.adoc[]
 * xref:security/index.adoc[]
 
