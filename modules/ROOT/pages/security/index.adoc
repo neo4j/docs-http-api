@@ -90,3 +90,10 @@ _Example response_
 }
 ----
 
+
+[[http-api-auth-failure-rollback]]
+== Authentication failure on open transactions
+
+A `Neo.ClientError.Security.Unauthorized` error will typically imply a transaction rollback.
+However, due to the way authentication is processed in the HTTP server, the transaction will remain open.
+
