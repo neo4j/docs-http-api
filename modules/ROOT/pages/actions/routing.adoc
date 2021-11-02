@@ -3,7 +3,7 @@
 [[http-api-actions-cluster-routing]]
 = Clusters and Routing
 
-The Cypher Transactional API provides a limited level of support for query routing. The level of support depends on whether Server-side Routing has been enabled. See (`dbms.routing.enabled=true` [link to https://neo4j.com/docs/operations-manual/current/clustering/internals/#clustering-routing)].
+The Cypher Transactional API provides a limited level of support for query routing. The level of support depends on whether xref:4.4-preview@operations-manual:ROOT:clustering/internals.adoc#causal-clustering-routing[Server-side Routing]  has been enabled.
 
 == Server-side Routing Disabled
 
