@@ -1,20 +1,25 @@
-:description: HTTP API Routing.
+:description: HTTP API routing.
 
 [[http-api-actions-cluster-routing]]
-= Clusters and Routing
+= Clusters and routing
 
 The Cypher Transactional API provides a limited level of support for query routing.
-The level of support depends on whether link:https://neo4j.com/docs/operations-manual/current/clustering/internals/#clustering-routing[Server-side Routing] has been enabled.
 
-== Server-side Routing Disabled
+The level of support depends on whether link:https://neo4j.com/docs/operations-manual/current/clustering/internals/#clustering-routing[Server-side routing] has been enabled:
 
-Clusters support read-only queries.
+[options="header", cols="20m,80a"]
+|===
+| Server-side routing
+| Support
 
-== Server-side Routing Enabled
+|disabled
+|Clusters support read-only queries.
 
-Clusters support routing for queries that involve a xref::/actions/begin-and-commit-a-transaction-in-one-request.adoc[single request] (i.e. via the `tx/commit` endpoint).
+|enabled
+|Clusters support routing for queries that involve a xref::/actions/begin-and-commit-a-transaction-in-one-request.adoc[single request] (i.e. via the `tx/commit` endpoint).
 This is because the cluster does not currently support transaction identifiers across the cluster.
 
-In this context, all queries are considered `WRITE` queries even if they contain no cypher with write operations.
+In this context, all queries are considered `WRITE` queries, even if they contain no cypher with write operations.
 Since the HTTP API did not previously support marking queries as `READ` or `WRITE`, the server assumes all queries are `WRITE` queries to support all cases.
 The effect of this is that all queries are ultimately executed on the leader.
+|===
