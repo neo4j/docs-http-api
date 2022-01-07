@@ -94,7 +94,7 @@ This format can be returned when adding `application/vnd.neo4j.jolt` to the requ
 === Line delimited and Sequenced
 
 Jolt may be returned in either line feed delimited or JSON sequencefootnote:[JSON Sequences are encoded as outlined in link:https://tools.ietf.org/html/rfc7464#section-2.2[RFC 7464].] mode.
-The formats are made available via the `application/vnd.neo4j.jolt` and `application/vnd.neo4j.jolt+json+seq` types which may be passed to the request's `Accept` header respectively.
+The formats are made available via the `application/vnd.neo4j.jolt` and `application/vnd.neo4j.jolt+json-seq` types which may be passed to the request's `Accept` header respectively.
 
 
 === Strict and sparse
@@ -371,4 +371,3 @@ will yield the following result response:
 ----
 
 Results sets will be returned in the same order as passed in the original request.
-
