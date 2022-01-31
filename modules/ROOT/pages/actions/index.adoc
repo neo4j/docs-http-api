@@ -10,6 +10,7 @@ There are several _actions_ that can be performed using the Cypher transaction H
 * xref:actions/transaction-flow.adoc[]
 * xref:actions/query-format.adoc[]
 * xref:actions/result-format.adoc[]
+* xref:actions/routing.adoc[]
 
 *Using the API:*
 
@@ -31,4 +32,3 @@ There are several _actions_ that can be performed using the Cypher transaction H
 * xref:actions/expired-transactions.adoc[]
 * xref:actions/handling-errors.adoc[]
 * xref:actions/handling-errors-in-an-open-transaction.adoc[]
-
