@@ -1,0 +1,15 @@
+[[http-api-actions-transaction-configuration]]
+
+:description: Configuring HTTP Transactions.
+
+
+= Transaction Configuration
+
+For any transaction initiating request (i.e. `/tx` or `tx/commit` ) you can provide configuration options that apply for the duration of the whole transaction.
+
+== Access Mode
+To ensure that efficient load balancing across a cluster, it is important to label transactions that only contain `READ` statements with a `READ` access mode.
+
+This can be done by adding an `access-mode` header to the request with a value of `READ`.
+
+The default value if an `access-mode` configuration has not been provided is `WRITE` (expect for clusters where Server-side routing has been disabled where it is `READ`).
