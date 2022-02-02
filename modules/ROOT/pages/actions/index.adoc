@@ -11,6 +11,7 @@ There are several _actions_ that can be performed using the Cypher transaction H
 * xref:actions/query-format.adoc[]
 * xref:actions/result-format.adoc[]
 * xref:actions/routing.adoc[]
+* xref:actions/transaction-configuration.adoc[]
 
 *Using the API:*
 
