@@ -19,7 +19,9 @@ The level of support depends on whether link:https://neo4j.com/docs/operations-m
 |Clusters support routing for queries that involve a xref::/actions/begin-and-commit-a-transaction-in-one-request.adoc[single request] (i.e. via the `tx/commit` endpoint).
 This is because the cluster does not currently support transaction identifiers across the cluster.
 
-By default, all transactions are considered `WRITE` transactions, even if they contain no Cypher with write operations. This can be overridden by setting a value of `READ` in the `access-mode` header of the request (see xref::/actions/transaction-configuration.adoc[Transaction Configuration - Access Mode]).
+By default, all transactions are considered `WRITE` transactions, even if they contain no Cypher with write operations.
+This can be overridden by setting a value of `READ` in the `access-mode` header of the request (For more information, see xref::/actions/transaction-configuration.adoc[Transaction Configuration - Access Mode]).
 
-This default has the effect that all queries are ultimately executed on the leader. To ensure efficient load balancing of `READ` transactions, you must label them as such in the request.
+This default value ensures that all queries are ultimately run on the leader.
+To ensure efficient load balancing of `READ` transactions, you should label them as such in the request.
 |===
