@@ -6,9 +6,12 @@
 For any transaction-initiating request (such as `/tx` or `tx/commit`), you can provide configuration options that apply for the duration of the whole transaction.
 
 == Access Mode
-To ensure that efficient load balancing across a cluster, it is important to label transactions that only contain `READ` statements with a `READ` access mode.
+
+To ensure efficient load balancing across a cluster, it is important to label transactions that only contain `READ` statements with a `READ` access mode.
 
 This can be done by adding an `access-mode` header to the request, with a value of `READ`.
+
+This feature was introduced in Neo4j version 4.4.4.
 
 [WARNING]
 ====
