@@ -23,7 +23,7 @@ However, if you have clusters with link:https://neo4j.com/docs/operations-manual
 
 [NOTE]
 ====
-* Please note that `access-mode` is not required for a Neo4j single instance.
+Please note that `access-mode` is not required for a Neo4j single instance.
 ====
 
 _Example request_
