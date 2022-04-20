@@ -19,3 +19,44 @@ If an `access-mode` configuration has *not* been provided, the default value is 
 
 However, if you have clusters with link:https://neo4j.com/docs/operations-manual/current/clustering/internals/#clustering-routing[Server-side routing] disabled, the default value is `READ`.
 ====
+
+_Example request_
+
+* *+POST+* +http://localhost:7474/db/neo4j/tx/commit+
+* *+Accept:+* +application/json;charset=UTF-8+
+* *+Content-Type:+* +application/json+
+* *+Access-Mode:+*  +WRITE+
+
+[source, JSON, role="nocopy"]
+----
+{
+  "statements": [
+    {
+      "statement": "CREATE (n) RETURN n"
+    }
+  ]
+}
+----
+
+_Example response_
+
+* *+200:+* +OK+
+* *+Content-Type:+* +application/json;charset=utf-8+
+
+[source, JSON, role="nocopy"]
+----
+{
+  "results" : [ {
+    "columns" : [ "n" ],
+    "data" : [ {
+      "row" : [ { } ],
+      "meta" : [ {
+        "id" : 7,
+        "type" : "node",
+        "deleted" : false
+      } ]
+    } ]
+  } ],
+  "errors" : [ ]
+}
+----
