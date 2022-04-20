@@ -5,19 +5,26 @@
 
 For any transaction-initiating request (such as `/tx` or `tx/commit`), you can provide configuration options that apply for the duration of the whole transaction.
 
+
+[[http-api-actions-access-mode]]
 == Access Mode
 
 To ensure efficient load balancing across a cluster, it is important to label transactions that only contain `READ` statements with a `READ` access mode.
 
 This can be done by adding an `access-mode` header to the request, with a value of `READ`.
 
-This feature was introduced in Neo4j version 4.4.4.
 
 [WARNING]
 ====
 If an `access-mode` configuration has *not* been provided, the default value is `WRITE`.
 
-However, if you have clusters with link:https://neo4j.com/docs/operations-manual/current/clustering/internals/#clustering-routing[Server-side routing] disabled, the default value is `READ`.
+However, if you have clusters with link:https://neo4j.com/docs/operations-manual/current/clustering/internals/#causal-clustering-routing[Server-side routing] disabled, the default value is `READ`.
+====
+
+[NOTE]
+====
+* Please note that `access-mode` is not required for a Neo4j single instance.
+* This feature was introduced in Neo4j version 4.4.4.
 ====
 
 _Example request_
