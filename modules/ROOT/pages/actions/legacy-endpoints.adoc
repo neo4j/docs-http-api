@@ -1,23 +1,24 @@
 :description: Legacy endpoints.
 
 [[http-api-legacy-endpoints]]
-= Legacy Endpoints label:deprecated[]
+= [deprecated]#Legacy Endpoints#
 
 [IMPORTANT]
 ====
 The API described in this section of the manual has been deprecated and will be removed in Neo4j 5.0.
 ====
 
-For backwards compatibility with neo4j 3.5, it is still possible to
-use the HTTP API without specifying the database in the URL. For example:
+For backwards compatibility with neo4j 3.5, it is still possible to use the HTTP API without specifying the database in the URL.
+For example:
 
 `http://localhost:7474/db/data/transaction/commit`.
 
 Since the database is not specified, the statements will be executed against the user's _home database_.
 
-All endpoints in this manual can also be executed against the legacy API where `db/<database-name>` is replaced with `db/data/transaction`. The input format and output formata are identical for both the legacy API and the current API.
+All endpoints can also be executed against the legacy API, where `db/<database-name>` is replaced with `db/data/transaction`.
+The input format and output format are identical for both the legacy API and the current API.
 
-For example beginning and commiting a transaction in a single requests looks as follows:
+For example, beginning and committing a transaction in a single requests looks as follows:
 
 _Example request_
 
@@ -61,5 +62,3 @@ _Example response_
   "errors" : [ ]
 }
 ----
-
-

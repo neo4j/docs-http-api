@@ -13,6 +13,7 @@
 ** xref:actions/commit-an-open-transaction.adoc[]
 ** xref:actions/rollback-an-open-transaction.adoc[]
 ** xref:actions/begin-and-commit-a-transaction-in-one-request.adoc[]
+** xref:actions/legacy-endpoints.adoc[]
 ** xref:actions/execute-multiple-statements.adoc[]
 ** xref:actions/include-query-statistics.adoc[]
 ** xref:actions/return-results-in-graph-format.adoc[]
