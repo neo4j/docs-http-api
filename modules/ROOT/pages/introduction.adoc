@@ -15,7 +15,8 @@ The default timeout is `60` seconds.
 Responses from the HTTP API can be transmitted as JSON streams, resulting in better performance and lower memory overhead on the server side.
 To use streaming, supply the header `X-Stream: true` with each request.
 
-Additionally, see xref:4.4@operations-manual:ROOT:reference/configuration-settings/index.adoc#config_dbms.http_enabled_modules[Operations Manual -> Configuration settings `config_dbms.http_enabled_modules`] for more information on how to define the set of modules loaded into the Neo4j web server.
+In case `dbms.http_enabled_modules` is defined in `conf/neo4j.conf` and you want to use HTTP API, then the parameter must include `TRANSACTIONAL_ENDPOINTS`.
+See xref:4.4@operations-manual:ROOT:reference/configuration-settings/index.adoc#config_dbms.http_enabled_modules[Operations Manual -> Configuration settings `config_dbms.http_enabled_modules`] for more information.
 
 [NOTE]
 ====
