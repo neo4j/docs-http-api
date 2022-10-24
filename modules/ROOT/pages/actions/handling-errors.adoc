@@ -14,7 +14,7 @@ If errors occur while executing statements, the server will roll back the transa
 
 In this example, we send an invalid statement to the server in order to demonstrate error handling.
 
-For more information on the status codes, see xref:4.0@status-codes:ROOT:index.adoc[Neo4j Status Codes].
+For more information on the status codes, see link:{neo4j-docs-base-uri}/status-codes/{page-version}[Neo4j Status Codes].
 
 _Example request_
 
