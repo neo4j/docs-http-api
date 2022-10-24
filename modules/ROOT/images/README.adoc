@@ -1,1 +1,0 @@
-No images available for HTTP API - Neo4j 3.5.
