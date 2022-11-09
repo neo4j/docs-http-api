@@ -7,7 +7,7 @@ The HTTP API uses the port `7474` for HTTP and the port `7473` for HTTPS.
 
 [TIP]
 ====
-See the link:{neo4j-docs-base-uri}/operations-manual/{page-version}/configuration/ports[Operations Manual -> Ports] for an overview of the Neo4j-specific ports.
+See the link:/docs/operations-manual/{neo4j-version}/configuration/ports[Operations Manual -> Ports] for an overview of the Neo4j-specific ports.
 ====
 
 
