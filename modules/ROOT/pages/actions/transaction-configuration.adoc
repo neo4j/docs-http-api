@@ -72,7 +72,7 @@ _Example response_
 
 When working with a Causal Cluster, transactions can be chained, via a bookmarks, to ensure causal consistency. See xxx for more about how this works.
 
-`Bookmarks` can be added to the header of a transaction initiating request. This header contains an array of strings with the encoded bookmark. The server will ensure the transaction being executed is up to date with each of the bookmarks supplied before executing the query. For example:
+`Bookmarks` can be added to the header of a transaction initiating request. This header contains an array of strings with the encoded bookmark. The server will block until it has caught up with the changes encapsulated in the bookmark before executing the transaction. For example:
 
 
 _Example request_
