@@ -66,3 +66,59 @@ _Example response_
   "errors" : [ ]
 }
 ----
+
+[[http-api-actions-bookmarks-mode]]
+== Bookmarks
+
+When working with a Causal Cluster, transactions can be chained, via a bookmarks, to ensure causal consistency. See xxx for more about how this works.
+
+`Bookmarks` can be added to the header of a transaction initiating request. This header contains an array of strings with the encoded bookmark. The server will ensure the transaction being executed is up to date with each of the bookmarks supplied before executing the query. For example:
+
+
+_Example request_
+
+* *+POST+* +http://localhost:7474/db/neo4j/tx/commit+
+* *+Accept:+* +application/json;charset=UTF-8+
+* *+Content-Type:+* +application/json+
+* *+Bookmarks:+*  +["FB:kcwQy9mp3ioyRom386bZDRRcuCeQ", "FB:kcwQy9mp3ioyRom386bZDRRcuCiQ"]+
+
+[source, JSON, role="nocopy"]
+----
+{
+  "statements": [
+    {
+      "statement": "RETURN 1 as n"
+    }
+  ]
+}
+----
+
+On requests that commit a transaction the response will contain a `lastBookmarks` property containing array of encoded bookmarks which represent the state of the transaction's committed changes.
+
+_Example response_
+
+* *+200:+* +OK+
+* *+Content-Type:+* +application/json;charset=utf-8+
+
+[source, JSON, role="nocopy"]
+----
+{
+  "results" : [ {
+    "columns" : [ "n" ],
+    "data" : [ {
+      "row" : [ 1 ],
+      "meta" : [ null ]
+    } ]
+  } ],
+  "errors" : [ ],
+  "lastBookmarks":  ["FB:kcwQy9mp3ioyRom386bZDRRcuCSQ"]
+}
+----
+
+The bookmarks returned in the response should be used in a subsequent transaction's `Bookmarks` header should you wish the transaction to be causally chained.
+
+[NOTE]
+====
+Bookmarks returned by the server are not intended to be parsed or modified by the client and should simply be inserted as is into the `Bookmarks` header.
+====
+
