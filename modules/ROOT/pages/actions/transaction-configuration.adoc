@@ -70,10 +70,11 @@ _Example response_
 [[http-api-actions-bookmarks-mode]]
 == Bookmarks
 
-When working with a Causal Cluster, transactions can be chained, via a bookmarks, to ensure causal consistency. See xxx for more about how this works.
+When working with a cluster, _bookmarks_ allow you to chain transactions and enforce causal consistency.
 
-`Bookmarks` can be added to the header of a transaction initiating request. This header contains an array of strings with the encoded bookmark. The server will block until it has caught up with the changes encapsulated in the bookmark before executing the transaction. For example:
+You can add `Bookmarks` to the headers of a _transaction initiating_ request. This header contains an array of strings with the encoded bookmarks. The server waits until it has caught up with the changes encapsulated in the bookmarks before executing the transaction.
 
+In the example below, the server does not execute the transaction until it has registered the changes associated with the bookmarks `FB:kcwQy9mp3ioyRom386bZDRRcuCeQ` and  `FB:kcwQy9mp3ioyRom386bZDRRcuCiQ`.
 
 _Example request_
 
@@ -93,7 +94,7 @@ _Example request_
 }
 ----
 
-On requests that commit a transaction the response will contain a `lastBookmarks` property containing array of encoded bookmarks which represent the state of the transaction's committed changes.
+On requests that _commit_ a transaction (like the one above), the response includes a `lastBookmarks` property containing an array of encoded bookmarks, which represent the state of the transaction's committed changes.
 
 _Example response_
 
@@ -115,7 +116,7 @@ _Example response_
 }
 ----
 
-The bookmarks returned in the response should be used in a subsequent transaction's `Bookmarks` header should you wish the transaction to be causally chained.
+You can use the bookmarks returned in the response in a subsequent transaction's `Bookmarks` header, if you want to causally chain those transactions together.
 
 [NOTE]
 ====
