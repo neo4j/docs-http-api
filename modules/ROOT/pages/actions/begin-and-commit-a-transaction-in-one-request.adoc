@@ -68,12 +68,13 @@ _Example request_
   ]
 }
 ----
+
 [WARNING]
 ====
-If you send multiple statements, at least one being *+CALL IN TRANSACTION+*, and one of the normal
-statements fail the *+CALL IN TRANSACTION+* query will *+NOT+* be rolled back and the others will.
-In the below example the simple creates would be rolled back but call in transactions would not be so the final node count
-would be 4.
+If you send multiple statements (at least one being `CALL IN TRANSACTION`), and one of the normal
+statements fails, the `CALL IN TRANSACTION` query will *_not_* be rolled back, while the others will.
+In the example below, the simple `CREATE` statements would be rolled back in case of failure, but the `CALL IN TRANSACTION` would not.
+The final node count would thus be 4.
 ====
 
 _Example request_
