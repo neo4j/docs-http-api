@@ -50,4 +50,51 @@ _Example response_
 }
 ----
 
+It is also possible to send *+CALL IN TRANSACTION+* requests to this endpoint.
 
+_Example request_
+
+* *+POST+* +http://localhost:7474/db/neo4j/tx/commit+
+* *+Accept:+* +application/json;charset=UTF-8+
+* *+Content-Type:+* +application/json+
+
+[source, JSON, role="nocopy"]
+----
+{
+  "statements": [
+    {
+      "statement": "UNWIND [4, 2, 1, 0] AS i CALL { WITH i CREATE ()} IN TRANSACTIONS OF 2 ROWS RETURN i"
+    }
+  ]
+}
+----
+[WARNING]
+====
+If you send multiple statements, at least one being *+CALL IN TRANSACTION+*, and one of the normal
+statements fail the *+CALL IN TRANSACTION+* query will *+NOT+* be rolled back and the others will.
+In the below example the simple creates would be rolled back but call in transactions would not be so the final node count
+would be 4.
+====
+
+_Example request_
+
+* *+POST+* +http://localhost:7474/db/neo4j/tx/commit+
+* *+Accept:+* +application/json;charset=UTF-8+
+* *+Content-Type:+* +application/json+
+
+[source, JSON, role="nocopy"]
+----
+{
+  "statements": [
+    {
+      "statement": "UNWIND [4, 2, 1, 0] AS i CALL { WITH i CREATE ()} IN TRANSACTIONS OF 2 ROWS RETURN i"
+    },
+    {
+      "statement": "CREATE ()"
+    },
+    {
+      "statement": "CREATE ()"
+    }
+  ]
+}
+----
