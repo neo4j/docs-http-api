@@ -6,6 +6,70 @@
 Authentication and authorization are enabled by default in Neo4j (refer to link:{neo4j-docs-base-uri}/operations-manual/{page-version}/authentication-authorization#auth[Operations Manual -> Authentication and authorization]).
 With authentication and authorization enabled, requests to the HTTP API must be authorized using the username and password of a valid user.
 
+[NOTE]
+====
+If authentication and authorization have been disabled, HTTP API requests can be sent without an `Authorization` header.
+====
+
+
+[[http-api-successful-authorization]]
+== Authorizing a Request
+
+Each HTTP request requires a `Authorization` header. The header value encoding follows standard format for `Basic` authentication (RFC 7617) and therefore must be in the following format:
+
+----
+Authorization: Basic <base64 encoding of username:credential>
+----
+
+For example, if we wish to authenticate as user `neo4j` with credential `verysecret` we combine them with `:` so that we have:
+----
+neo4j:verysecret
+----
+Then we base64 encode that value to:
+----
+bmVvNGo6dmVyeXNlY3JldA==
+----
+
+Finally we append `Basic` to the beginning to have the following as the final header:
+
+
+----
+Authorization: Basic bmVvNGo6dmVyeXNlY3JldA==
+----
+
+
+_Complete Request Example_
+
+* *+POST+*  +http://localhost:7474/db/neo4j/tx/commit+
+* *+Accept:+* +application/json;charset=UTF-8+
+* *+Content-Type:+* +application/json+
+* *+Authorization:+* +Basic bmVvNGo6dmVyeXNlY3JldA==+
+
+[source, JSON, role="nocopy"]
+----
+{
+  "statements": [
+    {
+      "statement": "RETURN 1"
+    }
+  ]
+}
+----
+
+_Example response_
+
+* *+200:+* +OK+
+* *+Content-Type:+* +application/json;charset=utf-8+
+
+[source, JSON, role="nocopy"]
+----
+{
+    "results": [ {
+      "columns": ["1"],
+      "data": [{"row": [1], "meta": [null]}] }],
+    "errors": []
+}
+----
 
 [[http-api-missing-authorization]]
 == Missing authorization
