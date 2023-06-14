@@ -3,6 +3,11 @@
 [[http-api-discovery]]
 = Discovery API
 
+[WARNING]
+====
+The HTTP API is currently not available on link:{neo4j-docs-base-uri}/aura[Neo4j Aura].
+====
+
 The HTTP API uses the port `7474` for HTTP and the port `7473` for HTTPS.
 
 [TIP]
