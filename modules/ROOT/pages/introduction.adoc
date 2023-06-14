@@ -3,6 +3,11 @@
 [[http-api-introduction]]
 = Introduction
 
+[WARNING]
+====
+The HTTP API is currently not available on link:{neo4j-docs-base-uri}/aura[Neo4j Aura].
+====
+
 The Neo4j transactional HTTP endpoint allows you to execute a series of Cypher statements within the scope of a transaction.
 The transaction may be kept open across multiple HTTP requests, until the client chooses to commit or roll back.
 Each HTTP request can include a list of statements, and for convenience you can include statements along with a request to begin or commit a transaction.
