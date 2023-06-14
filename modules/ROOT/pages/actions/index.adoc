@@ -3,6 +3,11 @@
 [[http-api-actions]]
 = Cypher transaction API
 
+[WARNING]
+====
+The HTTP API is currently not available on link:{neo4j-docs-base-uri}/aura[Neo4j Aura].
+====
+
 There are several _actions_ that can be performed using the Cypher transaction HTTP endpoint.
 
 *Concepts:*
