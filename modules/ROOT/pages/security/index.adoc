@@ -37,8 +37,19 @@ Finally we append `Basic` to the beginning to have the following as the final he
 Authorization: Basic bmVvNGo6dmVyeXNlY3JldA==
 ----
 
+.How to base64 encode a string
+[%collapsible]
+====
+To base64 encode a string on a Linux or Mac machine, use the built-in `base64` command:
 
-_Complete Request Example_
+[source, bash]
+----
+echo -n "neo4j:verysecret" | base64
+----
+====
+
+[discrete]
+=== Complete Request Example
 
 * *+POST+*  +http://localhost:7474/db/neo4j/tx/commit+
 * *+Accept:+* +application/json;charset=UTF-8+
