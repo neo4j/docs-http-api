@@ -30,13 +30,6 @@ Then we base64 encode that value to:
 bmVvNGo6dmVyeXNlY3JldA==
 ----
 
-Finally we append `Basic` to the beginning to have the following as the final header:
-
-
-----
-Authorization: Basic bmVvNGo6dmVyeXNlY3JldA==
-----
-
 .How to base64 encode a string
 [%collapsible]
 ====
@@ -47,6 +40,12 @@ To base64 encode a string on a Linux or Mac machine, use the built-in `base64` c
 echo -n "neo4j:verysecret" | base64
 ----
 ====
+
+Finally we append `Basic` to the beginning to have the following as the final header:
+
+----
+Authorization: Basic bmVvNGo6dmVyeXNlY3JldA==
+----
 
 [discrete]
 === Complete Request Example
