@@ -3,6 +3,11 @@
 [[http-api]]
 = HTTP API
 
+[WARNING]
+====
+The HTTP API is currently not available on link:{neo4j-docs-base-uri}/aura[Neo4j Aura].
+====
+
 [discrete]
 == Neo4j  v{neo4j-version}
 
@@ -14,7 +19,7 @@ ifdef::backend-pdf[]
 License: Creative Commons 4.0
 endif::[]
 
-Transactional Cypher HTTP endpoint. 
+Transactional Cypher HTTP endpoint.
 
 This manual covers the following areas:
 
