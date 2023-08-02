@@ -1,7 +1,20 @@
 * xref:index.adoc[]
+* xref:authentication-authorization.adoc[]
+* xref:query.adoc[]
+* xref:query.adoc[Run transactions]
+* xref:query.adoc[Transaction configuration]
+* xref:query.adoc[Handle errors]
+
+* **Reference**
+* xref:query.adoc[Endpoints]
+* xref:query.adoc[Headers]
+* xref:query.adoc[Result formats]
+
+* **OLD**
+
 * xref:introduction.adoc[]
 * xref:discovery.adoc[]
-* xref:actions/index.adoc[]
+* Actions
 ** xref:actions/transaction-flow.adoc[]
 ** xref:actions/query-format.adoc[]
 ** xref:actions/result-format.adoc[]
@@ -19,4 +32,4 @@
 ** xref:actions/expired-transactions.adoc[]
 ** xref:actions/handling-errors.adoc[]
 ** xref:actions/handling-errors-in-an-open-transaction.adoc[]
-* xref:security/index.adoc[]
+
