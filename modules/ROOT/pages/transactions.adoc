@@ -1,0 +1,275 @@
+= Run transactions
+
+short info on transactions
+
+== Create a transaction
+
+To open a new transaction, submit a `POST` request to the following endpoint:
+
+----
+http://<host>:<port>/db/<databaseName>/tx
+----
+
+The server will respond the location of the new transaction.
+
+====
+[discrete]
+=== Example request
+
+[source, headers]
+----
+POST http://localhost:7474/db/neo4j/tx
+Accept: application/json;charset=UTF-8
+Content-Type: application/json
+Authorization: Basic bmVvNGo6dmVyeXNlY3JldA==
+----
+
+[source, JSON]
+----
+{
+  "statements": []
+}
+----
+
+[TIP]
+The body of the request may contain an empty `statements` list, or it may be **empty**.
+
+[discrete]
+=== Example response
+
+[source, headers]
+----
+200: OK
+Content-Type: application/json;charset=utf-8
+----
+
+[source, JSON]
+----
+{
+  "results": [],
+  "errors": [],
+  "commit": "http://localhost:7474/db/neo4j/tx/50/commit",
+  "transaction": {
+    "expires": "Thu, 3 Aug 2023 11:45:10 GMT"
+  }
+}
+----
+====
+
+
+== Execute queries
+
+Once a transaction is open, you can submit queries to it by sending more `POST` requests to the following transaction endpoint:
+
+----
+http://<host>:<port>/db/<databaseName>/tx/<transactionID>
+----
+
+You can find the transaction ID under the `commit` key of your first request result.
+
+====
+[discrete]
+=== Example request
+
+[source, headers]
+----
+POST http://localhost:7474/db/neo4j/tx/50
+Accept: application/json;charset=UTF-8
+Content-Type: application/json
+Authorization: Basic bmVvNGo6dmVyeXNlY3JldA==
+----
+
+[source, JSON]
+----
+{
+  "statements": [
+    {
+      "statement": "MERGE (n:Person {name: $name, age: $age}) RETURN n",
+      "parameters": {
+        "name": "Alice",
+        "age": 42
+      }
+    }
+  ]
+}
+----
+
+[discrete]
+=== Example response
+
+[source, headers]
+----
+200: OK
+Content-Type: application/json;charset=utf-8
+----
+
+[source, JSON, role=nocollapse]
+----
+{
+  "results": [ {
+    "columns": ["n"],
+    "data": [ {
+      "row": [ {
+        "name": "Alice",
+        "age": 42
+      } ],
+      "meta": [ {
+        "id": 36,
+        "elementId": "4:0ea4a108-32c5-498c-99e7-95cc67ab5f7d:36",
+        "type": "node",
+        "deleted": false
+      } ]
+    } ]
+  } ],
+  "errors": [],
+  "commit": "http://localhost:7474/db/neo4j/tx/50/commit",
+  "transaction": {
+    "expires": "Thu, 3 Aug 2023 11:45:20 GMT"
+  }
+}
+----
+====
+
+[TIP]
+You can also open a transaction _and_ submit the first query in one request.
+To do so, just include some Cypher statements alongside the first request, with the same format you would use to run further queries.
+
+== Execute multiple queries
+
+To reduce the number of requests and network overhead, you can include multiple statements within a single request. The server runs them in sequence, but separate from each other, so a query cannot reference a variable defined in another query. The response contains the result of each statement, in order.
+
+====
+[discrete]
+=== Example request
+
+[source, headers]
+----
+POST http://localhost:7474/db/neo4j/tx/50
+Accept: application/json;charset=UTF-8
+Content-Type: application/json
+Authorization: Basic bmVvNGo6dmVyeXNlY3JldA==
+----
+
+[source, JSON]
+----
+{
+  "statements": [
+    {
+      "statement": "RETURN 1"
+    },
+    {
+      "statement": "RETURN 2"
+    }
+  ]
+}
+----
+
+[discrete]
+=== Example response
+
+[source, headers]
+----
+200: OK
+Content-Type: application/json;charset=utf-8
+----
+
+[source, JSON]
+----
+{
+  "results": [
+    {
+      "columns": ["1"],
+      "data": [{ "row": [1], "meta": [null] }]
+    },
+    {
+      "columns": ["2"],
+      "data": [{ "row": [2], "meta": [null] }]
+    }
+  ],
+  "errors": [],
+  "commit": "http://localhost:7474/db/neo4j/tx/50/commit",
+  "transaction": {
+    "expires": "Thu, 3 Aug 2023 11:45:25 GMT"
+  }
+}
+----
+====
+
+
+== Transaction expiration and keep alive
+
+Transactions expire automatically after a period of inactivity, after which they are rolled back. The transaction expiration time is reported in each response, under the `transaction` key.
+
+By default the timeout is 60 seconds, but you can set a different value in the server configuration (link:{neo4j-docs-base-uri}/operations-manual/{page-version}/configuration/configuration-settings#config_dbms.rest.transaction.idle_timeout[`dbms.rest.transaction.idle_timeout`]).
+
+To keep a transaction alive without submitting new queries, you can submit an empty statement list to the transaction URI.
+
+Attempting to submit queries to an expired transaction will result in the following error:
+
+[source, JSON]
+----
+{
+  "results": [],
+  "errors": [ {
+    "code": "Neo.ClientError.Transaction.TransactionNotFound",
+    "message": "Unrecognized transaction id. Transaction may have timed out and been rolled back."
+  } ]
+}
+----
+
+
+== Commit a transaction
+
+To commit a transaction, send a `POST` request to the following endpoint:
+
+----
+http://<host>:<port>/db/<databaseName>/tx/<transactionID>/commit
+----
+
+Committing a transaction results in its changes becoming permanent on the database.
+
+The request may optionally include a final bunch of queries, which will be executed before closing the transaction.
+
+
+
+
+== Rollback a transaction
+
+To rollback a transaction, submit a `DELETE` request to the following endpoint:
+
+----
+http://localhost:7474/db/neo4j/tx/<transactionID>
+----
+
+When a transaction is rolled back, the status of the database gets restored to before your transaction was opened.
+All the changes your queries would make to the database are thus discarded.
+
+
+====
+[discrete]
+=== Example request
+
+[source, headers]
+----
+DELETE http://localhost:7474/db/neo4j/tx/50
+Accept: application/json;charset=UTF-8
+Authorization: Basic bmVvNGo6dmVyeXNlY3JldA==
+----
+
+[discrete]
+=== Example response
+
+[source, headers]
+----
+200: OK
+Content-Type: application/json;charset=utf-8
+----
+
+[source, JSON]
+----
+{
+  "results": [],
+  "errors": []
+}
+----
+====

@@ -1,8 +1,9 @@
 * xref:index.adoc[]
 * xref:authentication-authorization.adoc[]
 * xref:query.adoc[]
-* xref:query.adoc[Run transactions]
+* xref:transactions.adoc[]
 * xref:query.adoc[Transaction configuration]
+* xref:statistics.adoc[Retrieve query statistics]
 * xref:query.adoc[Handle errors]
 
 * **Reference**

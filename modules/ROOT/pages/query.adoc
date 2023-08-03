@@ -1,6 +1,10 @@
 = Query the database
 
-To run a query on a database, submit a `POST` request to the endpoint `\http://<host>:<port>/db/<databaseName>/tx/commit`.
+To run a query on a database, submit a `POST` request to the following endpoint:
+
+----
+http://<host>:<port>/db/<databaseName>/tx/commit
+----
 
 //, where:
 //

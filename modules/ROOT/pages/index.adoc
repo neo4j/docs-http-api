@@ -8,27 +8,10 @@
 The HTTP API is currently not available on link:{neo4j-docs-base-uri}/aura[Neo4j Aura].
 ====
 
-[discrete]
-== Neo4j  v{neo4j-version}
+The Neo4j transactional HTTP endpoint allows you to execute a series of Cypher statements within the scope of a transaction.
+The transaction may be kept open across multiple HTTP requests, until the client chooses to commit or roll back.
+Each HTTP request can include a list of statements, and for convenience you can include statements along with a request to begin or commit a transaction.
 
-ifndef::backend-pdf[]
-License: link:{common-license-page-uri}[Creative Commons 4.0]
-endif::[]
+The overall flow is illustrated below, with each box representing a separate HTTP request:
 
-ifdef::backend-pdf[]
-License: Creative Commons 4.0
-endif::[]
-
-Transactional Cypher HTTP endpoint.
-
-This manual covers the following areas:
-
-* xref:introduction.adoc[]
-* xref:discovery.adoc[]
-* xref:actions/index.adoc[]
-* xref:security/index.adoc[]
-
-_Who should read this?_
-
-This manual is written for the developer of a client application which accesses Neo4j through the HTTP API.
-
+image::http-cypher-transaction-api-flow.png[title="Cypher transaction flow"]
