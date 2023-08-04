@@ -231,8 +231,6 @@ Committing a transaction results in its changes becoming permanent on the databa
 The request may optionally include a final bunch of queries, which will be executed before closing the transaction.
 
 
-
-
 == Rollback a transaction
 
 To rollback a transaction, submit a `DELETE` request to the following endpoint:
@@ -243,7 +241,6 @@ http://localhost:7474/db/neo4j/tx/<transactionID>
 
 When a transaction is rolled back, the status of the database gets restored to before your transaction was opened.
 All the changes your queries would make to the database are thus discarded.
-
 
 ====
 [discrete]
@@ -273,3 +270,6 @@ Content-Type: application/json;charset=utf-8
 }
 ----
 ====
+
+[TIP]
+An error in any request to an open transaction automatically results in a rollback.

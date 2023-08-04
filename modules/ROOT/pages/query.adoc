@@ -16,13 +16,8 @@ The server wraps the submitted Cypher query in a transaction for you. This means
 
 [TIP]
 ====
-**Literal line breaks are not allowed inside Cypher statements** submitted through the API (as per JSON specifications).
-This means that queries should fit on a single line.
-You can replace line breaks with spaces, as Cypher parses them equivalently.
+Each request must include an `Authorization` header with, see xref:authentication-authorization.adoc[Authentication and authorization] for more information.
 ====
-
-
-// == Execute a single query
 
 ====
 [discrete]
@@ -84,6 +79,13 @@ Content-Type: application/json;charset=utf-8
   ]
 }
 ----
+====
+
+[TIP]
+====
+**Literal line breaks are not allowed inside Cypher statements** submitted through the API (as per JSON specifications).
+This means that queries should fit on a single line.
+You can replace line breaks with spaces, as Cypher parses them equivalently.
 ====
 
 == Execute multiple queries
