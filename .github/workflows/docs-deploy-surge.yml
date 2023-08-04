@@ -54,7 +54,7 @@ jobs:
       - name: Deploy docs to surge
         run: |
           npm install -g surge
-          surge ./site ${{ github.event.repository.owner.login}}-${{ github.event.repository.name}}-${{ steps.get-deploy-id.outputs.deploy-id }}.surge.sh --token ${{ secrets.SURGE_TOKEN }}
+          surge ./site ${{ github.event.repository.owner.login}}-${{ github.event.repository.name}}-${{ steps.get-deploy-id.outputs.deploy-id }}.surge.sh --token ${{ secrets.DOCS_SURGE_TOKEN }}
 
       - name: Comment on PR
         uses: marocchino/sticky-pull-request-comment@v2

@@ -22,4 +22,4 @@ jobs:
       - name: Teardown documentation
         run: |
           npm install -g surge
-          surge teardown ${{ github.event.repository.owner.login}}-${{ github.event.repository.name}}-${{ github.event.pull_request.number }}.surge.sh --token ${{ secrets.SURGE_TOKEN }}
+          surge teardown ${{ github.event.repository.owner.login}}-${{ github.event.repository.name}}-${{ github.event.pull_request.number }}.surge.sh --token ${{ secrets.DOCS_SURGE_TOKEN }}
