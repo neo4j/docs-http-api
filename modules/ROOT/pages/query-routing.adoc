@@ -1,0 +1,54 @@
+= Route queries to read cluster members
+
+In a cluster environment, all queries are routed to writer members by default. To ensure efficient load balancing, you should send queries that contain only read statements to the cluster readers.
+
+You can do so by adding the header `Access-Mode: READ` to the request (the default is `WRITE`).
+
+For any transaction-initiating request (such as `/tx` or `tx/commit`), you can provide configuration options that apply for the duration of the whole transaction.
+
+====
+[discrete]
+=== Example request
+
+[source, headers]
+----
+POST http://localhost:7474/db/neo4j/tx
+Accept: application/json;charset=UTF-8
+Content-Type: application/json
+Authorization: Basic bmVvNGo6dmVyeXNlY3JldA==
+Access-Mode: READ
+----
+
+[source, JSON]
+----
+{
+  "statements": [
+    {
+      "statement": "MATCH (n) RETURN n LIMIT 20"
+    }
+  ]
+}
+----
+
+[discrete]
+=== Example response
+
+[source, headers]
+----
+200: OK
+Content-Type: application/json;charset=utf-8
+----
+
+[source, JSON]
+----
+{
+  "results": [],
+  "errors": [],
+  "commit": "http://localhost:7474/db/neo4j/tx/50/commit",
+  "transaction": {
+    "expires": "Thu, 3 Aug 2023 11:45:10 GMT"
+  }
+}
+----
+====
+

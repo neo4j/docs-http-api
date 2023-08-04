@@ -6,13 +6,19 @@
 Once you have an open transaction by calling `db/\{name}/tx`, you can run additional statements that form part of your transaction by calling the newly created transaction endpoint.
 The endpoint will be in the form `db/\{name}/tx/\{txid}`, where `txid` is provided in the response of the initial call to begin the transaction.
 
-_Example request_
 
-* *+POST+*  +http://localhost:7474/db/neo4j/tx/18+
-* *+Accept:+* +application/json;charset=UTF-8+
-* *+Content-Type:+* +application/json+
+====
+[discrete]
+=== Example request
 
-[source, JSON, role="nocopy"]
+[source]
+----
+POST http://localhost:7474/db/neo4j/tx/18
+Accept: application/json;charset=UTF-8
+Content-Type: application/json
+----
+
+[source, JSON]
 ----
 {
   "statements": [
@@ -23,12 +29,16 @@ _Example request_
 }
 ----
 
-_Example response_
+[discrete]
+=== Example response
 
-* *+200:+* +OK+
-* *+Content-Type:+* +application/json;charset=utf-8+
+[source]
+----
+200: OK
+Content-Type: application/json;charset=utf-8
+----
 
-[source, JSON, role="nocopy"]
+[source, JSON]
 ----
 {
   "results" : [ {
@@ -49,4 +59,4 @@ _Example response_
   }
 }
 ----
-
+====

@@ -1,0 +1,54 @@
+= Coordinate transactions and enforce causal consistency
+
+When working with a cluster, _bookmarks_ allow you to chain transactions and enforce causal consistency.
+
+You can add `Bookmarks` to the headers of a _transaction initiating_ request. This header contains an array of strings with the encoded bookmarks. The server waits until it has caught up with the changes encapsulated in the bookmarks before executing the transaction.
+
+In the example below, the server does not execute the transaction until it has registered the changes associated with the bookmarks `FB:kcwQy9mp3ioyRom386bZDRRcuCeQ` and  `FB:kcwQy9mp3ioyRom386bZDRRcuCiQ`.
+
+_Example request_
+
+* *+POST+* +http://localhost:7474/db/neo4j/tx/commit+
+* *+Accept:+* +application/json;charset=UTF-8+
+* *+Content-Type:+* +application/json+
+* *+Bookmarks:+*  +["FB:kcwQy9mp3ioyRom386bZDRRcuCeQ", "FB:kcwQy9mp3ioyRom386bZDRRcuCiQ"]+
+
+[source, JSON, role="nocopy"]
+----
+{
+  "statements": [
+    {
+      "statement": "RETURN 1 as n"
+    }
+  ]
+}
+----
+
+On requests that _commit_ a transaction (like the one above), the response includes a `lastBookmarks` property containing an array of encoded bookmarks, which represent the state of the transaction's committed changes.
+
+_Example response_
+
+* *+200:+* +OK+
+* *+Content-Type:+* +application/json;charset=utf-8+
+
+[source, JSON, role="nocopy"]
+----
+{
+  "results" : [ {
+    "columns" : [ "n" ],
+    "data" : [ {
+      "row" : [ 1 ],
+      "meta" : [ null ]
+    } ]
+  } ],
+  "errors" : [ ],
+  "lastBookmarks":  ["FB:kcwQy9mp3ioyRom386bZDRRcuCSQ"]
+}
+----
+
+You can use the bookmarks returned in the response in a subsequent transaction's `Bookmarks` header, if you want to causally chain those transactions together.
+
+[NOTE]
+====
+Bookmarks returned by the server are not intended to be parsed or modified by the client and should simply be inserted as is into the `Bookmarks` header.
+====

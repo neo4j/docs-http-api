@@ -10,7 +10,7 @@ To open a new transaction, submit a `POST` request to the following endpoint:
 http://<host>:<port>/db/<databaseName>/tx
 ----
 
-The server will respond the location of the new transaction.
+The server will respond with the location of the new transaction.
 
 ====
 [discrete]

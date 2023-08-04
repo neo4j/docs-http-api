@@ -1,7 +1,4 @@
-:description: Query statistics option.
-
-[[http-api-include-query-statistics]]
-= Include query statistics
+= Retrieve query statistics
 
 By setting `includeStats` to `true` for a statement, query statistics will be returned for it.
 
