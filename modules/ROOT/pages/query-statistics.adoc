@@ -1,37 +1,50 @@
 = Retrieve query statistics
 
-By setting `includeStats` to `true` for a statement, query statistics will be returned for it.
+If `includeStats` is set to `true` for a statement, the server returns query statistics (also known as query counters) alongside the query result. Statistics give insights into how the status of the database was altered by the query.
 
-_Example request_
+====
+[discrete]
+=== Example request
 
-* *+POST+* +http://localhost:7474/db/neo4j/tx/commit+
-* *+Accept:+* +application/json;charset=UTF-8+
-* *+Content-Type:+* +application/json+
+[source, headers]
+----
+POST http://localhost:7474/db/neo4j/tx/commit
+Accept: application/json;charset=UTF-8
+Content-Type: application/json
+Authorization: Basic bmVvNGo6dmVyeXNlY3JldA==
+----
 
-[source, JSON, role="nocopy"]
+[source, JSON]
 ----
 {
   "statements": [
     {
-      "statement": "CREATE (n) RETURN id(n)",
+      "statement": "CREATE (n:Person {name: $name}) RETURN n.name",
+      "parameters": {
+        "name": "Peter"
+       },
       "includeStats": true
     }
   ]
 }
 ----
 
-_Example response_
+[discrete]
+=== Example response
 
-* *+200:+* +OK+
-* *+Content-Type:+* +application/json;charset=utf-8+
+[source, headers]
+----
+* 200: OK
+* Content-Type: application/json;charset=utf-8
+----
 
-[source, JSON, role="nocopy"]
+[source, JSON]
 ----
 {
   "results" : [ {
-    "columns" : [ "id(n)" ],
+    "columns" : [ "n.name" ],
     "data" : [ {
-      "row" : [ 5 ],
+      "row" : [ "Peter" ],
       "meta" : [ null ]
     } ],
     "stats" : {
@@ -41,7 +54,7 @@ _Example response_
       "properties_set" : 0,
       "relationships_created" : 0,
       "relationship_deleted" : 0,
-      "labels_added" : 0,
+      "labels_added" : 1,
       "labels_removed" : 0,
       "indexes_added" : 0,
       "indexes_removed" : 0,

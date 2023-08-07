@@ -1,10 +1,10 @@
 = Route queries to read cluster members
 
-In a cluster environment, all queries are routed to writer members by default. To ensure efficient load balancing, you should send queries that contain only read statements to the cluster readers.
+In a cluster environment, all queries are routed to writer members by default. To ensure efficient load balancing, you should send queries that contain only read statements to the cluster readers. You can do so by adding the header `Access-Mode: READ` to the request (the default is `WRITE`).
 
-You can do so by adding the header `Access-Mode: READ` to the request (the default is `WRITE`).
+Query routing is supported for any transaction-initiating request (such as `/tx` or `tx/commit`), and they apply for the duration of the whole transaction.
 
-For any transaction-initiating request (such as `/tx` or `tx/commit`), you can provide configuration options that apply for the duration of the whole transaction.
+AND FOR QUERIES IN A TRANSACTION?
 
 ====
 [discrete]
@@ -12,7 +12,7 @@ For any transaction-initiating request (such as `/tx` or `tx/commit`), you can p
 
 [source, headers]
 ----
-POST http://localhost:7474/db/neo4j/tx
+POST http://localhost:7474/db/neo4j/tx/commit
 Accept: application/json;charset=UTF-8
 Content-Type: application/json
 Authorization: Basic bmVvNGo6dmVyeXNlY3JldA==

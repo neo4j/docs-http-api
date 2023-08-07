@@ -1,0 +1,3 @@
+= Endpoints
+
+Full list of endpoints, including Discovery API

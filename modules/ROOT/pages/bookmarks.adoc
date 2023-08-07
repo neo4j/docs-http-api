@@ -1,52 +1,99 @@
 = Coordinate transactions and enforce causal consistency
 
 When working with a cluster, _bookmarks_ allow you to chain transactions and enforce causal consistency.
+A bookmark is a token that represents some state of the database.
+By passing one or multiple bookmarks along with a query, the server will make sure that the query does not get executed before the represented state(s) have been established.
 
-You can add `Bookmarks` to the headers of a _transaction initiating_ request. This header contains an array of strings with the encoded bookmarks. The server waits until it has caught up with the changes encapsulated in the bookmarks before executing the transaction.
+On requests that _commit_ a transaction (i.e. to the `tx/commit` endpoint), the response includes a `lastBookmarks` property containing an array of encoded bookmarks, which represent the state of the transaction's committed changes.
 
-In the example below, the server does not execute the transaction until it has registered the changes associated with the bookmarks `FB:kcwQy9mp3ioyRom386bZDRRcuCeQ` and  `FB:kcwQy9mp3ioyRom386bZDRRcuCiQ`.
+====
+[discrete]
+=== Example request
 
-_Example request_
+[source, headers]
+----
+POST http://localhost:7474/db/neo4j/tx/commit
+Accept: application/json;charset=UTF-8
+Content-Type: application/json
+Authorization: Basic bmVvNGo6dmVyeXNlY3JldA==
+----
 
-* *+POST+* +http://localhost:7474/db/neo4j/tx/commit+
-* *+Accept:+* +application/json;charset=UTF-8+
-* *+Content-Type:+* +application/json+
-* *+Bookmarks:+*  +["FB:kcwQy9mp3ioyRom386bZDRRcuCeQ", "FB:kcwQy9mp3ioyRom386bZDRRcuCiQ"]+
-
-[source, JSON, role="nocopy"]
+[source, JSON]
 ----
 {
   "statements": [
     {
-      "statement": "RETURN 1 as n"
+      "statement": "MERGE (p1:Person {name: $name}) MERGE (p2:Person {name: $otherName}) RETURN p1.name, p2.name",
+      "parameters": {
+        "name": "Alice",
+        "otherName": "Bob"
+      }
     }
   ]
 }
 ----
 
-On requests that _commit_ a transaction (like the one above), the response includes a `lastBookmarks` property containing an array of encoded bookmarks, which represent the state of the transaction's committed changes.
+[discrete]
+=== Example response
 
-_Example response_
+[source, headers]
+----
+200: OK
+Content-Type: application/json;charset=utf-8
+----
 
-* *+200:+* +OK+
-* *+Content-Type:+* +application/json;charset=utf-8+
-
-[source, JSON, role="nocopy"]
+[source, JSON]
 ----
 {
-  "results" : [ {
-    "columns" : [ "n" ],
-    "data" : [ {
-      "row" : [ 1 ],
-      "meta" : [ null ]
+  "results": [ {
+    "columns": [ "p1.name", "p2.name" ],
+    "data": [ {
+      "row": [ "Alice", "Bob" ],
+      "meta": [ null, null ]
     } ]
   } ],
-  "errors" : [ ],
-  "lastBookmarks":  ["FB:kcwQy9mp3ioyRom386bZDRRcuCSQ"]
+  "errors": [],
+  "lastBookmarks": [
+    "FB:kcwQt8DpQx5zR0uN3Oj/OudM3QaQ"
+  ]
 }
 ----
+====
 
 You can use the bookmarks returned in the response in a subsequent transaction's `Bookmarks` header, if you want to causally chain those transactions together.
+This header should contain an array of bookmark strings.
+The server waits until it has caught up with the changes encapsulated in the bookmarks before executing the submitted transaction.
+
+In the example below, the server does not execute the transaction until it has registered the changes associated with the bookmarks `FB:kcwQt8DpQx5zR0uN3Oj/OudM3QaQ` and `FB:kcwQy9mp3ioyRom386bZDRRcuCiQ`.
+
+====
+[discrete]
+=== Example request
+
+[source, headers]
+----
+POST http://localhost:7474/db/neo4j/tx/commit
+Accept: application/json;charset=UTF-8
+Content-Type: application/json
+Authorization: Basic bmVvNGo6dmVyeXNlY3JldA==
+Bookmarks: ["FB:kcwQt8DpQx5zR0uN3Oj/OudM3QaQ", "FB:kcwQy9mp3ioyRom386bZDRRcuCiQ"]
+----
+
+[source, JSON]
+----
+{
+  "statements": [
+    {
+      "statement": "MATCH (p1:Person {name: $source}) MATCH (p2:Person {name: $end}) MERGE (p1)-[:LIKES]->(p2)",
+      "parameters": {
+        "source": "Alice",
+        "end": "Bob"
+      }
+    }
+  ]
+}
+----
+====
 
 [NOTE]
 ====

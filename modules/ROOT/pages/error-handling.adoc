@@ -1,0 +1,55 @@
+= Error handling
+
+The result of any request to the HTTP API is streamed back to the client.
+The server does not know whether the request will be successful or not when it sends the HTTP status code.
+Because of this, all requests against the transactional endpoint return a `200`/`201` status code, regardless of whether the statements were successfully executed.
+The only exception is xref:authentication-authorization.adoc[authentication] errors, which result in a `301` status code.
+
+At the end of the response payload, the server includes a list of errors that occurred while executing statements.
+An empty list means the request completed successfully.
+
+====
+[discrete]
+=== Example request
+
+.Send an invalid Cypher statement
+[source, headers]
+----
+POST  http://localhost:7474/db/neo4j/tx/commit
+Accept: application/json;charset=UTF-8
+Content-Type: application/json
+----
+
+[source, JSON]
+----
+{
+  "statements": [
+    {
+      "statement": "This is not a valid Cypher Statement and will raise an error."
+    }
+  ]
+}
+----
+
+[discrete]
+=== Example response
+
+[source, headers]
+----
+200: OK
+Content-Type: application/json;charset=utf-8
+----
+
+[source, JSON]
+----
+{
+  "results" : [ ],
+  "errors" : [ {
+    "code" : "Neo.ClientError.Statement.SyntaxError",
+    "message" : "Invalid input 'T': expected <init> (line 1, column 1 (offset: 0))\n\"This is not a valid Cypher Statement.\"\n ^"
+  } ]
+}
+----
+====
+
+For more information on error codes the server may raise, see link:{neo4j-docs-base-uri}/status-codes/{page-version}[Neo4j Status Codes].

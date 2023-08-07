@@ -2,7 +2,7 @@
 
 Unless authentication is disabled on the server, all HTTP requests must be authorized using the username and password of a valid user.
 
-Each request should carry an `Authorization` header. The header value encoding follows the standard format for `Basic` authentication (RFC 7617), which is as follows:
+Request are authorized through an `Authorization` header. The header value encoding follows the standard format for `Basic` authentication (RFC 7617), which is as follows:
 
 ----
 Authorization: Basic <base64(username:password)>
@@ -54,8 +54,8 @@ If an `Authorization` header is not supplied (and authentication is not disabled
 [source, headers]
 ----
 POST  http://localhost:7474/db/neo4j/tx/commit
-Accept application/json;charset=UTF-8
-Content-Type application/json
+Accept: application/json;charset=UTF-8
+Content-Type: application/json
 ----
 
 [discrete]

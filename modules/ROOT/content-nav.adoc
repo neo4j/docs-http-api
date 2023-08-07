@@ -4,13 +4,14 @@
 * xref:transactions.adoc[]
 * xref:query-routing.adoc[]
 * xref:query-statistics.adoc[]
+* xref:profile-query.adoc[]
 * xref:bookmarks.adoc[]
-* xref:query.adoc[Handle errors]
+* xref:error-handling.adoc[]
 
 * **Reference**
-* xref:query.adoc[Endpoints]
-* xref:query.adoc[Headers]
-* xref:query.adoc[Result formats]
+* xref:endpoints.adoc[]
+* xref:headers.adoc[]
+* xref:result-formats.adoc[]
 
 * **OLD**
 
