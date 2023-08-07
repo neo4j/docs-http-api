@@ -1,3 +1,5 @@
 = Endpoints
 
 Full list of endpoints, including Discovery API
+
+clustering stuff here https://neo4j.com/docs/operations-manual/current/clustering/monitoring/endpoints/#clustering-http-endpoints-status
