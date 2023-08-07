@@ -20,7 +20,7 @@
 * Actions
 ** xref:actions/transaction-flow.adoc[]
 ** xref:actions/query-format.adoc[]
-** xref:actions/result-format.adoc[]
+// ** xref:actions/result-format.adoc[]
 ** xref:actions/routing.adoc[]
 ** xref:actions/transaction-configuration.adoc[]
 ** xref:actions/begin-a-transaction.adoc[]
