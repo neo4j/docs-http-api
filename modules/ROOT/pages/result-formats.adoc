@@ -31,8 +31,8 @@ To request this format, set `Accept: application/json` in the request headers (o
 ----
 
 <1> Query fields, i.e. keys for the returned objects
-<1> Results from your query (the inner structure depends on the object type)
-<2> Metadata for each returned entity
+<2> Results from your query (the inner structure depends on the object type)
+<3> Metadata for each returned entity
 
 ====
 [discrete]
