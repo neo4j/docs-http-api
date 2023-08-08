@@ -1,10 +1,10 @@
 = Coordinate transactions and enforce causal consistency
 
-When working with a cluster, _bookmarks_ allow you to chain transactions and enforce causal consistency.
+When working with a cluster, _bookmarks_ allow you to chain transactions and enforce <<causal_consistency>>.
 A bookmark is a token that represents some state of the database.
 By passing one or multiple bookmarks along with a query, the server will make sure that the query does not get executed before the represented state(s) have been established.
 
-On requests that _commit_ a transaction (i.e. to the `tx/commit` endpoint), the response includes a `lastBookmarks` property containing an array of encoded bookmarks, which represent the state of the transaction's committed changes.
+On requests that _commit_ a transaction (i.e. to the `tx/commit` endpoint), the response includes a `lastBookmarks` key containing an array of encoded bookmarks, which represent the state of the transaction's committed changes.
 
 ====
 [discrete]
@@ -99,3 +99,11 @@ Bookmarks: ["FB:kcwQt8DpQx5zR0uN3Oj/OudM3QaQ", "FB:kcwQy9mp3ioyRom386bZDRRcuCiQ"
 ====
 Bookmarks returned by the server are not intended to be parsed or modified by the client and should simply be inserted as is into the `Bookmarks` header.
 ====
+
+
+ifndef::backend-pdf[]
+[discrete.glossary]
+== Glossary
+
+include::{partials}/glossary.adoc[]
+endif::[]

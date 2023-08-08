@@ -9,7 +9,7 @@ This page contains a list of the endpoints that the HTTP API provides, plus poin
 |Endpoint location |Description
 
 |/db/<databaseName>/tx/commit
-|To submit queries in a managed/implicit transaction. +
+|To submit queries (in an implicit transaction). +
 For more information, see xref:query.adoc[].
 
 |/db/<databaseName>/tx
@@ -22,7 +22,7 @@ A `DELETE` request results in a rollback. +
 For more information, see xref:transactions.adoc#_execute_queries[Run transactions -> Execute queries].
 
 |/db/<databaseName>/tx/<transactionID>/commit
-|To commit an open transaction. +
+|To commit an open transaction with ID `<transactionID>`. +
 For more information, see xref:transactions.adoc#_commit_a_transaction[Run transactions -> Commit a transaction].
 
 |/dbms/cluster

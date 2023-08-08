@@ -1,7 +1,7 @@
 = Run transactions
 
 Use transactions to group together related queries which work together to achieve a single logical database operation.
-As Neo4j is ACID compliant, queries within a transaction will either be executed as a whole or not at all: you cannot get a part of the transaction succeeding and another failing.
+As Neo4j is <<ACID>> compliant, queries within a <<transaction>> will either be executed as a whole or not at all: you cannot get a part of the transaction succeeding and another failing.
 
 == Create a transaction
 
@@ -278,3 +278,11 @@ Content-Type: application/json;charset=utf-8
 
 [TIP]
 An error in any request to an open transaction automatically results in a rollback.
+
+
+ifndef::backend-pdf[]
+[discrete.glossary]
+== Glossary
+
+include::{partials}/glossary.adoc[]
+endif::[]

@@ -362,3 +362,11 @@ In order to speed up queries in repeated scenarios, avoid using literals and rep
 ----
 
 See link:{neo4j-docs-base-uri}/cypher-manual/5/syntax/parameters/[Cypher Manual -> Parameters] for more information.
+
+
+ifndef::backend-pdf[]
+[discrete.glossary]
+== Glossary
+
+include::{partials}/glossary.adoc[]
+endif::[]

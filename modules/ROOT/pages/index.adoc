@@ -7,11 +7,12 @@
 The HTTP API is currently not available on link:{neo4j-docs-base-uri}/aura[Neo4j Aura].
 ====
 
-The Neo4j HTTP API allows you to execute a series of Cypher statements against a Neo4j server through HTTP requests.
+The Neo4j HTTP API allows you to execute a series of <<Cypher>> statements against a Neo4j server through HTTP requests.
+If you do not have a running Neo4j instance yet, check out how to link:{neo4j-docs-base-uri}/docs/operations-manual/current/installation/[install Neo4j].
 
 To execute queries, you may use either:
 
-- xref:query.adoc[implicit transactions] -- you just submit queries, the API takes care of the transaction handling for you,
+- xref:query.adoc[implicit transactions] -- you just submit queries, the API takes care of the transaction handling for you
 - xref:transactions.adoc[explicit transactions] -- you control the lifecycle of the transaction (open, commit, rollback), within which you can execute queries.
 
 [TIP]
@@ -20,3 +21,11 @@ By default, the HTTP API uses the port 7474 for HTTP and the port 7473 for HTTPS
 The overall flow is illustrated below, with each box representing a separate HTTP request:
 
 image::http-cypher-transaction-api-flow.png[title="HTTP API flow"]
+
+
+ifndef::backend-pdf[]
+[discrete.glossary]
+== Glossary
+
+include::{partials}/glossary.adoc[]
+endif::[]
