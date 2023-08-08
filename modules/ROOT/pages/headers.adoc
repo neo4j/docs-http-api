@@ -1,3 +1,50 @@
 = Headers
 
-Full list of headers
+This page contains a full list of headers you may use to tweak the HTTP API behavior, or that the API may return in responses.
+
+== Request headers
+
+[cols="1m, 3"]
+|===
+|Header |Description
+
+|Accept
+|Desired format of the response body. +
+Possible values are `application/json` (default), `application/vnd.neo4j.jolt-v2`, or `application/vnd.neo4j.jolt-v2+json-seq`. +
+For more information, see xref:result-formats.adoc[].
+
+|Access-Mode
+|Whether the query should be routed to cluster readers or writers. +
+Possible values are `READ` or `WRITE` (default). +
+For more information, see xref:routing.adoc[].
+
+|Authorization
+|Authentication credentials to authorize the request. +
+For more information, see xref:authentication-authorization.adoc[].
+
+|Bookmarks
+|A list of bookmarks the server should wait for before executing the current request. +
+For more information, see xref:bookmarks.adoc[].
+
+|Content-Type
+|The format of the request body. +
+The only possible value is `application/json`.
+
+|X-Stream
+|Transmit responses as JSON streams, resulting in better performance and lower memory overhead on the server side. +
+Possible values are `true` or `false` (default).
+
+|===
+
+== Response headers
+
+[cols="1m, 3"]
+|===
+|Header |Description
+
+|Content-Type
+|The format of the response body (matches the `Accept` request header). +
+Possible values are `application/json`, `application/vnd.neo4j.jolt-v2`, or `application/vnd.neo4j.jolt-v2+json-seq`. +
+For more information, see xref:result-formats.adoc[].
+
+|===

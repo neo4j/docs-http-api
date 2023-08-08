@@ -1,19 +1,22 @@
-:description: Graph result data format option.
-
-[[http-api-return-results-in-graph-format]]
 = Return results in graph format
 
 If you want to understand the graph structure of nodes and relationships returned by your query, you can specify the `graph` results data format.
 This is useful when you want to visualize the graph structure.
 The format collates all the nodes and relationships from all columns of the result, and also flattens collections of nodes and relationships, including paths.
 
-_Example request_
+====
+[discrete]
+=== Example request
 
-* *+POST+* +http://localhost:7474/db/neo4j/tx/commit+
-* *+Accept:+* +application/json;charset=UTF-8+
-* *+Content-Type:+* +application/json+
+[source, headers]
+----
+POST http://localhost:7474/db/neo4j/tx/commit
+Accept: application/json;charset=UTF-8
+Content-Type: application/json
+Authorization: Basic bmVvNGo6dmVyeXNlY3JldA==
+----
 
-[source, JSON, role="nocopy"]
+[source, JSON]
 ----
 {
   "statements": [
@@ -25,12 +28,16 @@ _Example request_
 }
 ----
 
-_Example response_
+[discrete]
+=== Example response
 
-* *+200:+* +OK+
-* *+Content-Type:+* +application/json;charset=utf-8+
+[source, headers]
+----
+200: OK
+Content-Type: application/json;charset=utf-8
+----
 
-[source, JSON, role="nocopy"]
+[source, JSON]
 ----
 {
   "results" : [ {
@@ -123,4 +130,5 @@ _Example response_
   "errors" : [ ]
 }
 ----
+====
 

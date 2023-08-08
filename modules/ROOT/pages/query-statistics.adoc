@@ -34,8 +34,8 @@ Authorization: Basic bmVvNGo6dmVyeXNlY3JldA==
 
 [source, headers]
 ----
-* 200: OK
-* Content-Type: application/json;charset=utf-8
+200: OK
+Content-Type: application/json;charset=utf-8
 ----
 
 [source, JSON]

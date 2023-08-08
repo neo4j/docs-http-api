@@ -1,6 +1,7 @@
 = Run transactions
 
-short info on transactions
+Use transactions to group together related queries which work together to achieve a single logical database operation.
+As Neo4j is ACID compliant, queries within a transaction will either be executed as a whole or not at all: you cannot get a part of the transaction succeeding and another failing.
 
 == Create a transaction
 
@@ -204,7 +205,7 @@ By default the timeout is 60 seconds, but you can set a different value in the s
 
 To keep a transaction alive without submitting new queries, you can submit an empty statement list to the transaction URI.
 
-Attempting to submit queries to an expired transaction will result in the following error:
+Attempting to submit queries to an expired transaction will result in an error:
 
 [source, JSON]
 ----
@@ -216,6 +217,10 @@ Attempting to submit queries to an expired transaction will result in the follow
   } ]
 }
 ----
+
+[TIP]
+If a response does not contain the `transaction` key, the corresponding transaction has been closed.
+This usually happens after an error is raised.
 
 
 == Commit a transaction

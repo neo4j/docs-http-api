@@ -6,11 +6,9 @@ To run a query on a database, submit a `POST` request to the following endpoint:
 http://<host>:<port>/db/<databaseName>/tx/commit
 ----
 
-//, where:
-//
-//- `<host>` is where the Neo4j instance is located (example `localhost`, `xxx.databases.neo4j.io`),
-//- `<port>` is the port on which the Neo4j HTTP server is set to listen on (default `7474`),
-//- `<databaseName>` is the database you want to query.
+- `<host>` is where the Neo4j instance is located (example `localhost`, `xxx.databases.neo4j.io`),
+- `<port>` is the port on which the Neo4j HTTP server is set to listen on (default `7474`),
+- `<databaseName>` is the database you want to query (example `neo4j`).
 
 The server wraps the submitted Cypher query in a transaction for you. This means that in case any part of the query fails, the database will be reverted back to its status before any part of the query was executed. To control the lifecycle of transactions, see xref:transactions.adoc[Run transactions].
 
