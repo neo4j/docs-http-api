@@ -1,114 +1,248 @@
 :description: HTTP API result format.
 
-[[http-api-actions-result-format]]
 = Result formats
 
-== Default
+Responses can return queried data in of three formats: JSON, Jolt, or graph.
 
-This format returns JSON with an embedded `results` element.
-To request this format, place `application/json` in the `Accept` header.
-This format is the default returned if no `Accept` header is provided.
+== JSON
 
-[source, JSON, role="nocopy"]
+The JSON format is the default one, and returns JSON with an embedded `results` element.
+To request this format, set `Accept: application/json` in the request headers (or avoid specifying it all, as it is the default if no `Accept` header is provided).
+
+.JSON output format prototype
+[source, JSON]
 ----
 {
-    "results": [
+  "results": [
+    {
+      "columns": [ columns-list ], <1>
+      "data": [
         {
-            "columns": [],
-            "data": [
-                {
-                    "row": [ row-data ],
-                    "meta": [ metadata ]
-                },
-                {
-
-                }
-            ]
+          "row": [ row-data ],  // <2>
+          "meta": [ entities-metadata ]  // <3>
         },
-        {
-             //another statement’s results
-        }
-    ]
+      ]
+    },
+    {
+     //another statement's results
+    }
+  ]
 }
 ----
 
-For example, running the query `UNWIND range(0, 2, 1) AS number RETURN number` will return the following results:
+<1> Query fields, i.e. keys for the returned objects
+<1> Results from your query (the inner structure depends on the object type)
+<2> Metadata for each returned entity
 
-[source, JSON, role="nocopy"]
+====
+[discrete]
+=== Example request
+
+[source, headers]
+----
+POST http://localhost:7474/db/neo4j/tx/commit
+Accept: application/json;charset=UTF-8
+Content-Type: application/json
+Authorization: Basic bmVvNGo6dmVyeXNlY3JldA==
+----
+
+[source, JSON]
 ----
 {
-    "results": [
-        {
-            "columns": [
-                "number"
-            ],
-            "data": [
-                {
-                    "row": [
-                        0
-                    ],
-                    "meta": [
-                        null
-                    ]
-                },
-                {
-                    "row": [
-                        1
-                    ],
-                    "meta": [
-                        null
-                    ]
-                },
-                {
-                    "row": [
-                        2
-                    ],
-                    "meta": [
-                        null
-                    ]
-                }
-            ]
-        }
-    ],
-    // other transactional data
+  "statements": [
+    {
+      "statement": "MERGE (p:Person {name: $name}) RETURN p AS person",
+      "parameters": {
+          "name": "Phil"
+      }
+    }
+  ]
 }
 ----
 
+[discrete]
+=== Example response
+
+[source, JSON]
+----
+{
+  "results": [ {
+    "columns": [ "person" ],
+    "data": [ {
+      "row": [ {
+        "name": "Phil"
+      } ],
+      "meta": [ {
+        "id": 11,  // <1>
+        "elementId": "4:b7c0e943-1e73-474b-8ddc-e8ff3ae74cdd:11",  // <2>
+        "type": "node",  // <3>
+        "deleted": false  // <4>
+      } ]
+    } ]
+  } ],
+  // other transactional data
+}
+----
+
+<1> (Deprecated) Entity ID within the database
+<2> Entity ID within the database
+<3> Entity type
+<4> Whether the entity was deleted in the query (it is `true` when returning an entity after running Cypher `DELETE` on it)
+
+[NOTE]
+`elementId` should be used with care, as no guarantees are given about the mapping between ID values and elements outside the scope of a single transaction. In other words, using an `elementId` to `MATCH` an element across different transactions is risky.
+
+====
 
 == Jolt
 
 Jolt, short for _JSON Bolt_, is a JSON-based format which encloses the response value's type together with the value inside a singleton object.
 
-For example:
+For example, `{"Z": "2"}` labels the value `2` as an integer type.
 
-[source, JSON, role="nocopy"]
+To receive the result in this format, set the `Accept` header as follows:
+
 ----
-{"Z": "2"}
+Accept: application/vnd.neo4j.jolt-v2
 ----
 
-This labels the value `2` as an integer type.
+=== Line feed delimited and JSON sequence mode
 
-This format can be returned when adding `application/vnd.neo4j.jolt` to the request's `Accept` header.
+By default, Jolt is returned in line feed delimited mode. The API can also return it in JSON sequence mode (encoded as per link:https://tools.ietf.org/html/rfc7464#section-2.2[RFC 7464]). To achieve that, set the `Accept` header as follows:
 
+----
+Accept: application/vnd.neo4j.jolt-v2+json-seq
+----
 
-=== Line delimited and Sequenced
+=== Sparse and strict mode
 
-Jolt may be returned in either line feed delimited or JSON sequencefootnote:[JSON Sequences are encoded as outlined in link:https://tools.ietf.org/html/rfc7464#section-2.2[RFC 7464].] mode.
-The formats are made available via the `application/vnd.neo4j.jolt` and `application/vnd.neo4j.jolt+json-seq` types which may be passed to the request's `Accept` header respectively.
+By default, Jolt returns data in _sparse mode_, which omits type pairing on values which can be matched to JSON types.
 
+In _strict mode_, **all** values are paired with their type.
+To enable _strict mode_, append `;strict=true` to the `Accept` header:
 
-=== Strict and sparse
+----
+Accept: application/vnd.neo4j.jolt-v2;strict=true
+----
+----
+Accept: application/vnd.neo4j.jolt-v2+json-seq;strict=true
+----
 
-There are two modes of Jolt that can be returned:
+=== Container format
 
-* *Strict mode*, where all values are paired with their type.
-* *Sparse mode*, which omits typing pairing on values which can suitably be matched to JSON types.
+Jolt results are returned in a container format based on events.
+A typical response looks like the following:
 
-By default, the _sparse mode_ is returned.
-To enable _strict mode_, pass `application/vnd.neo4j.jolt;strict=true` or `application/vnd.neo4j.jolt+json-seq;strict=true` in the `Accept` header.
+[source, JSON]
+----
+{"header":{"fields":["name","age"]}}
+{"data":[{"U":"Bob"},{"Z":"30"}]}
+{"data":[{"U":"Alice"},{"Z":"40"}]}
+{"data":[{"U":"Eve"},{"Z":"50"}]}
+...
+{"summary":{}}
+{"info":{"commit":"commit/uri/1"}}
+----
+
+Each event is a separate JSON document separated by a single `LF` character (Line Feed, UTF encoding: `0x8A`) or, with JSON sequences, encapsulated within an `RS` character (Information Separator Two, UTF-8 encoding: `0x1E`) footnote:[The common name is Record Separator, while the Unicode name is Information Separator Two.] at the beginning of each document as well as a `LF` character at the end.
+
+[options="header", cols="1m,3a"]
+|===
+| Event
+| Function
+
+| header
+| Marks the start of a result set for a statement, and contains query fields.
+
+| data
+| One such object for each returned record.
+Each query can potentially return multiple `data` objects.
+The order of values in the array matches the fields received in the header.
+
+| summary
+| Marks the end of a result set for a statement.
+Contains query plan information, if requested.
+
+| info
+| Final event to appear after processing all statements (unless an error has occurred).
+Contains transaction information (e.g. commit URI, bookmarks).
+
+| error
+| Errors occurred during the processing of the transaction.
+|===
+
+For example, the default Jolt encoding results in a stream encoded as follows:
+
+[source]
+----
+{"header":{"fields":["result"]}}\n
+{"data":[{"Z":"1"}]}\n
+{"summary":{}}\n
+{"info":{}}\n
+----
+
+While the JSON sequence based Jolt encoding results in the following response:
+
+[source]
+----
+\u001E{"header":{"fields":["result"]}}\n
+\u001E{"data":[{"Z":"1"}]}\n
+\u001E{"summary":{}}\n
+\u001E{"info":{}}\n
+----
+
+==== Multiple result sets in a request
+
+When there are multiple queries in a single request, there will be multiple `header`, `data`, and `summary` outputs for each query.
+
+====
+[discrete]
+=== Example request
+
+[source, headers]
+----
+POST http://localhost:7474/db/neo4j/tx/commit
+Accept: application/vnd.neo4j.jolt-v2
+Content-Type: application/json
+Authorization: Basic bmVvNGo6dmVyeXNlY3JldA==
+----
+
+[source, JSON]
+----
+{
+  "statements": [
+    { "statement": "RETURN 1 as resultA" },
+    { "statement": "UNWIND range(1,3,1) as resultB RETURN resultB" }
+  ]
+}
+----
+
+[discrete]
+=== Example response
+
+[source, headers]
+----
+200: OK
+Content-Type: application/vnd.neo4j.jolt-v2
+----
+
+[source, JSON]
+----
+{"header":{"fields":["resultA"]}}
+{"data":[{"Z":"1"}]}
+{"summary":{}}
+{"header":{"fields":["resultB"]}}
+{"data":[{"Z":"1"}]}
+{"data":[{"Z":"2"}]}
+{"data":[{"Z":"3"}]}
+{"summary":{}}
+{"info":{}}
+----
+====
+
+Results sets are returned in the same order as specified in the request.
 
 === Jolt types
-
 
 ==== Base types
 
@@ -165,7 +299,7 @@ To enable _strict mode_, pass `application/vnd.neo4j.jolt;strict=true` or `appli
 | `{"[]": [{"Z": "123"}, ... ]}`
 
 | `{}`
-| Dictionary
+| Map
 | `+{"{}": {"name": {"U": "Jeff"}, ...}}+`
 |===
 
@@ -174,200 +308,271 @@ To enable _strict mode_, pass `application/vnd.neo4j.jolt;strict=true` or `appli
 
 Node::
 +
-[source, JSON, role="nocopy"]
+[source, JSON]
 ----
 {"()": [node_id, [ node_labels], {"prop1": "value1", "prop2": "value2"}]}
 ----
 +
-For example:
-+
-[source, JSON, role="nocopy"]
+====
+[discrete]
+=== Example request
+
+[source, headers]
+----
+POST http://localhost:7474/db/neo4j/tx/commit
+Accept: application/vnd.neo4j.jolt-v2
+Content-Type: application/json
+Authorization: Basic bmVvNGo6dmVyeXNlY3JldA==
+----
+
+[source, JSON]
 ----
 {
- "()": [
-   4711,
-   [
-     "A",
-     "B"
-   ],
-   {
-     "prop1": {
-       "Z": "1"
-     },
-     "prop2": {
-       "U": "Hello"
-     }
-   }
- ]
+  "statements": [
+    {
+      "statement": "MERGE (p:Person:Employee {name: 'Phil', age: 21}) RETURN p"
+    }
+  ]
 }
 ----
 
+[discrete]
+=== Example response
+
+[source, headers]
+----
+200: OK
+Content-Type: application/vnd.neo4j.jolt-v2
+----
+
+[source, JSON]
+----
+{
+  "header": {
+    "fields": [
+      "p"
+    ]
+  }
+}
+{
+  "data": [
+    {
+      "()": [
+        "4:b7c0e943-1e73-474b-8ddc-e8ff3ae74cdd:12",
+        [
+          "Person",
+          "Employee"
+        ],
+        {
+          "name": "Phil",
+          "age": 21
+        }
+      ]
+    }
+  ]
+}
+{
+  "summary": {}
+}
+{
+  "info": {
+    "lastBookmarks": [
+      "FB:kcwQt8DpQx5zR0uN3Oj/OudM3ReQ"
+    ]
+  }
+}
+----
+====
+
 Relationships::
 +
-[source, JSON, role="nocopy"]
+[source, JSON]
 ----
 {"->": [rel_id, start_node_id, rel_type, end_node_id, {properties}]}
 {"<-": [rel_id, end_node_id, rel_type, start_node_id, {properties}]}
 ----
 +
-For example:
-+
-[source, JSON, role="nocopy"]
+====
+[discrete]
+=== Example request
+
+[source, headers]
+----
+POST http://localhost:7474/db/neo4j/tx/commit
+Accept: application/vnd.neo4j.jolt-v2
+Content-Type: application/json
+Authorization: Basic bmVvNGo6dmVyeXNlY3JldA==
+----
+
+[source, JSON]
 ----
 {
- "->": [
-   4711,
-   123,
-   "KNOWS",
-   124,
-   {
-     "since": {
-       "Z": "1999"
-     }
-   }
- ]
-}
-----
-
-Paths::
-+
-[source, JSON, role="nocopy"]
-----
-{"..": [{node_1}, {rel_1}, {node_2}, ..., {node_n}, {rel_n}, {node_n+1}]}
-----
-+
-For example:
-+
-[source, JSON, role="nocopy"]
-----
-{
- "..": [
-   {
-     "()": [
-       111,
-       [],
-       {}
-     ]
-   },
-   {
-     "->": [
-       9090,
-       111,
-       "KNOWS",
-       222,
-       {
-         "since": {
-           "Z": "1999"
-         }
-       }
-     ]
-   },
-   {
-     "()": [
-       222,
-       [],
-       {}
-     ]
-   }
- ]
-}
-----
-
-
-==== Container format
-
-Jolt results will be returned in a new container format based on events.
-A typical response will contain:
-
-[source, JSON, role="noheader"]
-----
-{"header":{"fields":["name","age"]}}
-{"data":[{"U":"Bob"},{"Z":"30"}]}
-{"data":[{"U":"Alice"},{"Z":"40"}]}
-{"data":[{"U":"Eve"},{"Z":"50"}]}
-...
-{"summary":{}}
-{"info":{"commit":"commit/uri/1"}}
-----
-
-Each event is a separate JSON document separated by a single LF character (Line Feed, UTF encoding: `0x8A`) or, if JSON sequences are requested, encapsulated within an `RS` characterfootnote:[The common name is Record Separator, and the Unicode name is Information Separator Two.] (Information Separator Two, UTF-8 encoding: `0x1E`) at the beginning of each document as well as a `LF` character at the end:
-
-[options="header", cols="m,a"]
-|===
-| Event
-| Function
-
-| header
-| Marks the start of a result set for a statement, and contains query fields.
-
-| data
-| For each record returned in the result set there will be a `data` json object.
-Depending on the query, each query can return multiple `data` objects.
-
-The order of values in the array match the fields received in the header.
-
-| summary
-| Marks the end of a result set for a statement.
-
-Can contain query plan information if requested.
-
-| info
-| Final event to appear after processing all statements (unless an error has occurred), and can contain transaction information (e.g. a commit URI).
-
-| error
-| Errors which occur during the processing of the transaction.
-|===
-
-For example, the default Jolt encoding will result in a stream encoded as follows:
-
-[source, result stream, role="noheader"]
-----
-{"header":{"fields":["result"]}}\n
-{"data":[{"Z":"1"}]}\n
-{"summary":{}}\n
-{"info":{}}\n
-----
-
-While the JSON sequence based Jolt encoding will result in the following response:
-
-[source, response, role="noheader"]
-----
-\u001E{"header":{"fields":["result"]}}\n
-\u001E{"data":[{"Z":"1"}]}\n
-\u001E{"summary":{}}\n
-\u001E{"info":{}}\n
-----
-
-
-===== Multiple result sets in a request
-
-When there are multiple queries in a single request there will be multiple `header`, `data`, and `summary` outputs for each query.
-
-For example, posting the following request:
-
-[source, JSON, role="nocopy"]
-----
-{
-  "statements" : [
-    { "statement" : "RETURN 1 as resultA"},
-    { "statement" : "UNWIND range(1,3,1) as resultB RETURN resultB"}
+  "statements": [
+    {
+      "statement": "MERGE (:Person:Employee {name: 'Phil', age: 21})-[rel:KNOWS {since: 1999}]->(:Person {name:'Lucy', age: 20}) RETURN rel"
+      }
   ]
 }
 ----
 
-will yield the following result response:
+[discrete]
+=== Example response
 
-[source, response, role="noheader"]
+[source, headers]
 ----
-{"header":{"fields":["resultA"]}}
-{"data":[{"Z":"1"}]}
-{"summary":{}}
-{"header":{"fields":["resultB"]}}
-{"data":[{"Z":"1"}]}
-{"data":[{"Z":"2"}]}
-{"data":[{"Z":"3"}]}
-{"summary":{}}
-{"info":{}}
+200: OK
+Content-Type: application/vnd.neo4j.jolt-v2
 ----
 
-Results sets will be returned in the same order as passed in the original request.
+[source, JSON]
+----
+{
+  "header": {
+    "fields": [
+      "rel"
+    ]
+  }
+}
+{
+  "data": [
+    {
+      "->": [
+        "5:b7c0e943-1e73-474b-8ddc-e8ff3ae74cdd:7",
+        "4:b7c0e943-1e73-474b-8ddc-e8ff3ae74cdd:12",
+        "KNOWS",
+        "4:b7c0e943-1e73-474b-8ddc-e8ff3ae74cdd:13",
+        {
+          "since": 1999
+        }
+      ]
+    }
+  ]
+}
+{
+  "summary": {}
+}
+{
+  "info": {
+    "lastBookmarks": [
+      "FB:kcwQt8DpQx5zR0uN3Oj/OudM3ReQ"
+    ]
+  }
+}
+----
+====
+
+Paths::
++
+[source, JSON]
+----
+{"..": [{node_1}, {rel_1}, {node_2}, ..., {node_n}, {rel_n}, {node_n+1}]}
+----
++
+====
+[discrete]
+=== Example request
+
+[source, headers]
+----
+POST http://localhost:7474/db/neo4j/tx/commit
+Accept: application/vnd.neo4j.jolt-v2
+Content-Type: application/json
+Authorization: Basic bmVvNGo6dmVyeXNlY3JldA==
+----
+
+[source, JSON]
+----
+{
+  "statements": [
+    {
+      "statement": "MERGE path=(:Person:Employee {name: 'Phil', age: 21})-[:KNOWS {since: 1999}]->(:Person {name:'Lucy', age: 20}) RETURN path"
+      }
+  ]
+}
+----
+
+[discrete]
+=== Example response
+
+[source, headers]
+----
+200: OK
+Content-Type: application/vnd.neo4j.jolt-v2
+----
+
+[source, JSON]
+----
+{
+  "header": {
+    "fields": [
+      "path"
+    ]
+  }
+}
+{
+  "data": [
+    {
+      "..": [
+        {
+          "()": [
+            "4:b7c0e943-1e73-474b-8ddc-e8ff3ae74cdd:12",
+            [
+              "Person",
+              "Employee"
+            ],
+            {
+              "name": "Phil",
+              "age": 21
+            }
+          ]
+        },
+        {
+          "->": [
+            "5:b7c0e943-1e73-474b-8ddc-e8ff3ae74cdd:7",
+            "4:b7c0e943-1e73-474b-8ddc-e8ff3ae74cdd:12",
+            "KNOWS",
+            "4:b7c0e943-1e73-474b-8ddc-e8ff3ae74cdd:13",
+            {
+              "since": 1999
+            }
+          ]
+        },
+        {
+          "()": [
+            "4:b7c0e943-1e73-474b-8ddc-e8ff3ae74cdd:13",
+            [
+              "Person"
+            ],
+            {
+              "name": "Lucy",
+              "age": 20
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+{
+  "summary": {}
+}
+{
+  "info": {
+    "lastBookmarks": [
+      "FB:kcwQt8DpQx5zR0uN3Oj/OudM3ReQ"
+    ]
+  }
+}
+----
+====
+
+
+== Graph
+
+The graph format collates all the nodes and relationships from all columns of the result, and also flattens collections of nodes and relationships, including paths.
+This format is useful to understand the graph structure of nodes and relationships returned by a query.
+
+[TIP]
+As the graph format is not related to how the result body is _encoded_, it can be coupled with JSON/Jolt.
+
+For more information, see xref:result-as-graph.adoc[].
