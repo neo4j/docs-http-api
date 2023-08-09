@@ -69,3 +69,6 @@ Accept: application/json
 }
 ----
 ====
+
+[NOTE]
+Bolt routing is meant to be used with link:{neo4j-docs-base-uri}/create-applications/[Neo4j's client libraries (Drivers)].

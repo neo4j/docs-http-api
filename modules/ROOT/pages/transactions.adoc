@@ -5,13 +5,16 @@ As Neo4j is <<ACID>> compliant, queries within a <<transaction>> will either be 
 
 == Create a transaction
 
-To open a new transaction, submit a `POST` request to the following endpoint:
+To open a new (explicit) transaction, submit a `POST` request to the following endpoint:
 
 ----
 http://<host>:<port>/db/<databaseName>/tx
 ----
 
 The server will respond with the location of the new transaction.
+
+[NOTE]
+Cypher queries with link:{neo4j-docs-base-uri}/cypher-manual/current/clauses/call-subquery/#subquery-call-in-transactions[`CALL {} IN TRANSACTIONS`] can not be executed in explicit transactions. Submit those queries with xref:query.adoc[implicit transactions].
 
 ====
 [discrete]
@@ -31,9 +34,6 @@ Authorization: Basic bmVvNGo6dmVyeXNlY3JldA==
   "statements": []
 }
 ----
-
-[TIP]
-The body of the request may contain an empty `statements` list, or it may be **empty**.
 
 [discrete]
 === Example response
@@ -55,6 +55,11 @@ Content-Type: application/json;charset=utf-8
   }
 }
 ----
+
+[TIP]
+The body of the request may contain an empty `statements` list, or it may be **empty**.
+It does not make any difference.
+
 ====
 
 
@@ -137,7 +142,7 @@ To do so, just include some Cypher statements alongside the first request, with 
 
 == Execute multiple queries
 
-To reduce the number of requests and network overhead, you can include multiple statements within a single request. The server runs them in sequence, but separate from each other, so a query cannot reference a variable defined in another query. The response contains the result of each statement, in order.
+To reduce the number of requests and network overhead, you can include multiple statements within a single request. The server runs them in sequence, but separate from each other, so a statement cannot reference a variable defined in another statement. The response contains the result of each statement, in order.
 
 ====
 [discrete]
@@ -199,13 +204,13 @@ Content-Type: application/json;charset=utf-8
 
 == Transaction expiration and keep alive
 
-Transactions expire automatically after a period of inactivity, after which they are rolled back. The transaction expiration time is reported in each response, under the `transaction` key.
-
+Transactions expire automatically after a period of inactivity, after which they are rolled back.
 By default the timeout is 60 seconds, but you can set a different value in the server configuration (link:{neo4j-docs-base-uri}/operations-manual/{page-version}/configuration/configuration-settings#config_dbms.rest.transaction.idle_timeout[`dbms.rest.transaction.idle_timeout`]).
 
+The transaction expiration time is reported in each response, under the `transaction` key.
 To keep a transaction alive without submitting new queries, you can submit an empty statement list to the transaction URI.
 
-Attempting to submit queries to an expired transaction will result in an error:
+Attempting to submit queries to an expired transaction results in an error:
 
 [source, JSON]
 ----
@@ -244,7 +249,7 @@ To rollback a transaction, submit a `DELETE` request to the following endpoint:
 http://localhost:7474/db/neo4j/tx/<transactionID>
 ----
 
-When a transaction is rolled back, the status of the database gets restored to before your transaction was opened.
+When a transaction is rolled back, the status of the database gets restored to before the transaction was opened.
 All the changes your queries would make to the database are thus discarded.
 
 ====

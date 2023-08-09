@@ -10,7 +10,7 @@ http://<host>:<port>/db/<databaseName>/tx/commit
 - `<port>` is the port on which the Neo4j HTTP server is set to listen on (default `7474`),
 - `<databaseName>` is the database you want to query (example `neo4j`).
 
-The server wraps the submitted Cypher query in a transaction for you. This means that in case any part of the query fails, the database will be reverted back to its status before any part of the query was executed. To control the lifecycle of transactions, see xref:transactions.adoc[Run transactions].
+The server wraps the submitted Cypher query in a (implicit) transaction for you. This means that in case any part of the query fails, the database will be reverted back to its status before any part of the query was executed. To control the lifecycle of transactions, see xref:transactions.adoc[Run transactions].
 
 [TIP]
 ====
@@ -89,7 +89,7 @@ You can replace line breaks with spaces, as Cypher parses them equivalently.
 == Execute multiple queries
 
 You can send multiple Cypher statements in the same request.
-The server runs them in sequence, but separate from each other, so a query cannot reference a variable defined in another query.
+The server runs them in sequence, but separate from each other, so a statement cannot reference a variable defined in another statement.
 The response contains the result of each statement, in order.
 
 ====
@@ -149,7 +149,7 @@ Content-Type: application/json;charset=utf-8
 ====
 
 **If one of the queries fails, _all statements_ submitted with the request will be rolled back.**
-In the example below, the first statement fails due to a division by 0 (as the error report).
+In the example below, the first statement fails due to a division by 0.
 The result is that not only no `:Number` nodes are created (not even the one with `val: 1`), but no `:Person` nodes are created either.
 
 ====
@@ -267,7 +267,7 @@ Authorization: Basic bmVvNGo6dmVyeXNlY3JldA==
 === Query order
 
 Queries containing `CALL {} In TRANSACTIONS` must come first in the order of the `statements` JSON list.
-Failure to do so will result in an error.
+Failure to do so results in an error.
 
 ====
 [discrete]

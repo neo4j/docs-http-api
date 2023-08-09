@@ -39,50 +39,64 @@ Content-Type: application/json;charset=utf-8
 [source, JSON]
 ----
 {
-  "results" : [ {
-    "columns" : [ "bike", "p1", "p2" ],
-    "data" : [ {
-      "graph" : {
-        "nodes" : [ {
-          "id" : "8",
-          "labels" : [ "Bike" ],
-          "properties" : {
-            "weight" : 10
+  "results": [ {
+    "columns": [
+      "bike",
+      "p1",
+      "p2"
+    ],
+    "data": [ {
+      "graph": {
+        "nodes": [
+          {
+            "id": "17",
+            "elementId": "4:b7c0e943-1e73-474b-8ddc-e8ff3ae74cdd:17",
+            "labels": [ "Wheel" ],
+            "properties": { "spokes": 3 }
+          },
+          {
+            "id": "18",
+            "elementId": "4:b7c0e943-1e73-474b-8ddc-e8ff3ae74cdd:18",
+            "labels": [ "Wheel" ],
+            "properties": { "spokes": 32 }
+          },
+          {
+            "id": "16",
+            "elementId": "4:b7c0e943-1e73-474b-8ddc-e8ff3ae74cdd:16",
+            "labels": [ "Bike" ],
+            "properties": { "weight": 10 }
           }
-        }, {
-          "id" : "9",
-          "labels" : [ "Wheel" ],
-          "properties" : {
-            "spokes" : 3
+        ],
+        "relationships": [
+          {
+            "id": "9",
+            "elementId": "5:b7c0e943-1e73-474b-8ddc-e8ff3ae74cdd:9",
+            "type": "HAS",
+            "startNode": "16",
+            "startNodeElementId": "4:b7c0e943-1e73-474b-8ddc-e8ff3ae74cdd:16",
+            "endNode": "17",
+            "endNodeElementId": "4:b7c0e943-1e73-474b-8ddc-e8ff3ae74cdd:17",
+            "properties": { "position": 1 }
+          },
+          {
+            "id": "10",
+            "elementId": "5:b7c0e943-1e73-474b-8ddc-e8ff3ae74cdd:10",
+            "type": "HAS",
+            "startNode": "16",
+            "startNodeElementId": "4:b7c0e943-1e73-474b-8ddc-e8ff3ae74cdd:16",
+            "endNode": "18",
+            "endNodeElementId": "4:b7c0e943-1e73-474b-8ddc-e8ff3ae74cdd:18",
+            "properties": { "position": 2 }
           }
-        }, {
-          "id" : "10",
-          "labels" : [ "Wheel" ],
-          "properties" : {
-            "spokes" : 32
-          }
-        } ],
-        "relationships" : [ {
-          "id" : "0",
-          "type" : "HAS",
-          "startNode" : "8",
-          "endNode" : "9",
-          "properties" : {
-            "position" : 1
-          }
-        }, {
-          "id" : "1",
-          "type" : "HAS",
-          "startNode" : "8",
-          "endNode" : "10",
-          "properties" : {
-            "position" : 2
-          }
-        } ]
+        ]
       }
     } ]
   } ],
-  "errors" : [ ]
+  "errors": [],
+  "commit": "http://localhost:7474/db/neo4j/tx/14/commit",
+  "transaction": {
+      "expires": "Wed, 9 Aug 2023 08:08:35 GMT"
+  }
 }
 ----
 ====

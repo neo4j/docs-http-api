@@ -1,5 +1,5 @@
 [glossary]
-[[Cypher]]Cypher:: link:{neo4j-docs-base-uri}/cypher-manual/current/introduction/cypher_overview/[Cypher] is Neo4j's graph query language that lets you retrieve data from the database.
+[[Cypher]]Cypher:: link:{neo4j-docs-base-uri}/getting-started/cypher-intro/[Cypher] is Neo4j's graph query language that lets you retrieve data from the database.
 It is like SQL, but for graphs.
 [[ACID]]ACID:: Atomicity, Consistency, Isolation, Durability (ACID) are properties guaranteeing that database transactions are processed reliably.
 An ACID-compliant DBMS ensures that the data in the database remains accurate and consistent despite failures.

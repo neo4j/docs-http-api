@@ -1,18 +1,18 @@
 = Error handling
 
-The result of any request to the HTTP API is streamed back to the client.
+The result of any request to the HTTP API is streamed back to the client as received from the underlying Neo4j server.
 The server does not know whether the request will be successful or not when it sends the HTTP status code.
-Because of this, all requests against the transactional endpoint return a `200`/`201` status code, regardless of whether the statements were successfully executed.
+Because of this, all API requests return a `200`/`201` status code, regardless of whether the statements were successfully executed.
 The only exception is xref:authentication-authorization.adoc[authentication] errors, which result in a `301` status code.
 
 At the end of the response payload, the server includes a list of errors that occurred while executing statements.
 An empty list means the request completed successfully.
 
+.Send an invalid Cypher statement
 ====
 [discrete]
 === Example request
 
-.Send an invalid Cypher statement
 [source, headers]
 ----
 POST  http://localhost:7474/db/neo4j/tx/commit

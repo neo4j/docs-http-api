@@ -1,6 +1,6 @@
 = Authorize requests
 
-Unless authentication is disabled on the server, all HTTP requests must be authorized using the username and password of a valid user.
+Unless authentication is disabled on the server, all HTTP requests must be authorized using the login credentials of a valid user.
 
 Request are authorized through an `Authorization` header. The header value encoding follows the standard format for `Basic` authentication (RFC 7617), which is as follows:
 
@@ -116,7 +116,43 @@ Content-Type: application/json;charset=utf-8
 ====
 
 
-[[http-api-auth-failure-rollback]]
+== Invalid authentication
+
+If the content of the `Authorization` header fails to be properly base64-encoded, the server replies with status `401 Forbidden` and an error.
+
+====
+[discrete]
+=== Example request
+
+[source, headers]
+----
+POST  http://localhost:7474/db/neo4j/tx/commit
+Accept: application/json;charset=UTF-8
+Authorization: Basic not-proper-base64
+Content-Type: application/json
+----
+
+[discrete]
+=== Example response
+
+[source, headers]
+----
+401: Unauthorized
+Content-Type: application/json;charset=utf-8
+----
+
+[source, JSON]
+----
+{
+  "errors" : [ {
+    "code": "Neo.ClientError.Request.InvalidFormat",
+    "message": "Invalid authentication header."
+  } ]
+}
+----
+====
+
+
 == Authentication failure on open transactions
 
 TEST THIS

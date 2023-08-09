@@ -32,7 +32,7 @@ To request this format, set `Accept: application/json` in the request headers (o
 
 <1> Query fields, i.e. keys for the returned objects
 <2> Results from your query (the inner structure depends on the object type)
-<3> Metadata for each returned entity
+<3> Metadata for each returned entity (node/relationship)
 
 ====
 [discrete]
@@ -128,9 +128,11 @@ Accept: application/vnd.neo4j.jolt-v2;strict=true
 Accept: application/vnd.neo4j.jolt-v2+json-seq;strict=true
 ----
 
+For information on types matching, see xref:_jolt_types[].
+
 === Container format
 
-Jolt results are returned in a container format based on events.
+Jolt results are returned in a container format based on _events_.
 A typical response looks like the following:
 
 [source, JSON]
@@ -173,7 +175,7 @@ Contains transaction information (e.g. commit URI, bookmarks).
 
 For example, the default Jolt encoding results in a stream encoded as follows:
 
-[source]
+[source, JSON]
 ----
 {"header":{"fields":["result"]}}\n
 {"data":[{"Z":"1"}]}\n
@@ -183,7 +185,7 @@ For example, the default Jolt encoding results in a stream encoded as follows:
 
 While the JSON sequence based Jolt encoding results in the following response:
 
-[source]
+[source, JSON]
 ----
 \u001E{"header":{"fields":["result"]}}\n
 \u001E{"data":[{"Z":"1"}]}\n
@@ -240,9 +242,11 @@ Content-Type: application/vnd.neo4j.jolt-v2
 ----
 ====
 
-Results sets are returned in the same order as specified in the request.
+Result sets are returned in the same order as specified in the request.
 
 === Jolt types
+
+This section details how link:{neo4j-docs-base-uri}/cypher-manual/current/values-and-types/[Cypher types] are labeled in Jolt.
 
 ==== Base types
 
@@ -265,20 +269,26 @@ Results sets are returned in the same order as specified in the request.
 | `{"Z": "123"}`
 
 | `R`
-| Float/Real
+| Float
 | `{"R": "9.87"}` footnote:[The type label `R` is used both to indicate floating point numbers and integers that are outside the range of 32-bit signed integers.]
 
 | `U`
 | String
-| `{"U": "A string"}`
+| `{"U": "Neo4j"}`
 
 | `T`
-| Date/Time
-| `{"T": "2002-04-16T12:34:56"}`
+| Temporal
+|
+`{"T": "2023-08-09T09:02:40.063Z"}` +
+`{"T": "2023-08-09"}` +
+`{"T": "09:02:40.063Z"}` +
+`{"T": "P14DT16H12M"}`
 
 | `@`
-| Geospatial
-| `{"@": "POINT (30 10)"}`
+| Spatial
+|
+`{"@": "SRID=4326;POINT(1.2 3.4)"}` +
+`{"@": "SRID=4979;POINT Z (3.4 5.6 7.8)"}`
 
 | `#`
 | Hexadecimal
@@ -573,6 +583,6 @@ The graph format collates all the nodes and relationships from all columns of th
 This format is useful to understand the graph structure of nodes and relationships returned by a query.
 
 [TIP]
-As the graph format is not related to how the result body is _encoded_, it can be coupled with JSON/Jolt.
+As the graph format is not related to how the result body is _encoded_, it can be coupled with either JSON or Jolt `Accept` header.
 
 For more information, see xref:result-as-graph.adoc[].
