@@ -250,7 +250,7 @@ This section details how link:{neo4j-docs-base-uri}/cypher-manual/current/values
 
 ==== Base types
 
-[options="header", cols="a,a,d"]
+[options="header", cols=".^a,.^a,d"]
 |===
 | Type Label
 | Type
@@ -298,19 +298,19 @@ This section details how link:{neo4j-docs-base-uri}/cypher-manual/current/values
 
 ==== Composite types
 
-[options="header", cols="a,a,a"]
+[options="header", cols=".^m,.^a,m"]
 |===
 | Type Label
 | Type
 | Example
 
-| `[]`
+| []
 | List
-| `{"[]": [{"Z": "123"}, ... ]}`
+| {"[]": [{"Z": "123"}, ... ]}
 
-| `{}`
+| {}
 | Map
-| `+{"{}": {"name": {"U": "Jeff"}, ...}}+`
+| {"{}": {"name": {"U": "Jeff"}, ...}}
 |===
 
 
