@@ -38,9 +38,9 @@ Authorization: Basic bmVvNGo6dmVyeXNlY3JldA==
 ----
 
 [NOTE]
-====
+--
 If authentication is disabled on the server, HTTP API requests can be sent without an `Authorization` header.
-====
+--
 
 [[http-api-missing-authorization]]
 == Missing authorization
@@ -154,8 +154,6 @@ Content-Type: application/json;charset=utf-8
 
 
 == Authentication failure on open transactions
-
-TEST THIS
 
 An authentication error (`Neo.ClientError.Security.Unauthorized`) in a request to an open transaction results in a rollback. The transaction remains open though.
 

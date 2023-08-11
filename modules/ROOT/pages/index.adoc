@@ -16,8 +16,8 @@ This guide assumes that you have:
 
 To execute queries through the HTTP API, you may use either:
 
-- xref:query.adoc[implicit transactions] -- you just submit queries, the API takes care of the transaction handling for you
-- xref:transactions.adoc[explicit transactions] -- you control the lifecycle of the transaction (open, commit, rollback), within which you can execute queries.
+- xref:query.adoc[Implicit transactions] -- you just submit queries, the API takes care of the transaction handling for you
+- xref:transactions.adoc[Explicit transactions] -- you control the lifecycle of the transaction (open, commit, rollback), within which you can execute queries.
 
 [TIP]
 By default, the HTTP API uses port 7474 for HTTP and port 7473 for HTTPS.

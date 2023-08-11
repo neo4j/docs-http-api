@@ -24,9 +24,7 @@ Content-Type: application/json
 ----
 {
   "statements": [
-    {
-      "statement": "This is not a valid Cypher Statement and will raise an error."
-    }
+    { "statement": "This is not a valid Cypher Statement and will raise an error." }
   ]
 }
 ----

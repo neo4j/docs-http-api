@@ -3,6 +3,12 @@
 Use transactions to group together related queries which work together to achieve a single logical database operation.
 As Neo4j is <<ACID>> compliant, queries within a <<transaction>> will either be executed as a whole or not at all: you cannot get a part of the transaction succeeding and another failing.
 
+[NOTE]
+--
+Cypher queries with link:{neo4j-docs-base-uri}/cypher-manual/current/clauses/call-subquery/#subquery-call-in-transactions[`CALL {} IN TRANSACTIONS`] can not be executed in explicit transactions. Submit those queries with xref:query.adoc[implicit transactions].
+--
+
+
 == Create a transaction
 
 To open a new (explicit) transaction, submit a `POST` request to the following endpoint:
@@ -11,10 +17,13 @@ To open a new (explicit) transaction, submit a `POST` request to the following e
 http://<host>:<port>/db/<databaseName>/tx
 ----
 
-The server will respond with the location of the new transaction.
+The body of the request may either:
 
-[NOTE]
-Cypher queries with link:{neo4j-docs-base-uri}/cypher-manual/current/clauses/call-subquery/#subquery-call-in-transactions[`CALL {} IN TRANSACTIONS`] can not be executed in explicit transactions. Submit those queries with xref:query.adoc[implicit transactions].
+- contain a `statements` object consisting of a list of statements to execute
+- contain a `statements` object consisting of an empty list
+- be entirely empty.
+
+The server will respond with the location of the new transaction.
 
 ====
 [discrete]
@@ -31,7 +40,15 @@ Authorization: Basic bmVvNGo6dmVyeXNlY3JldA==
 [source, JSON]
 ----
 {
-  "statements": []
+  "statements": [
+    {
+      "statement": "MERGE (n:Person {name: $name, age: $age}) RETURN n",
+      "parameters": {
+        "name": "Patrick",
+        "age": 24
+      }
+    }
+  ]
 }
 ----
 
@@ -55,11 +72,6 @@ Content-Type: application/json;charset=utf-8
   }
 }
 ----
-
-[TIP]
-The body of the request may contain an empty `statements` list, or it may be **empty**.
-It does not make any difference.
-
 ====
 
 
@@ -136,9 +148,6 @@ Content-Type: application/json;charset=utf-8
 ----
 ====
 
-[TIP]
-You can also open a transaction _and_ submit the first query in one request.
-To do so, just include some Cypher statements alongside the first request, with the same format you would use to run further queries.
 
 == Execute multiple queries
 
@@ -224,8 +233,10 @@ Attempting to submit queries to an expired transaction results in an error:
 ----
 
 [TIP]
+--
 If a response does not contain the `transaction` key, the corresponding transaction has been closed.
 This usually happens after an error is raised.
+--
 
 
 == Commit a transaction

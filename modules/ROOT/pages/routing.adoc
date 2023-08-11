@@ -2,9 +2,10 @@
 
 In a cluster environment, all queries are routed to writer members by default. To ensure efficient load balancing, you should send queries that contain only read statements to the cluster readers. You can do so by adding the header `Access-Mode: READ` to the request (the default is `WRITE`).
 
-Query routing is supported for any transaction-initiating request (such as `/tx` or `tx/commit`), and they apply for the duration of the whole transaction.
-
-AND FOR QUERIES IN A TRANSACTION?
+[WARNING]
+--
+Query routing is only supported for implicit transactions (i.e. requests to the `tx/commit` endpoint).
+--
 
 ====
 [discrete]
@@ -23,9 +24,7 @@ Access-Mode: READ
 ----
 {
   "statements": [
-    {
-      "statement": "MATCH (n) RETURN n LIMIT 2"
-    }
+    { "statement": "MATCH (n) RETURN n LIMIT 2" }
   ]
 }
 ----

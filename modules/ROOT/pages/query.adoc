@@ -108,12 +108,8 @@ Authorization: Basic bmVvNGo6dmVyeXNlY3JldA==
 ----
 {
   "statements": [
-    {
-      "statement": "RETURN 1"
-    },
-    {
-      "statement": "RETURN 2"
-    }
+    { "statement": "RETURN 1" },
+    { "statement": "RETURN 2" }
   ]
 }
 ----
@@ -229,9 +225,11 @@ Content-Type: application/json;charset=utf-8
 ----
 ====
 
+
 == Queries with `CALL {} IN TRANSACTIONS`
 
 Take extra care with queries using the Cypher clause link:{neo4j-docs-base-uri}/cypher-manual/current/clauses/call-subquery/#subquery-call-in-transactions[`CALL {} IN TRANSACTIONS`]. Because those queries spawn further transactions of their own, there can be unexpected behaviors due to their interaction with the surrounding transaction.
+
 
 === Rollback behaviour
 
@@ -328,6 +326,7 @@ Content-Type: application/json;charset=utf-8
 }
 ----
 ====
+
 
 == Query parameters
 
