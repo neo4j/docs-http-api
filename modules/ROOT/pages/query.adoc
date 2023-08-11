@@ -13,9 +13,9 @@ http://<host>:<port>/db/<databaseName>/tx/commit
 The server wraps the submitted Cypher query in a (implicit) transaction for you. This means that in case any part of the query fails, the database will be reverted back to its status before any part of the query was executed. To control the lifecycle of transactions, see xref:transactions.adoc[Run transactions].
 
 [TIP]
-====
-Each request must include an `Authorization` header with, see xref:authentication-authorization.adoc[Authentication and authorization] for more information.
-====
+--
+Each request must include an `Authorization` header, see xref:authentication-authorization.adoc[Authentication and authorization] for more information.
+--
 
 ====
 [discrete]

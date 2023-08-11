@@ -9,6 +9,9 @@ The HTTP API is currently not available on link:{neo4j-docs-base-uri}/aura[Neo4j
 
 The Neo4j HTTP API allows you to execute a series of Cypher statements against a Neo4j server through HTTP requests.
 
+The main use case of the HTTP API is for developing client applications in languages for which there is no supported library.
+If there exists an official library (driver) for the language you are using, consider using that instead -- see link:{neo4j-docs-base-uri}/create-applications/[Create applications].
+
 This guide assumes that you have:
 
 - a running Neo4j instance -- if not, check out how to link:{neo4j-docs-base-uri}/docs/operations-manual/current/installation/[install Neo4j]
