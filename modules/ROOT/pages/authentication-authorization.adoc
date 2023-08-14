@@ -1,0 +1,154 @@
+= Authorize requests
+
+Unless authentication is disabled on the server, all HTTP requests must be authorized using the login credentials of a valid user.
+
+Request are authorized through an `Authorization` header.
+The header value encoding follows the standard format for `Basic` authentication (RFC 7617), which is as follows:
+
+----
+Authorization: Basic <base64(username:password)>
+----
+
+For example, to authenticate as user `neo4j` with password `verysecret`, first join them with a colon:
+
+----
+neo4j:verysecret
+----
+
+and then base64-encode that value:
+
+----
+bmVvNGo6dmVyeXNlY3JldA==
+----
+
+.How to base64-encode a string
+[%collapsible]
+====
+To base64-encode a string on a Linux or Mac machine, use the built-in `base64` command:
+
+[source, bash]
+----
+echo -n "neo4j:verysecret" | base64
+----
+====
+
+To obtain the final header, prepend `Basic` to the base64-encoding of the credentials:
+
+----
+Authorization: Basic bmVvNGo6dmVyeXNlY3JldA==
+----
+
+[NOTE]
+--
+If authentication is disabled on the server, HTTP API requests can be sent without an `Authorization` header.
+--
+
+
+== Missing authorization
+
+If an `Authorization` header is not supplied (and authentication is not disabled), the server replies with status `401 Forbidden` and an error.
+
+====
+[discrete]
+=== Example request
+
+[source, headers]
+----
+POST http://localhost:7474/db/neo4j/tx/commit
+Accept: application/json;charset=UTF-8
+Content-Type: application/json
+----
+
+[discrete]
+=== Example response
+
+[source, headers]
+----
+401: Unauthorized
+Content-Type: application/json;charset=utf-8
+----
+
+[source, JSON]
+----
+{
+  "errors" : [ {
+    "code" : "Neo.ClientError.Security.Unauthorized",
+    "message" : "No authentication header supplied."
+  } ]
+}
+----
+====
+
+
+== Incorrect authentication
+
+If an incorrect username or password is provided, or if they fail to be properly base64-encoded, the server replies with status `401 Forbidden` and an error.
+
+====
+[discrete]
+=== Example request
+
+[source, headers]
+----
+POST http://localhost:7474/db/neo4j/tx/commit
+Accept: application/json;charset=UTF-8
+Authorization: Basic bmVvNGo6aW5jb3JyZWN0
+Content-Type: application/json
+----
+
+[discrete]
+=== Example response
+
+[source, headers]
+----
+401: Unauthorized
+Content-Type: application/json;charset=utf-8
+----
+
+[source, JSON]
+----
+{
+  "errors" : [ {
+    "code" : "Neo.ClientError.Security.Unauthorized",
+    "message" : "Invalid username or password."
+  } ]
+}
+----
+====
+
+
+== Invalid authentication
+
+If the content of the `Authorization` header fails to be properly base64-encoded, the server replies with status `401 Forbidden` and an error.
+
+====
+[discrete]
+=== Example request
+
+[source, headers]
+----
+POST http://localhost:7474/db/neo4j/tx/commit
+Accept: application/json;charset=UTF-8
+Authorization: Basic not-proper-base64
+Content-Type: application/json
+----
+
+[discrete]
+=== Example response
+
+[source, headers]
+----
+401: Unauthorized
+Content-Type: application/json;charset=utf-8
+----
+
+[source, JSON]
+----
+{
+  "errors" : [ {
+    "code": "Neo.ClientError.Request.InvalidFormat",
+    "message": "Invalid authentication header."
+  } ]
+}
+----
+====

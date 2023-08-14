@@ -1,0 +1,70 @@
+= Retrieve query statistics
+
+If `includeStats` is set to `true` for a statement, the server returns query statistics (also known as query counters) alongside the query result. Statistics give insights into how the status of the database was altered by the query.
+
+====
+[discrete]
+=== Example request
+
+[source, headers]
+----
+POST http://localhost:7474/db/neo4j/tx/commit
+Accept: application/json;charset=UTF-8
+Content-Type: application/json
+Authorization: Basic bmVvNGo6dmVyeXNlY3JldA==
+----
+
+[source, JSON]
+----
+{
+  "statements": [
+    {
+      "statement": "CREATE (n:Person {name: $name}) RETURN n.name",
+      "parameters": {
+        "name": "Peter"
+       },
+      "includeStats": true
+    }
+  ]
+}
+----
+
+[discrete]
+=== Example response
+
+[source, headers]
+----
+200: OK
+Content-Type: application/json;charset=utf-8
+----
+
+[source, JSON]
+----
+{
+  "results" : [ {
+    "columns" : [ "n.name" ],
+    "data" : [ {
+      "row" : [ "Peter" ],
+      "meta" : [ null ]
+    } ],
+    "stats" : {
+      "contains_updates" : true,
+      "nodes_created" : 1,
+      "nodes_deleted" : 0,
+      "properties_set" : 0,
+      "relationships_created" : 0,
+      "relationship_deleted" : 0,
+      "labels_added" : 1,
+      "labels_removed" : 0,
+      "indexes_added" : 0,
+      "indexes_removed" : 0,
+      "constraints_added" : 0,
+      "constraints_removed" : 0,
+      "contains_system_updates" : false,
+      "system_updates" : 0
+    }
+  } ],
+  "errors" : [ ]
+}
+----
+====

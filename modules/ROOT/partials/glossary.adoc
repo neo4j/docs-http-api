@@ -1,0 +1,9 @@
+[glossary]
+[[Cypher]]Cypher:: link:{neo4j-docs-base-uri}/getting-started/cypher-intro/[Cypher] is Neo4j's graph query language that lets you retrieve data from the database.
+It is like SQL, but for graphs.
+[[ACID]]ACID:: Atomicity, Consistency, Isolation, Durability (ACID) are properties guaranteeing that database transactions are processed reliably.
+An ACID-compliant DBMS ensures that the data in the database remains accurate and consistent despite failures.
+[[causal_consistency]]causal consistency:: A database is causally consistent if read and write queries are seen by every member of the cluster in the same order.
+This is stronger than eventual consistency.
+[[transaction]]transaction:: A transaction is a unit of work that is either _committed_ in its entirety or _rolled back_ on failure.
+An example is a bank transfer: it involves multiple steps, but they must _all_ succeed or be reverted, to avoid money being subtracted from one account but not added to the other.

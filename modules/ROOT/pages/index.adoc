@@ -1,34 +1,38 @@
-:description: This is the manual for the HTTP API, Neo4j version {neo4j-version}.
+:description: The Neo4j HTTP API allows to execute a series of Cypher statements against a Neo4j server through HTTP requests.
 
-[[http-api]]
-= HTTP API
+= Introduction
 
 [WARNING]
 ====
 The HTTP API is currently not available on link:{neo4j-docs-base-uri}/aura[Neo4j Aura].
 ====
 
-[discrete]
-== Neo4j  v{neo4j-version}
+The Neo4j HTTP API allows to execute a series of Cypher statements against a Neo4j server through HTTP requests.
+
+The main use case of the HTTP API is for developing client applications in languages for which there is no supported library.
+If there exists an official library (driver) for the language you are using, consider using that instead -- see link:{neo4j-docs-base-uri}/create-applications/[Create applications].
+
+This guide assumes that you have:
+
+- a running Neo4j instance -- if not, check out how to link:{neo4j-docs-base-uri}/docs/operations-manual/current/installation/[install Neo4j]
+- some familiarity with <<Cypher>> -- if you need a hand, check out link:{neo4j-docs-base-uri}/getting-started/cypher-intro/[Getting started -> Cypher].
+
+To execute queries through the HTTP API, you may use either:
+
+- xref:query.adoc[Implicit transactions] -- you just submit queries, the API takes care of the transaction handling for you
+- xref:transactions.adoc[Explicit transactions] -- you control the lifecycle of the transaction (open, commit, rollback), within which you can execute queries.
+
+[TIP]
+By default, the HTTP API uses port 7474 for HTTP and port 7473 for HTTPS.
+
+The overall flow of the API is illustrated below, with each box representing a separate HTTP request:
+
+image::http-cypher-transaction-api-flow.png[title="HTTP API flow"]
+
 
 ifndef::backend-pdf[]
-License: link:{common-license-page-uri}[Creative Commons 4.0]
+[discrete.glossary]
+== Glossary
+
+include::{partials}/glossary.adoc[]
 endif::[]
-
-ifdef::backend-pdf[]
-License: Creative Commons 4.0
-endif::[]
-
-Transactional Cypher HTTP endpoint.
-
-This manual covers the following areas:
-
-* xref:introduction.adoc[]
-* xref:discovery.adoc[]
-* xref:actions/index.adoc[]
-* xref:security/index.adoc[]
-
-_Who should read this?_
-
-This manual is written for the developer of a client application which accesses Neo4j through the HTTP API.
-

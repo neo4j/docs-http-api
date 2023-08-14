@@ -1,0 +1,82 @@
+= Route queries to read cluster members
+
+In a cluster environment, all queries are routed to writer members by default.
+To ensure efficient load balancing, you should send queries that contain only read statements to the cluster readers.
+You can do so by adding the header `Access-Mode: READ` to the request (the default is `WRITE`).
+
+[WARNING]
+--
+Query routing is only supported for implicit transactions (i.e. requests to the `tx/commit` endpoint).
+--
+
+====
+[discrete]
+=== Example request
+
+[source, headers]
+----
+POST http://localhost:7474/db/neo4j/tx/commit
+Accept: application/json;charset=UTF-8
+Content-Type: application/json
+Authorization: Basic bmVvNGo6dmVyeXNlY3JldA==
+Access-Mode: READ
+----
+
+[source, JSON]
+----
+{
+  "statements": [
+    { "statement": "MATCH (n) RETURN n LIMIT 2" }
+  ]
+}
+----
+
+[discrete]
+=== Example response
+
+[source, headers]
+----
+200: OK
+Content-Type: application/json;charset=utf-8
+----
+
+[source, JSON]
+----
+{
+  "results": [ {
+    "columns": [ "n" ],
+    "data": [
+      {
+        "row": [ {
+          "name": "Phil",
+          "age": 21
+        } ],
+        "meta": [ {
+          "id": 12,
+          "elementId": "4:b7c0e943-1e73-474b-8ddc-e8ff3ae74cdd:12",
+          "type": "node",
+          "deleted": false
+        } ]
+      },
+      {
+        "row": [ {
+          "name": "Lucy",
+          "age": 20
+        } ],
+        "meta": [ {
+          "id": 13,
+          "elementId": "4:b7c0e943-1e73-474b-8ddc-e8ff3ae74cdd:13",
+          "type": "node",
+          "deleted": false
+        } ]
+      }
+    ]
+  } ],
+  "errors": [],
+  "lastBookmarks": [
+      "FB:kcwQt8DpQx5zR0uN3Oj/OudM3RmQ"
+  ]
+}
+----
+====
+

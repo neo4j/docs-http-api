@@ -1,0 +1,97 @@
+= Profile queries
+
+If a query is prepended with `EXPLAIN`, the server will return the _execution plan_ it would use to run it, but not actually execute it.
+On the other hand, if a query is prepended with `PROFILE`, the server will return the execution plan _and_ the corresponding query result.
+
+The execution plan is valuable in analyzing a query and profile its performance.
+For more information, see link:{neo4j-docs-base-uri}/cypher-manual/current/query-tuning/query-profile/[Query tuning -> Profile a query].
+
+====
+[discrete]
+=== Example request
+
+[source, headers]
+----
+POST http://localhost:7474/db/neo4j/tx/commit
+Accept: application/json;charset=UTF-8
+Content-Type: application/json
+Authorization: Basic bmVvNGo6dmVyeXNlY3JldA==
+----
+
+[source, JSON]
+----
+{
+  "statements": [
+    {
+      "statement": "EXPLAIN MATCH (n:Person {name: $name}) RETURN n.name",
+      "parameters": {
+        "name": "Peter"
+       }
+    }
+  ]
+}
+----
+
+[discrete]
+=== Example response
+
+[source, headers]
+----
+200: OK
+Content-Type: application/json;charset=utf-8
+----
+
+[source, JSON]
+----
+{
+  "results": [ {
+    "columns": [ "n.name" ],
+    "data": [],
+    "plan": {
+      "root": {
+        "operatorType": "ProduceResults@neo4j",
+        "string-representation": "Planner COST\n\nRuntime PIPELINED\n\nRuntime version 5.12\n\nBatch size 128\n\n+------------------+----+---------------------------+----------------+---------------------+\n| Operator         | Id | Details                   | Estimated Rows | Pipeline            |\n+------------------+----+---------------------------+----------------+---------------------+\n| +ProduceResults  |  0 | `n.name`                  |              1 |                     |\n| |                +----+---------------------------+----------------+                     |\n| +Projection      |  1 | cache[n.name] AS `n.name` |              1 |                     |\n| |                +----+---------------------------+----------------+                     |\n| +Filter          |  2 | cache[n.name] = $name     |              1 |                     |\n| |                +----+---------------------------+----------------+                     |\n| +NodeByLabelScan |  3 | n:Person                  |             10 | Fused in Pipeline 0 |\n+------------------+----+---------------------------+----------------+---------------------+\n\nTotal database accesses: ?\n",
+        "Id": 0,
+        "planner-impl": "IDP",
+        "runtime-version": "5.12",
+        "Details": "`n.name`",
+        "planner-version": "5.12",
+        "EstimatedRows": 0.5,
+        "planner": "COST",
+        "batch-size": 128,
+        "runtime": "PIPELINED",
+        "PipelineInfo": "Fused in Pipeline 0",
+        "runtime-impl": "PIPELINED",
+        "identifiers": [ "`n.name`" ],
+        "children": [ {
+          "operatorType": "Projection@neo4j",
+          "Details": "cache[n.name] AS `n.name`",
+          "EstimatedRows": 0.5,
+          "PipelineInfo": "Fused in Pipeline 0",
+          "Id": 1,
+          "identifiers": [ "`n.name`" ],
+          "children": [ {
+            "operatorType": "Filter@neo4j",
+            "Details": "cache[n.name] = $name",
+            "EstimatedRows": 0.5,
+            "PipelineInfo": "Fused in Pipeline 0",
+            "Id": 2,
+            "identifiers": [ "n" ],
+              "children": [ {
+                "operatorType": "NodeByLabelScan@neo4j",
+                "Details": "n:Person",
+                "EstimatedRows": 10.0,
+                "PipelineInfo": "Fused in Pipeline 0",
+                "Id": 3,
+                "identifiers": [ "n" ],
+                "children": []
+              } ]
+            } ]
+          } ]
+        }
+      }
+    } ],
+  "errors": []
+}
+----
+====

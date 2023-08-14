@@ -1,0 +1,74 @@
+:page-toclevels: -1
+
+= Endpoints
+
+This page contains a list of the endpoints that the HTTP API provides, plus pointers to other HTTP endpoints available on a Neo4j server.
+
+[cols="2m, 3"]
+|===
+|Endpoint location |Description
+
+|/db/<databaseName>/tx/commit
+|To submit queries (in an implicit transaction). +
+For more information, see xref:query.adoc[].
+
+|/db/<databaseName>/tx
+|To open a transaction. +
+For more information, see xref:transactions.adoc[].
+
+|/db/<databaseName>/tx/<transactionID>
+|To submit queries to an open transaction with ID `<transactionID>`. +
+A `DELETE` request results in a rollback. +
+For more information, see xref:transactions.adoc#_execute_queries[Run transactions -> Execute queries].
+
+|/db/<databaseName>/tx/<transactionID>/commit
+|To commit an open transaction with ID `<transactionID>`. +
+For more information, see xref:transactions.adoc#_commit_a_transaction[Run transactions -> Commit a transaction].
+
+|/dbms/cluster
+|Status endpoint to assist with rolling upgrades. +
+For more information, see link:{neo4j-docs-base-uri}/operations-manual/current/clustering/monitoring/endpoints/#clustering-http-endpoints-status[Clustering -> Monitoring -> Monitor cluster endpoints for status information].
+
+|/db/<databaseName>/cluster
+|Status endpoint to assist with rolling upgrades. +
+For more information, see link:{neo4j-docs-base-uri}/operations-manual/current/clustering/monitoring/endpoints/#clustering-http-endpoints-status[Clustering -> Monitoring -> Monitor cluster endpoints for status information].
+
+|===
+
+[[discovery-api]]
+== Retrieve the endpoints list with the Discovery API
+
+To obtain a list of available endpoints on your installation, together with some basic server information, you may send an un-authenticated `GET` request to the server root.
+
+====
+[discrete]
+=== Example request
+
+[source, headers]
+----
+GET http://localhost:7474/
+Accept: application/json
+----
+
+[discrete]
+=== Example response
+
+[source, JSON]
+----
+{
+  "bolt_routing": "neo4j://localhost:7687",
+  "dbms/cluster": "http://localhost:7474/dbms/cluster",
+  "db/cluster": "http://localhost:7474/db/{databaseName}/cluster",
+  "transaction": "http://localhost:7474/db/{databaseName}/tx",
+  "bolt_direct": "bolt://localhost:7687",
+  "neo4j_version": "5.12.0",
+  "neo4j_edition": "enterprise",
+  "auth_config": {
+    "oidc_providers": []
+  }
+}
+----
+====
+
+[NOTE]
+Bolt routing is meant to be used with link:{neo4j-docs-base-uri}/create-applications/[Neo4j's client libraries (Drivers)].
