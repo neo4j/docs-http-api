@@ -30,10 +30,6 @@ For more information, see xref:bookmarks.adoc[].
 |The format of the request body. +
 The only possible value is `application/json`.
 
-|X-Stream
-|Transmit responses as JSON streams, resulting in better performance and lower memory overhead on the server side. +
-Possible values are `true` or `false` (default).
-
 |===
 
 == Response headers
