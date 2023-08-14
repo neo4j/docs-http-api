@@ -32,7 +32,7 @@ To request this format, set `Accept: application/json` in the request headers (o
 
 <1> Query fields, i.e. keys for the returned objects
 <2> Results from your query (the inner structure depends on the object type)
-<3> Metadata for each returned entity (node/relationship)
+<3> Metadata for each returned entity (nodes/relationships)
 
 ====
 [discrete]
@@ -84,7 +84,7 @@ Authorization: Basic bmVvNGo6dmVyeXNlY3JldA==
 }
 ----
 
-<1> (Deprecated) Entity ID within the database
+<1> _(Deprecated)_ Entity ID within the database
 <2> Entity ID within the database
 <3> Entity type
 <4> Whether the entity was deleted in the query (it is `true` when returning an entity after running Cypher `DELETE` on it)
@@ -106,30 +106,6 @@ To receive the result in this format, set the `Accept` header as follows:
 Accept: application/vnd.neo4j.jolt-v2
 ----
 
-=== Line feed delimited and JSON sequence mode
-
-By default, Jolt is returned in line feed delimited mode. The API can also return it in JSON sequence mode (encoded as per link:https://tools.ietf.org/html/rfc7464#section-2.2[RFC 7464]). To achieve that, set the `Accept` header as follows:
-
-----
-Accept: application/vnd.neo4j.jolt-v2+json-seq
-----
-
-=== Sparse and strict mode
-
-By default, Jolt returns data in _sparse mode_, which omits type pairing on values which can be matched to JSON types.
-
-In _strict mode_, **all** values are paired with their type.
-To enable _strict mode_, append `;strict=true` to the `Accept` header:
-
-----
-Accept: application/vnd.neo4j.jolt-v2;strict=true
-----
-----
-Accept: application/vnd.neo4j.jolt-v2+json-seq;strict=true
-----
-
-For information on types matching, see xref:_jolt_types[].
-
 === Container format
 
 Jolt results are returned in a container format based on _events_.
@@ -146,8 +122,7 @@ A typical response looks like the following:
 {"info":{"commit":"commit/uri/1"}}
 ----
 
-Each event is a separate JSON document separated by a single `LF` character (Line Feed, UTF encoding: `0x8A`) or, with JSON sequences, encapsulated within an `RS` character (Information Separator Two, UTF-8 encoding: `0x1E`) footnote:[The common name is Record Separator, while the Unicode name is Information Separator Two.] at the beginning of each document as well as a `LF` character at the end.
-
+.Container format objects
 [options="header", cols="1m,3a"]
 |===
 | Event
@@ -173,8 +148,13 @@ Contains transaction information (e.g. commit URI, bookmarks).
 | Errors occurred during the processing of the transaction.
 |===
 
-For example, the default Jolt encoding results in a stream encoded as follows:
 
+=== Line feed delimited mode and JSON sequence mode
+
+By default, Jolt is returned in _line feed delimited mode_.
+In this mode, each event is a separate JSON document separated by a single `LF` character (Line Feed, UTF encoding: `0x8A`).
+
+.Line feed delimited mode encoding example
 [source, JSON]
 ----
 {"header":{"fields":["result"]}}\n
@@ -183,8 +163,15 @@ For example, the default Jolt encoding results in a stream encoded as follows:
 {"info":{}}\n
 ----
 
-While the JSON sequence based Jolt encoding results in the following response:
+The API can also return it in _JSON sequence mode_ (encoded as per link:https://tools.ietf.org/html/rfc7464#section-2.2[RFC 7464]). To achieve that, set the `Accept` header as follows:
 
+----
+Accept: application/vnd.neo4j.jolt-v2+json-seq
+----
+
+In this mode, each event is encapsulated within an `RS` character (Record Separator/Information Separator Two, UTF-8 encoding: `0x1E`) at the beginning of each document as well as a `LF` character at the end.
+
+.JSON sequence mode encoding example
 [source, JSON]
 ----
 \u001E{"header":{"fields":["result"]}}\n
@@ -193,9 +180,28 @@ While the JSON sequence based Jolt encoding results in the following response:
 \u001E{"info":{}}\n
 ----
 
+
+=== Sparse and strict mode
+
+By default, Jolt returns data in _sparse mode_, which omits type pairing on values which can be matched to JSON types.
+
+In _strict mode_, **all** values are paired with their type.
+To enable _strict mode_, append `;strict=true` to the `Accept` header:
+
+----
+Accept: application/vnd.neo4j.jolt-v2;strict=true
+----
+----
+Accept: application/vnd.neo4j.jolt-v2+json-seq;strict=true
+----
+
+For information on types matching, see xref:_jolt_types[].
+
+
 ==== Multiple result sets in a request
 
 When there are multiple queries in a single request, there will be multiple `header`, `data`, and `summary` outputs for each query.
+Result sets are returned in the same order as specified in the request.
 
 ====
 [discrete]
@@ -213,8 +219,8 @@ Authorization: Basic bmVvNGo6dmVyeXNlY3JldA==
 ----
 {
   "statements": [
-    { "statement": "RETURN 1 as resultA" },
-    { "statement": "UNWIND range(1,3,1) as resultB RETURN resultB" }
+    { "statement": "RETURN 1 AS resultA" },
+    { "statement": "UNWIND range(1,3,1) AS resultB RETURN resultB" }
   ]
 }
 ----
@@ -242,7 +248,6 @@ Content-Type: application/vnd.neo4j.jolt-v2
 ----
 ====
 
-Result sets are returned in the same order as specified in the request.
 
 === Jolt types
 
@@ -270,7 +275,7 @@ This section details how link:{neo4j-docs-base-uri}/cypher-manual/current/values
 
 | `R`
 | Float
-| `{"R": "9.87"}` footnote:[The type label `R` is used both to indicate floating point numbers and integers that are outside the range of 32-bit signed integers.]
+| `{"R": "9.87"}` footnote:[The type label `R` is used both to indicate floating point numbers and integers outside the range of 32-bit signed integers.]
 
 | `U`
 | String

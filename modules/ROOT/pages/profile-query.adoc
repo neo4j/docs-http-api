@@ -1,8 +1,10 @@
 = Profile queries
 
-If a query is prepended with `EXPLAIN`, the server will return the _execution plan_ it would use to run it but not execute it. If a query is prepended with `PROFILE` instead, the server will return the query result and also the plan it used to execute it.
+If a query is prepended with `EXPLAIN`, the server will return the _execution plan_ it would use to run it, but not actually execute it.
+On the other hand, if a query is prepended with `PROFILE`, the server will return the execution plan _and_ the corresponding query result.
 
-The execution plan is valuable to analyze a query and profile its performance. For more information, see link:{neo4j-docs-base-uri}/cypher-manual/current/query-tuning/query-profile/[Query tuning -> Profile a query].
+The execution plan is valuable in analyzing a query and profile its performance.
+For more information, see link:{neo4j-docs-base-uri}/cypher-manual/current/query-tuning/query-profile/[Query tuning -> Profile a query].
 
 ====
 [discrete]

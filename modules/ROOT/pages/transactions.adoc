@@ -1,11 +1,12 @@
 = Run transactions
 
 Use transactions to group together related queries which work together to achieve a single logical database operation.
-As Neo4j is <<ACID>> compliant, queries within a <<transaction>> will either be executed as a whole or not at all: you cannot get a part of the transaction succeeding and another failing.
+As Neo4j is <<ACID>> compliant, queries within a <<transaction>> will either be executed as a whole or not at all: you cannot get a part of the transaction succeed and another fail.
 
 [NOTE]
 --
-Cypher queries with link:{neo4j-docs-base-uri}/cypher-manual/current/clauses/call-subquery/#subquery-call-in-transactions[`CALL {} IN TRANSACTIONS`] can not be executed in explicit transactions. Submit those queries with xref:query.adoc[implicit transactions].
+Cypher queries with link:{neo4j-docs-base-uri}/cypher-manual/current/clauses/call-subquery/#subquery-call-in-transactions[`CALL {} IN TRANSACTIONS`] can not be executed in explicit transactions.
+Submit those queries with xref:query.adoc[implicit transactions] instead.
 --
 
 
@@ -19,7 +20,7 @@ http://<host>:<port>/db/<databaseName>/tx
 
 The body of the request may either:
 
-- contain a `statements` object consisting of a list of statements to execute
+- contain a `statements` object consisting of a list of statements to execute (example below)
 - contain a `statements` object consisting of an empty list
 - be entirely empty.
 
@@ -77,7 +78,7 @@ Content-Type: application/json;charset=utf-8
 
 == Execute queries
 
-Once a transaction is open, you can submit queries to it by sending more `POST` requests to the following transaction endpoint:
+Once a transaction is open, you can submit queries to it by sending more `POST` requests to the following endpoint:
 
 ----
 http://<host>:<port>/db/<databaseName>/tx/<transactionID>
@@ -151,7 +152,9 @@ Content-Type: application/json;charset=utf-8
 
 == Execute multiple queries
 
-To reduce the number of requests and network overhead, you can include multiple statements within a single request. The server runs them in sequence, but separate from each other, so a statement cannot reference a variable defined in another statement. The response contains the result of each statement, in order.
+To reduce the number of requests and network overhead, you can include multiple statements within a single request.
+The server runs them in sequence, but separate from each other, so a statement cannot reference a variable defined in another statement.
+The response contains the result of each statement, in order.
 
 ====
 [discrete]
@@ -169,12 +172,8 @@ Authorization: Basic bmVvNGo6dmVyeXNlY3JldA==
 ----
 {
   "statements": [
-    {
-      "statement": "RETURN 1"
-    },
-    {
-      "statement": "RETURN 2"
-    }
+    { "statement": "RETURN 1" },
+    { "statement": "RETURN 2" }
   ]
 }
 ----
@@ -292,8 +291,11 @@ Content-Type: application/json;charset=utf-8
 ----
 ====
 
-[TIP]
-An error in any request to an open transaction automatically results in a rollback.
+
+== Authentication failure on open transactions
+
+An authentication error (`Neo.ClientError.Security.Unauthorized`) in a request to an open transaction results in a rollback.
+The transaction remains open though.
 
 
 ifndef::backend-pdf[]

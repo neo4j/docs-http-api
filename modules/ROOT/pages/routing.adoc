@@ -1,6 +1,8 @@
 = Route queries to read cluster members
 
-In a cluster environment, all queries are routed to writer members by default. To ensure efficient load balancing, you should send queries that contain only read statements to the cluster readers. You can do so by adding the header `Access-Mode: READ` to the request (the default is `WRITE`).
+In a cluster environment, all queries are routed to writer members by default.
+To ensure efficient load balancing, you should send queries that contain only read statements to the cluster readers.
+You can do so by adding the header `Access-Mode: READ` to the request (the default is `WRITE`).
 
 [WARNING]
 --

@@ -2,7 +2,8 @@
 
 Unless authentication is disabled on the server, all HTTP requests must be authorized using the login credentials of a valid user.
 
-Request are authorized through an `Authorization` header. The header value encoding follows the standard format for `Basic` authentication (RFC 7617), which is as follows:
+Request are authorized through an `Authorization` header.
+The header value encoding follows the standard format for `Basic` authentication (RFC 7617), which is as follows:
 
 ----
 Authorization: Basic <base64(username:password)>
@@ -14,16 +15,16 @@ For example, to authenticate as user `neo4j` with password `verysecret`, first j
 neo4j:verysecret
 ----
 
-and then base64 encode that value:
+and then base64-encode that value:
 
 ----
 bmVvNGo6dmVyeXNlY3JldA==
 ----
 
-.How to base64 encode a string
+.How to base64-encode a string
 [%collapsible]
 ====
-To base64 encode a string on a Linux or Mac machine, use the built-in `base64` command:
+To base64-encode a string on a Linux or Mac machine, use the built-in `base64` command:
 
 [source, bash]
 ----
@@ -31,7 +32,7 @@ echo -n "neo4j:verysecret" | base64
 ----
 ====
 
-To obtain the final header, prepend `Basic` to the base64-encode of the credentials:
+To obtain the final header, prepend `Basic` to the base64-encoding of the credentials:
 
 ----
 Authorization: Basic bmVvNGo6dmVyeXNlY3JldA==
@@ -42,7 +43,7 @@ Authorization: Basic bmVvNGo6dmVyeXNlY3JldA==
 If authentication is disabled on the server, HTTP API requests can be sent without an `Authorization` header.
 --
 
-[[http-api-missing-authorization]]
+
 == Missing authorization
 
 If an `Authorization` header is not supplied (and authentication is not disabled), the server replies with status `401 Forbidden` and an error.
@@ -53,7 +54,7 @@ If an `Authorization` header is not supplied (and authentication is not disabled
 
 [source, headers]
 ----
-POST  http://localhost:7474/db/neo4j/tx/commit
+POST http://localhost:7474/db/neo4j/tx/commit
 Accept: application/json;charset=UTF-8
 Content-Type: application/json
 ----
@@ -89,7 +90,7 @@ If an incorrect username or password is provided, or if they fail to be properly
 
 [source, headers]
 ----
-POST  http://localhost:7474/db/neo4j/tx/commit
+POST http://localhost:7474/db/neo4j/tx/commit
 Accept: application/json;charset=UTF-8
 Authorization: Basic bmVvNGo6aW5jb3JyZWN0
 Content-Type: application/json
@@ -126,7 +127,7 @@ If the content of the `Authorization` header fails to be properly base64-encoded
 
 [source, headers]
 ----
-POST  http://localhost:7474/db/neo4j/tx/commit
+POST http://localhost:7474/db/neo4j/tx/commit
 Accept: application/json;charset=UTF-8
 Authorization: Basic not-proper-base64
 Content-Type: application/json
@@ -151,9 +152,3 @@ Content-Type: application/json;charset=utf-8
 }
 ----
 ====
-
-
-== Authentication failure on open transactions
-
-An authentication error (`Neo.ClientError.Security.Unauthorized`) in a request to an open transaction results in a rollback. The transaction remains open though.
-
