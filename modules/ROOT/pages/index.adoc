@@ -25,10 +25,6 @@ To execute queries through the HTTP API, you may use either:
 [TIP]
 By default, the HTTP API uses port 7474 for HTTP and port 7473 for HTTPS.
 
-The overall flow of the API is illustrated below, with each box representing a separate HTTP request:
-
-image::http-cypher-transaction-api-flow.png[title="HTTP API flow"]
-
 
 ifndef::backend-pdf[]
 [discrete.glossary]

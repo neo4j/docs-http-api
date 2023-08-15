@@ -35,6 +35,10 @@ For more information, see link:{neo4j-docs-base-uri}/operations-manual/current/c
 
 |===
 
+The overall flow of the API is illustrated below, with each box representing a separate HTTP request:
+
+image::http-cypher-transaction-api-flow.png[title="HTTP API flow"]
+
 [[discovery-api]]
 == Retrieve the endpoints list with the Discovery API
 
