@@ -213,7 +213,7 @@ Content-Type: application/json;charset=utf-8
 == Transaction expiration and keep alive
 
 Transactions expire automatically after a period of inactivity, after which they are rolled back.
-By default the timeout is 60 seconds, but you can set a different value in the server configuration (link:{neo4j-docs-base-uri}/operations-manual/{page-version}/configuration/configuration-settings#config_dbms.rest.transaction.idle_timeout[`dbms.rest.transaction.idle_timeout`]).
+By default the timeout is 2 seconds, but you can set a different value in the server configuration (link:{neo4j-docs-base-uri}/operations-manual/{page-version}/configuration/configuration-settings#config_db.transaction.timeout[`db.transaction.timeout`]).
 
 The transaction expiration time is reported in each response, under the `transaction` key.
 To keep a transaction alive without submitting new queries, you can submit an empty statement list to the transaction URI.
