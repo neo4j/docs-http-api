@@ -14,7 +14,7 @@ If there exists an official library (driver) for the language you are using, con
 
 This guide assumes that you have:
 
-- a running Neo4j instance -- if not, check out how to link:{neo4j-docs-base-uri}/docs/operations-manual/current/installation/[install Neo4j]
+- a running Neo4j instance -- if not, check out how to link:{neo4j-docs-base-uri}/operations-manual/current/installation/[install Neo4j]
 - some familiarity with <<Cypher>> -- if you need a hand, check out link:{neo4j-docs-base-uri}/getting-started/cypher-intro/[Getting started -> Cypher].
 
 To execute queries through the HTTP API, you may use either:
