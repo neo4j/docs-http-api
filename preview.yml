@@ -42,7 +42,7 @@ asciidoc:
     includePDF: false
     nonhtmloutput: ""
     experimental: ''
-    copyright: 2023
+    copyright: 2024
     common-license-page-uri: https://neo4j.com/docs/license/
     partials: 5@ROOT:partial$@
     # attributes for doc links to other manuals in preview playbook
