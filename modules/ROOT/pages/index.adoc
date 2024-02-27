@@ -25,6 +25,10 @@ To execute queries through the HTTP API, you may use either:
 [TIP]
 By default, the HTTP API uses port 7474 for HTTP and port 7473 for HTTPS.
 
+[NOTE]
+As of Neo4j 5.17, the HTTP API supports HTTP/2 as well as HTTP/1.1, unless either is explicitly disabled in the server configuration setting link:https://neo4j.com/docs/operations-manual/5/configuration/configuration-settings/#config_server.http_enabled_transports[`server.http_enabled_transports`].
+It's up to the client to initiate a connection with the preferred protocol.
+
 
 ifndef::backend-pdf[]
 [discrete.glossary]
