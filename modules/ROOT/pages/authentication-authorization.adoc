@@ -1,15 +1,25 @@
 = Authorize requests
 
-Unless authentication is disabled on the server, all HTTP requests must be authorized using the login credentials of a valid user.
+Unless authentication is disabled on the server, all requests must be authorized using the login credentials of a valid user.
 
 Request are authorized through an `Authorization` header.
-The header value encoding follows the standard format for `Basic` authentication (RFC 7617), which is as follows:
+Both _basic_ and _bearer_ authentication are supported.
+
+[NOTE]
+If authentication is disabled on the server, requests can be sent without an `Authorization` header.
+
+
+== Basic authentication
+
+The header format for basic authentication follows the standard format (RFC 7617):
 
 ----
 Authorization: Basic <base64(username:password)>
 ----
 
-For example, to authenticate as user `neo4j` with password `verysecret`, first join them with a colon:
+.Basic authentication
+=====
+To authenticate as user `neo4j` with password `verysecret`, first join them with a colon:
 
 ----
 neo4j:verysecret
@@ -37,14 +47,46 @@ To obtain the final header, prepend `Basic` to the base64-encoding of the creden
 ----
 Authorization: Basic bmVvNGo6dmVyeXNlY3JldA==
 ----
-
-[NOTE]
---
-If authentication is disabled on the server, HTTP API requests can be sent without an `Authorization` header.
---
+=====
 
 
-== Missing authorization
+== Bearer authentication
+
+The header format to authenticate with a bearer token is:
+
+----
+Authorization: Bearer <base64(token)>
+----
+
+.Bearer authentication
+=====
+To authenticate with the token `xbhkjnlvianztghqwawxqfe`, first base64-encode it:
+
+----
+eGJoa2pubHZpYW56dGdocXdhd3hxZmUK
+----
+
+.How to base64-encode a string
+[%collapsible]
+====
+To base64-encode a string on a Linux or Mac machine, use the built-in `base64` command:
+
+[source, bash]
+----
+echo -n "xbhkjnlvianztghqwawxqfe" | base64
+----
+====
+
+To obtain the final header, prepend `Bearer` to the base64-encoding of the credential:
+
+----
+Authorization: Bearer eGJoa2pubHZpYW56dGdocXdhd3hxZmUK
+----
+=====
+
+== Errors
+
+=== Missing authorization
 
 If an `Authorization` header is not supplied (and authentication is not disabled), the server replies with status `401 Forbidden` and an error.
 
@@ -80,7 +122,7 @@ Content-Type: application/json;charset=utf-8
 ====
 
 
-== Incorrect authentication
+=== Incorrect authentication
 
 If an incorrect username or password is provided, or if they fail to be properly base64-encoded, the server replies with status `401 Forbidden` and an error.
 
@@ -117,7 +159,7 @@ Content-Type: application/json;charset=utf-8
 ====
 
 
-== Invalid authentication
+=== Invalid authentication
 
 If the content of the `Authorization` header fails to be properly base64-encoded, the server replies with status `401 Forbidden` and an error.
 
