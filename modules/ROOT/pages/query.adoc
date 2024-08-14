@@ -374,40 +374,70 @@ Content-Type: application/json;charset=utf-8
 ====
 
 
-== Query parameters
+== Server notifications
 
-In order to speed up queries in repeated scenarios, avoid using literals and replace them with parameters wherever possible.
-This allows the server to cache query plans and can result in a significant performance improvement.
+If the server generates any link:{neo4j-docs-base-uri}/status-codes/current/notifications[notifications], they will be returned in the `notifications` key of the response object (as a list).
+Notifications include recommendations for performance improvements, warnings about the usage of deprecated features, and other hints about sub-optimal usage of Neo4j.
 
-.Do -- Use query parameters
+====
+[discrete]
+=== Example request
+
+[source, headers]
+----
+POST http://localhost:7474/db/neo4j/tx/commit
+Accept: application/json;charset=UTF-8
+Content-Type: application/json
+Authorization: Basic bmVvNGo6dmVyeXNlY3JldA==
+----
+
 [source, JSON]
 ----
 {
   "statements": [
     {
-      "statement": "MERGE (n:Person {name: $name, age: $age}) RETURN n",
+      "statement": "MATCH p=shortestPath((:Person {name: $from})-[*]->(:Person {name: $to})) RETURN p",
       "parameters": {
-        "name": "Alice",
-        "age": 42
+        "from": "Alice",
+        "to": "Bob"
       }
     }
   ]
 }
 ----
 
-.Do not -- Embed literals in query
-[source, JSON]
+[discrete]
+=== Example response
+
+[source, headers]
 ----
-{
-  "statements": [
-    {
-      "statement": "MERGE (n:Person {name: 'Alice', age: 42}) RETURN n",
-    }
-  ]
-}
+200: OK
+Content-Type: application/json;charset=utf-8
 ----
 
-See link:{neo4j-docs-base-uri}/cypher-manual/current/syntax/parameters/[Cypher Manual -> Parameters] for more information.
+[source, JSON, role=nocollapse]
+----
+{
+  "results": [
+    ...
+  ],
+  "notifications": [
+    {
+      "code": "Neo.ClientNotification.Statement.UnboundedVariableLengthPattern",
+      "severity": "INFORMATION",
+      "title": "The provided pattern is unbounded, consider adding an upper limit to the number of node hops.",
+      "description": "Using shortest path with an unbounded pattern will likely result in long execution times. It is recommended to use an upper limit to the number of node hops in your pattern.",
+      "position": {
+        "offset": 21,
+        "line": 1,
+        "column": 22
+      }
+    }
+  ],
+  ...
+}
+----
+====
 
 
 ifndef::backend-pdf[]
