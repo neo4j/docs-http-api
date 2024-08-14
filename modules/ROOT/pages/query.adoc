@@ -88,6 +88,47 @@ This means that queries should fit on a single line.
 You can replace line breaks with spaces, as Cypher parses them equivalently.
 ====
 
+
+== Query parameters
+
+Do not hardcode or concatenate parameters directly into queries.
+Instead, always use placeholders and specify the link:{neo4j-docs-base-uri}/cypher-manual/current/syntax/parameters/[Cypher parameters].
+This is for:
+
+1. *performance benefits*: Neo4j compiles and caches queries, but can only do so if the query structure is unchanged;
+2. *security reasons*: see link:https://neo4j.com/developer/kb/protecting-against-cypher-injection/[protecting against Cypher injection].
+
+.Do -- Use query parameters
+[source, JSON]
+----
+{
+  "statements": [
+    {
+      "statement": "MERGE (n:Person {name: $name, age: $age}) RETURN n",
+      "parameters": {
+        "name": "Alice",
+        "age": 42
+      }
+    }
+  ]
+}
+----
+
+.Do not -- Embed literals in query
+[source, JSON]
+----
+{
+  "statements": [
+    {
+      "statement": "MERGE (n:Person {name: 'Alice', age: 42}) RETURN n",
+    }
+  ]
+}
+----
+
+See link:{neo4j-docs-base-uri}/cypher-manual/current/syntax/parameters/[Cypher Manual -> Parameters] for more information.
+
+
 == Execute multiple queries
 
 You can send multiple Cypher statements in the same request.
