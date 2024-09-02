@@ -1,10 +1,12 @@
 :description: The Neo4j HTTP API allows to execute a series of Cypher statements against a Neo4j server through HTTP requests.
 
+
 = Introduction
 
 [WARNING]
 ====
-The HTTP API is currently not available on link:{neo4j-docs-base-uri}/aura[Neo4j Aura].
+The HTTP API is not available on <<Aura>>.
+Use the link:{neo4j-docs-base-uri}/query-api/current/[Query API] instead.
 ====
 
 The Neo4j HTTP API allows to execute a series of Cypher statements against a Neo4j server through HTTP requests.
@@ -12,18 +14,17 @@ The Neo4j HTTP API allows to execute a series of Cypher statements against a Neo
 The main use case of the HTTP API is for developing client applications in languages for which there is no supported library.
 If there exists an official library (driver) for the language you are using, consider using that instead -- see link:{neo4j-docs-base-uri}/create-applications/[Create applications].
 
+By default, the API uses port 7474 for HTTP and port 7473 for HTTPS.
+
 This guide assumes that you have:
 
-- a running Neo4j instance -- if not, check out how to link:{neo4j-docs-base-uri}/operations-manual/current/installation/[install Neo4j]
-- some familiarity with <<Cypher>> -- if you need a hand, check out link:{neo4j-docs-base-uri}/getting-started/cypher-intro/[Getting started -> Cypher].
+- A running instance of Neo4j -- If you don't have one, link:https://neo4j.com/docs/operations-manual/current/installation/[install Neo4j locally] or sign up for an link:https://neo4j.com/cloud/platform/aura-graph-database/[Aura cloud instance].
+- Some familiarity with <<Cypher>> -- If you are new to it, check out link:https://neo4j.com/docs/getting-started/cypher-intro/[Getting started -> Cypher].
 
 To execute queries through the HTTP API, you may use either:
 
 - xref:query.adoc[Implicit transactions] -- you just submit queries, the API takes care of the transaction handling for you
 - xref:transactions.adoc[Explicit transactions] -- you control the lifecycle of the transaction (open, commit, rollback), within which you can execute queries.
-
-[TIP]
-By default, the HTTP API uses port 7474 for HTTP and port 7473 for HTTPS.
 
 [NOTE]
 As of Neo4j 5.17, the HTTP API supports HTTP/2 as well as HTTP/1.1, unless either is explicitly disabled in the server configuration setting link:https://neo4j.com/docs/operations-manual/5/configuration/configuration-settings/#config_server.http_enabled_transports[`server.http_enabled_transports`].

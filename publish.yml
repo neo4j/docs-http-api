@@ -46,6 +46,7 @@ asciidoc:
     page-origin-private: false
     page-hide-toc: false
     page-mixpanel: 4bfb2414ab973c741b6f067bf06d5575
+    page-role: not-on-aura
     includePDF: false
     nonhtmloutput: ""
     experimental: ''
