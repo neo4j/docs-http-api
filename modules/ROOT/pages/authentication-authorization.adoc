@@ -84,6 +84,12 @@ Authorization: Bearer eGJoa2pubHZpYW56dGdocXdhd3hxZmUK
 ----
 =====
 
+[NOTE]
+It is up to your application to generate bearer tokens via your SSO provider.
+The Neo4j server should also be set up to work with SSO.
+For more information, see link:https://neo4j.com/docs/operations-manual/current/tutorial/tutorial-sso-configuration/[Configuring Neo4j Single Sign-On (SSO)].
+
+
 == Errors
 
 === Missing authorization
