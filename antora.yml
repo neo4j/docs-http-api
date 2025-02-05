@@ -7,4 +7,4 @@ nav:
 asciidoc:
   attributes:
     page-origin-private: false
-    neo4j-version: '5'
+    neo4j-version: '2025.01'
