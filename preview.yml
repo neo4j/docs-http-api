@@ -7,7 +7,7 @@ content:
   sources:
   - url: ./
     branches: ['HEAD']
-    edit_url: https://github.com/neo4j/docs-http-api/tree/{refname}/{path}
+    edit_url: '{web_url}/issues/new?title=Feedback:%20{refname}/{path}'
     exclude:
     - '!**/_includes/*'
     - '!**/readme.adoc'
