@@ -1,10 +1,6 @@
 name: http-api
 title: HTTP API
-version: '5'
+version: '2025.02'
 start_page: ROOT:index.adoc
 nav:
 - modules/ROOT/content-nav.adoc
-asciidoc:
-  attributes:
-    page-origin-private: false
-    neo4j-version: '5'
