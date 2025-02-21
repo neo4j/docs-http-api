@@ -4,7 +4,3 @@ version: '5'
 start_page: ROOT:index.adoc
 nav:
 - modules/ROOT/content-nav.adoc
-asciidoc:
-  attributes:
-    page-origin-private: false
-    neo4j-version: '2025.01'
