@@ -1,6 +1,6 @@
 name: http-api
 title: HTTP API
-version: '2025.03'
+version: '2025.04'
 start_page: ROOT:index.adoc
 nav:
 - modules/ROOT/content-nav.adoc
