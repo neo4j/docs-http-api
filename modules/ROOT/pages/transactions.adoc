@@ -5,7 +5,7 @@ As Neo4j is <<ACID>> compliant, queries within a <<transaction>> will either be 
 
 [NOTE]
 --
-Cypher queries with link:{neo4j-docs-base-uri}/cypher-manual/current/clauses/call-subquery/#subquery-call-in-transactions[`CALL {} IN TRANSACTIONS`] can not be executed in explicit transactions.
+Cypher queries with link:https://neo4j.com/docs/cypher-manual/current/subqueries/subqueries-in-transactions/[`CALL {} IN TRANSACTIONS`] can not be executed in explicit transactions.
 Submit those queries with xref:query.adoc[implicit transactions] instead.
 --
 
