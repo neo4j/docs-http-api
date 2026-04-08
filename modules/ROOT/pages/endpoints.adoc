@@ -4,6 +4,12 @@
 
 This page contains a list of the endpoints that the HTTP API provides, plus pointers to other HTTP endpoints available on a Neo4j server.
 
+[NOTE]
+====
+The cluster status endpoints are not deprecated and will continue working.
+See link:{neo4j-docs-base-uri}/operations-manual/current/clustering/monitoring/endpoints/[Clustering -> Monitoring -> Monitor cluster endpoints for status information] for more information.
+====
+
 [cols="2m, 3"]
 |===
 |Endpoint location |Description
