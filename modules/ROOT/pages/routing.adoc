@@ -1,4 +1,4 @@
-:page-role: deprecated-5.26
+:page-role: deprecated-5.26 not-on-aura
 = Route queries to read cluster members
 
 [NOTE]

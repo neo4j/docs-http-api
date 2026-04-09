@@ -1,3 +1,4 @@
+:page-role: not-on-aura
 = Headers
 
 This page contains a full list of headers you may use to tweak the HTTP API behavior, or that the API may return in responses.

@@ -1,4 +1,4 @@
-:page-role: deprecated-5.26
+:page-role: deprecated-5.26 not-on-aura
 = Coordinate transactions and enforce causal consistency
 
 [NOTE]

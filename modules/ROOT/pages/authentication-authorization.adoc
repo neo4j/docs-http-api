@@ -1,3 +1,4 @@
+:page-role: not-on-aura
 = Authorize requests
 
 [NOTE]

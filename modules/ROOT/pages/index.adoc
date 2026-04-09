@@ -1,5 +1,5 @@
 :description: The Neo4j HTTP API allows to execute a series of Cypher statements against a Neo4j server through HTTP requests.
-:page-role: deprecated-5.26
+:page-role: deprecated-5.26 not-on-aura
 
 = Introduction
 

@@ -1,5 +1,5 @@
 :page-toclevels: -1
-
+:page-role: not-on-aura
 = Endpoints
 
 This page contains a list of the endpoints that the HTTP API provides, plus pointers to other HTTP endpoints available on a Neo4j server.
