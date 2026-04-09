@@ -1,4 +1,11 @@
+:page-role: deprecated-5.26
 = Route queries to read cluster members
+
+[NOTE]
+====
+The transactional HTTP API is deprecated and replaced by the HTTP Query API.
+See link:{neo4j-docs-base-uri}/query-api/current/routing/[Query API -> Route queries to read cluster members] for details on how to route queries to read cluster members with the Query API.
+====
 
 In a cluster environment, all queries are routed to writer members by default.
 To ensure efficient load balancing, you should send queries that contain only read statements to the cluster readers.

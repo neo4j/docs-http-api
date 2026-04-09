@@ -1,4 +1,11 @@
+:page-role: deprecated-5.26
 = Retrieve query statistics
+
+[NOTE]
+====
+The transactional HTTP API is deprecated and replaced by the HTTP Query API.
+See link:{neo4j-docs-base-uri}/query-api/current/query-counters/[Query API -> Retrieve query counters] for details on how to retrieve query counters with the Query API.
+====
 
 If `includeStats` is set to `true` for a statement, the server returns query statistics (also known as query counters) alongside the query result. Statistics give insights into how the status of the database was altered by the query.
 

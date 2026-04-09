@@ -1,4 +1,11 @@
+:page-role: deprecated-5.26
 = Coordinate transactions and enforce causal consistency
+
+[NOTE]
+====
+The transactional HTTP API is deprecated and replaced by the HTTP Query API.
+See link:{neo4j-docs-base-uri}/query-api/current/bookmarks/[Query API -> Coordinate transactions and enforce causal consistency] for details on how to use bookmarks with the Query API.
+====
 
 When working with a cluster, _bookmarks_ allow you to chain transactions and enforce <<causal_consistency>>.
 A bookmark is a token that represents some state of the database.

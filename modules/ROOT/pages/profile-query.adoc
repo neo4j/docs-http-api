@@ -1,4 +1,11 @@
+:page-role: deprecated-5.26
 = Profile queries
+
+[NOTE]
+====
+The transactional HTTP API is deprecated and replaced by the HTTP Query API.
+See link:{neo4j-docs-base-uri}/query-api/current/profile-query/[Query API -> Profile queries] for details on how to profile queries with the Query API.
+====
 
 If a query is prepended with `EXPLAIN`, the server will return the _execution plan_ it would use to run it, but not actually execute it.
 On the other hand, if a query is prepended with `PROFILE`, the server will return the execution plan _and_ the corresponding query result.

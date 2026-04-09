@@ -1,4 +1,11 @@
+:page-role: deprecated-5.26
 = Run transactions
+
+[NOTE]
+====
+The transactional HTTP API is deprecated and replaced by the HTTP Query API.
+See link:{neo4j-docs-base-uri}/query-api/current/transactions/[Query API -> Run transactions] for details on how to use transactions with the Query API.
+====
 
 Use transactions to group together related queries which work together to achieve a single logical database operation.
 As Neo4j is <<ACID>> compliant, queries within a <<transaction>> will either be executed as a whole or not at all: you cannot get a part of the transaction succeed and another fail.

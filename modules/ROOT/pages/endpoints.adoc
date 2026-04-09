@@ -4,32 +4,26 @@
 
 This page contains a list of the endpoints that the HTTP API provides, plus pointers to other HTTP endpoints available on a Neo4j server.
 
-[NOTE]
-====
-The cluster status endpoints are not deprecated and will continue working.
-See link:{neo4j-docs-base-uri}/operations-manual/current/clustering/monitoring/endpoints/[Clustering -> Monitoring -> Monitor cluster endpoints for status information] for more information.
-====
-
 [cols="2m, 3"]
 |===
 |Endpoint location |Description
 
 |/db/<databaseName>/tx/commit
-|To submit queries (in an implicit transaction). +
-For more information, see xref:query.adoc[].
+|label:deprecated[Deprecated in 5.26] To submit queries (in an implicit transaction). +
+For more information, see link:{neo4j-docs-base-uri}/query-api/current/endpoints/[Query API -> Endpoints].
 
 |/db/<databaseName>/tx
-|To open a transaction. +
-For more information, see xref:transactions.adoc[].
+|label:deprecated[Deprecated in 5.26] To open a transaction. +
+For more information, see link:{neo4j-docs-base-uri}/query-api/current/endpoints/[Query API -> Endpoints].
 
 |/db/<databaseName>/tx/<transactionID>
-|To submit queries to an open transaction with ID `<transactionID>`. +
+|label:deprecated[Deprecated in 5.26] To submit queries to an open transaction with ID `<transactionID>`. +
 A `DELETE` request results in a rollback. +
-For more information, see xref:transactions.adoc#_execute_queries[Run transactions -> Execute queries].
+For more information, see link:{neo4j-docs-base-uri}/query-api/current/endpoints/[Query API -> Endpoints].
 
 |/db/<databaseName>/tx/<transactionID>/commit
-|To commit an open transaction with ID `<transactionID>`. +
-For more information, see xref:transactions.adoc#_commit_a_transaction[Run transactions -> Commit a transaction].
+|label:deprecated[Deprecated in 5.26] To commit an open transaction with ID `<transactionID>`. +
+For more information, see link:{neo4j-docs-base-uri}/query-api/current/endpoints/[Query API -> Endpoints].
 
 |/dbms/cluster
 |Status endpoint to assist with rolling upgrades. +

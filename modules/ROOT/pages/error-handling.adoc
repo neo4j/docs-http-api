@@ -1,5 +1,10 @@
 = Error handling
 
+[NOTE]
+====
+The example endpoints on this page are deprecated and replaced by the HTTP Query API.
+====
+
 The result of any request to the HTTP API is streamed back to the client as received from the underlying Neo4j server.
 The server does not know whether the request will be successful or not when it sends the HTTP status code.
 Because of this, all API requests return a `200`/`201` status code, regardless of whether the statements were successfully executed.

@@ -1,6 +1,13 @@
+:page-role: deprecated-5.26
 :description: HTTP API result format.
 
 = Result formats
+
+[NOTE]
+====
+The transactional HTTP API is deprecated and replaced by the HTTP Query API.
+See link:{neo4j-docs-base-uri}/query-api/current/plain-json/[Query API -> Plain JSON] and link:{neo4j-docs-base-uri}/query-api/current/typed-json/[Query API -> Typed JSON] for details on how to receive query results in different formats with the Query API.
+====
 
 Responses can return queried data in three formats: JSON, Jolt, or graph.
 
