@@ -1,5 +1,12 @@
 = Authorize requests
 
+[NOTE]
+====
+The process for authorizing requests to the Neo4j HTTP API is not deprecated and will continue working.
+However, all the examples are deprecated as of Neo4j 5.26.
+Use the same principles to authorize requests to the HTTP Query API instead, as described in link:{neo4j-docs-base-uri}/query-api/current/authentication-authorization/[Query API -> Authorize requests].
+====
+
 Unless authentication is disabled on the server, all requests must be authorized using the login credentials of a valid user.
 
 Request are authorized through an `Authorization` header.

@@ -5,8 +5,8 @@
 
 [WARNING]
 ====
-The HTTP API is not available on <<Aura>>.
-Use the link:{neo4j-docs-base-uri}/query-api/current/[Query API] instead.
+The transactional HTTP API is deprecated and replaced by the Query API.
+See the link:{neo4j-docs-base-uri}/query-api/current/[Neo4j Query API] documentation for more information.
 ====
 
 The Neo4j HTTP API allows to execute a series of Cypher statements against a Neo4j server through HTTP requests.
