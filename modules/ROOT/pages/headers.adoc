@@ -9,8 +9,8 @@ This page contains a full list of headers you may use to tweak the HTTP API beha
 |Header |Description
 
 |Accept
-|Desired format of the response body. +
-Possible values are `application/json` (default), `application/vnd.neo4j.jolt-v2`, or `application/vnd.neo4j.jolt-v2+json-seq`. +
+|label:deprecated[Not deprecated] Desired format of the response body. +
+Possible values are `application/json` (default), `application/vnd.neo4j.jolt-v2`, or `application/vnd.neo4j.jolt-v2+json-seq`.footnote:[The `application/json` format is not deprecated, but the JOLT formats are deprecated.] +
 For more information, see xref:result-formats.adoc[].
 
 |Access-Mode
@@ -19,7 +19,7 @@ Possible values are `READ` or `WRITE` (default). +
 For more information, see xref:routing.adoc[].
 
 |Authorization
-|Authentication credentials to authorize the request. +
+|label:deprecated[Not deprecated] Authentication credentials to authorize the request. +
 For more information, see xref:authentication-authorization.adoc[].
 
 |Bookmarks
@@ -27,7 +27,7 @@ For more information, see xref:authentication-authorization.adoc[].
 For more information, see xref:bookmarks.adoc[].
 
 |Content-Type
-|The format of the request body. +
+|label:deprecated[Not deprecated] The format of the request body. +
 The only possible value is `application/json`.
 
 |===
@@ -40,7 +40,7 @@ The only possible value is `application/json`.
 
 |Content-Type
 |The format of the response body (matches the `Accept` request header). +
-Possible values are `application/json`, `application/vnd.neo4j.jolt-v2`, or `application/vnd.neo4j.jolt-v2+json-seq`. +
+Possible values are `application/json` (not deprecated), `application/vnd.neo4j.jolt-v2`, or `application/vnd.neo4j.jolt-v2+json-seq`.footnote:[The `application/json` format is not deprecated, but the JOLT formats are deprecated.]
 For more information, see xref:result-formats.adoc[].
 
 |===
