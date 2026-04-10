@@ -1,5 +1,11 @@
 = Query the database
 
+[NOTE]
+====
+The transactional HTTP API is deprecated and replaced by the HTTP Query API.
+See link:{neo4j-docs-base-uri}/query-api/current/query/[Query API -> Query the database] for details on how to run queries with the Query API.
+====
+
 To run a query on a database, submit a `POST` request to the following endpoint:
 
 ----
