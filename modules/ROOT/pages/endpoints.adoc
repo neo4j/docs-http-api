@@ -36,7 +36,7 @@ For more information, see xref:transactions.adoc#_commit_a_transaction[Run trans
 
 The overall flow of the API is illustrated below, with each box representing a separate HTTP request:
 
-image::http-cypher-transaction-api-flow.png[title="HTTP API flow"]
+image::http-cypher-transaction-api-flow.png["Flow diagram of the HTTP API transaction endpoints: from START a transaction is opened with POST /tx (BEGIN), queries run with POST /tx/\{n} (RUN), and it is closed with either POST /tx/\{n}/commit (COMMIT) or DELETE /tx/\{n} (ROLLBACK) before reaching END; a single POST /tx/commit combines BEGIN and COMMIT",title="HTTP API flow"]
 
 
 [[discovery-api]]
